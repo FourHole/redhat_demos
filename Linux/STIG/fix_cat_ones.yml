@@ -1,19 +1,28 @@
 ---
-- name: Apply RHEL 9 STIG to target hosts
-  hosts: "{{ host_name }}" # Replace with your target host group or server IP/hostname
-  become: yes # The STIG role requires elevated privileges
+- name: Apply RHEL STIG to target hosts
+  hosts: "{{ host_name }}"  # Replace with your target host group or server IP/hostname
+  become: yes
 
   tasks:
-    - name: Fix RHEL 9 CAT I findings
+    - name: Apply RHEL 9 STIG
       ansible.builtin.import_role:
-        name: ansible-role-rhel9-stig     
-       
+        name: ansible-role-rhel9-stig
+      when:
+        - ansible_facts['distribution'] == "RedHat"
+        - ansible_facts['distribution_major_version'] | int == 9
+
+    - name: Apply RHEL 8 STIG
+      ansible.builtin.import_role:
+        name: ansible-role-rhel8-stig
+      when:
+        - ansible_facts['distribution'] == "RedHat"
+        - ansible_facts['distribution_major_version'] | int == 8
+
   post_tasks:
     - name: Reboot the system if required
       ansible.builtin.reboot:
-        msg: "Rebooting to apply RHEL 9 STIG changes"
+        msg: "Rebooting to apply RHEL STIG changes"
         connect_timeout: 5
         reboot_timeout: 600
       tags:
         - always
-        
