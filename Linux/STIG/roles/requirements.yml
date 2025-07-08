@@ -1,7 +1,7 @@
 # requirements.yml
-- src: https://github.com/RedHatOfficial/ansible-role-rhel9-stig.git
+- src: https://github.com/RedHatOfficial/ansible-role-rhel9-stig
   name: ansible-role-rhel9-stig
-- src: https://github.com/RedHatOfficial/ansible-role-rhel9-stig.git
-  name: ansible-role-rhel9-stig
+- src: https://github.com/RedHatOfficial/ansible-role-rhel8-stig
+  name: ansible-role-rhel8-stig
   # You can specify a version/tag if needed, e.g.:
   # version: v1.0.0
