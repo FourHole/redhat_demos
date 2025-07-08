@@ -1,8 +1,11 @@
 ---
 - name: IOS XE Compliance
   hosts: "{{ host_name }}"
+  connection: network_cli
   vars:
     ignore_all_errors: false
     ansible_command_timeout: 60
+    ansible_become: yes
+    ansible_become_method: enable
   roles:
     - iosxeSTIG
