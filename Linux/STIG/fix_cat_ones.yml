@@ -1,0 +1,19 @@
+---
+- name: Apply RHEL 9 STIG to target hosts
+  hosts: "{{ host_name }}" # Replace with your target host group or server IP/hostname
+  become: yes # The STIG role requires elevated privileges
+
+  tasks:
+    - name: Fix RHEL 9 CAT I findings
+      ansible.builtin.import_role:
+        name: ansible-role-rhel9-stig     
+       
+  post_tasks:
+    - name: Reboot the system if required
+      ansible.builtin.reboot:
+        msg: "Rebooting to apply RHEL 9 STIG changes"
+        connect_timeout: 5
+        reboot_timeout: 600
+      tags:
+        - always
+        
