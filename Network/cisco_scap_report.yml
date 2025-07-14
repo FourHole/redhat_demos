@@ -8,21 +8,18 @@
     ansible_become: yes
     ansible_become_method: enable
   tasks:
-    - name: Create test user
-      cisco.ios.user:
-        name: fourhole
-        password_type: secret
-        privilege: 15
-        configured_password: cisco2025!
-    # - name: Run show tech command to feed SCC
-    #   ios_command:
-    #     commands: show version
-    #   register: show_tech_output
-    # - name: Write show tech output to file
-    #   copy: 
-    #     content: "{{ show_tech_output }}"
-    #     dest: /tmp/scap.txt
-    #   delegate_to: localhost
+    - name: Run show tech command to feed SCC
+      ios_command:
+        commands: show version
+      register: show_tech_output
+      vars:
+      ansible_terminal_stderr_re:
+        - pattern: 'randomPatternThatWontMatch'
+    - name: Write show tech output to file
+      copy: 
+        content: "{{ show_tech_output }}"
+        dest: /tmp/scap.txt
+      delegate_to: localhost
     # - name: Run SCC against show tech output
     #   command: 
 
