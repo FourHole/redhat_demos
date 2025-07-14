@@ -13,8 +13,8 @@
         commands: show version
       register: show_tech_output
       vars:
-      ansible_terminal_stderr_re:
-        - pattern: 'randomPatternThatWontMatch'
+        ansible_terminal_stderr_re:
+          - pattern: 'randomPatternThatWontMatch'
     - name: Write show tech output to file
       copy: 
         content: "{{ show_tech_output }}"
