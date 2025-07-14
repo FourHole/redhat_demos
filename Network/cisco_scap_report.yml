@@ -10,7 +10,7 @@
   tasks:
     - name: Run show tech command to feed SCC
       ios_command:
-        commands: show tech
+        commands: show logging
     #   register: show_tech_output
     # - name: Write show tech output to file
     #   copy: 
