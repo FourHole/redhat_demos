@@ -10,7 +10,7 @@
   tasks:
     - name: Run show tech command to feed SCC
       ios_command:
-        commands: show version
+        commands: show tech
       register: show_tech_output
       vars:
         ansible_terminal_stderr_re:
