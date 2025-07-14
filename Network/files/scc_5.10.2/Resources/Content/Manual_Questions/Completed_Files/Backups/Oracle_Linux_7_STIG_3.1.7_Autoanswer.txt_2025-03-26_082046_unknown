@@ -1,0 +1,3112 @@
+################################################################################
+DOCUMENT         : Oracle_Linux_7_STIG
+VERSION          : 3.1.7
+CHECKSUM         : faa95a8bb17719764fa5947b5959a018623bc18470ef76db88646f4b26e040d5
+MANUAL QUESTIONS : 85
+
+IMPORTANT: Make sure to save the completed version of this file to: 
+<SCC Install>/Resources/Content/Manual_Questions/Completed_Files
+
+This file contains all of the non-automated STIG requirements found in the STIG.
+Results from this file will be combined with automated checks in SCC to provide
+complete STIG compliance results.
+
+This file will be programmaticaly imported, so do not modify anything in this file
+except for placing an '[X]' to select a Single answer, and entering text comments.
+
+The list of questions is printed in order of severity, listing CAT I (High), then CAT II, etc..
+
+################################################################################
+
+QUESTION         : 1 of 85
+TITLE            : CAT I, V-221652, SV-221652r991557, SRG-OS-000256-GPOS-00097
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1
+RULE             : The Oracle Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values.
+QUESTION_TEXT    : Verify the file permissions, ownership, and group membership of system files and commands match the vendor values.
+
+Check the default file permissions, ownership, and group membership of system files and commands with the following command:
+
+     # for i in `rpm -Va | grep -E '^.{1}M|^.{5}U|^.{6}G' | cut -d " " -f 4,5`;do for j in `rpm -qf $i`;do rpm -ql $j --dump | cut -d " " -f 1,5,6,7 | grep $i;done;done
+
+     /var/log/gdm 040755 root root
+     /etc/audisp/audisp-remote.conf 0100640 root root
+     /usr/bin/passwd 0104755 root root
+
+For each file returned, verify the current permissions, ownership, and group membership:
+     # ls -la <filename>
+
+     -rw-------. 1 root root  2017 Nov 1 10:03 /etc/audisp/audisp-remote.conf
+
+If the file is more permissive than the default permissions, this is a finding.
+
+If the file is not owned by the default owner and is not documented with the Information System Security Officer (ISSO), this is a finding.
+
+If the file is not a member of the default group and is not documented with the ISSO, this is a finding.
+
+References:
+V-99045
+SV-108149
+CCI-001494
+CCI-001496
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 1 *******************************
+
+QUESTION         : 2 of 85
+TITLE            : CAT I, V-221717, SV-221717r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1181
+RULE             : The Oracle Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.
+QUESTION_TEXT    : Verify the operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed.
+
+Check that the ctrl-alt-del.target is masked and not active with the following command:
+
+     # systemctl status ctrl-alt-del.target
+
+     ctrl-alt-del.target
+     Loaded: masked (/dev/null; bad)
+     Active: inactive (dead)
+
+If the ctrl-alt-del.target is not masked, this is a finding.
+
+If the ctrl-alt-del.target is active, this is a finding.
+
+References:
+V-99171
+SV-108275
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 2 *******************************
+
+QUESTION         : 3 of 85
+TITLE            : CAT I, V-221837, SV-221837r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3101
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3101
+RULE             : The Oracle Linux operating system must use a virus scan program.
+QUESTION_TEXT    : Verify an anti-virus solution is installed on the system. The anti-virus solution may be bundled with an approved host-based security solution.
+
+If there is no anti-virus solution installed on the system, this is a finding.
+
+References:
+V-99413
+SV-108517
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 3 *******************************
+
+QUESTION         : 4 of 85
+TITLE            : CAT I, V-228565, SV-228565r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4341
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4341
+RULE             : The Oracle Linux operating system must be configured so the x86 Ctrl-Alt-Delete key sequence is disabled in the Graphical User Interface.
+QUESTION_TEXT    : Note: If the operating system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Verify the operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed.
+
+Check that the ctrl-alt-del.target is masked and not active in the graphical user interface with the following command:
+
+# grep logout /etc/dconf/db/local.d/*
+
+logout=''
+
+If "logout" is not set to use two single quotations, or is missing, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 4 *******************************
+
+QUESTION         : 5 of 85
+TITLE            : CAT I, V-251698, SV-251698r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4621
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4621
+RULE             : The Oracle Linux operating system must not have accounts configured with blank or null passwords.
+QUESTION_TEXT    : Check the "/etc/shadow" file for blank passwords with the following command:
+
+$ sudo awk -F: '!$2 {print $1}' /etc/shadow
+
+If the command returns any results, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 5 *******************************
+
+QUESTION         : 6 of 85
+TITLE            : CAT II, V-221655, SV-221655r958390, SRG-OS-000023-GPOS-00006
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:61
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:61
+RULE             : The Oracle Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.
+QUESTION_TEXT    : Verify the operating system displays the approved Standard Mandatory DoD Notice and Consent Banner before granting access to the operating system via a graphical user logon.
+
+Note: If the system does not have a Graphical User Interface installed, this requirement is Not Applicable. 
+
+Check that the operating system displays the exact approved Standard Mandatory DoD Notice and Consent Banner text with the command:
+
+# grep banner-message-text /etc/dconf/db/local.d/*
+banner-message-text=
+'You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\nBy using this IS (which includes any device attached to this IS), you consent to the following conditions:\n-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n-At any time, the USG may inspect and seize data stored on this IS.\n-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.'
+
+Note: The "\n" characters are for formatting only. They will not be displayed on the Graphical User Interface.
+
+If the banner does not match the approved Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+
+References:
+V-99051
+SV-108155
+CCI-000048
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 6 *******************************
+
+QUESTION         : 7 of 85
+TITLE            : CAT II, V-221656, SV-221656r958390, SRG-OS-000023-GPOS-00006
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:81
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:81
+RULE             : The Oracle Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon.
+QUESTION_TEXT    : Verify the operating system displays the Standard Mandatory DoD Notice and Consent Banner before granting access to the operating system via a command line user logon.
+
+Check to see if the operating system displays a banner at the command line logon screen with the following command:
+
+# more /etc/issue
+
+The command should return the following text:
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+If the operating system does not display a graphical logon banner or the banner does not match the Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+
+If the text in the "/etc/issue" file does not match the Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+
+References:
+SV-108157
+V-99053
+CCI-000048
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 7 *******************************
+
+QUESTION         : 8 of 85
+TITLE            : CAT II, V-221659, SV-221659r958402, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:141
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:141
+RULE             : The Oracle Linux operating system must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface.
+QUESTION_TEXT    : Verify the operating system prevents a user from overriding the screensaver lock-enabled setting for the graphical user interface. 
+
+Note: If the system does not have GNOME installed, this requirement is Not Applicable.
+
+Determine which profile the system database is using with the following command:
+     # grep system-db /etc/dconf/profile/user
+
+     system-db:local
+
+Check for the lock-enabled setting with the following command:
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+     # grep -i lock-enabled /etc/dconf/db/local.d/locks/*
+
+     /org/gnome/desktop/screensaver/lock-enabled
+
+If the command does not return a result, this is a finding.
+
+References:
+V-99059
+SV-108163
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 8 *******************************
+
+QUESTION         : 9 of 85
+TITLE            : CAT II, V-221662, SV-221662r958402, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:201
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:201
+RULE             : The Oracle Linux operating system must prevent a user from overriding the session idle-delay setting for the graphical user interface.
+QUESTION_TEXT    : Verify the operating system prevents a user from overriding session idle delay after a 15-minute period of inactivity for graphical user interfaces. 
+
+Note: If the system does not have GNOME installed, this requirement is Not Applicable. 
+
+Determine which profile the system database is using with the following command:
+     # grep system-db /etc/dconf/profile/user
+     system-db:local
+
+Check for the session idle delay setting with the following command:
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+     # grep -i idle-delay /etc/dconf/db/local.d/locks/*
+     /org/gnome/desktop/session/idle-delay
+
+If the command does not return a result, this is a finding.
+
+References:
+V-99065
+SV-108169
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 9 *******************************
+
+QUESTION         : 10 of 85
+TITLE            : CAT II, V-221690, SV-221690r958388, SRG-OS-000021-GPOS-00005
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:701
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:701
+RULE             : The Oracle Linux operating system must be configured to lock accounts for a minimum of 15 minutes after three unsuccessful logon attempts within a 15-minute timeframe.
+QUESTION_TEXT    : Check that the system locks an account for a minimum of 15 minutes after three unsuccessful logon attempts within a period of 15 minutes with the following command:
+
+     # grep pam_faillock.so /etc/pam.d/password-auth
+
+auth        required      pam_faillock.so preauth silent audit deny=3 even_deny_root fail_interval=900 unlock_time=900
+auth        [default=die] pam_faillock.so authfail audit deny=3 even_deny_root fail_interval=900 unlock_time=900
+account     required      pam_faillock.so 
+
+If the "deny" parameter is set to "0" or a value greater than "3" on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+If the "even_deny_root" parameter is not set on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+If the "fail_interval" parameter is set to "0" or is set to a value less than "900" on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+If the "unlock_time" parameter is not set to "0", "never", or is set to a value less than "900" on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+Note: The maximum configurable value for "unlock_time" is "604800". 
+
+If any line referencing the "pam_faillock.so" module is commented out, this is a finding.
+
+     # grep pam_faillock.so /etc/pam.d/system-auth
+
+auth        required      pam_faillock.so preauth silent audit deny=3 even_deny_root fail_interval=900 unlock_time=900
+auth        [default=die] pam_faillock.so authfail audit deny=3 even_deny_root fail_interval=900 unlock_time=900
+account     required      pam_faillock.so
+
+If the "deny" parameter is set to "0" or a value greater than "3" on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+If the "even_deny_root" parameter is not set on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+If the "fail_interval" parameter is set to "0" or is set to a value less than "900" on both "auth" lines with the "pam_faillock.so" module, or is missing from these lines, this is a finding.
+
+If the "unlock_time" parameter is not set to "0", "never", or is set to a value less than "900" on both "auth" lines with the "pam_faillock.so" module or is missing from these lines, this is a finding.
+
+Note: The maximum configurable value for "unlock_time" is "604800". 
+
+If any line referencing the "pam_faillock.so" module is commented out, this is a finding.
+
+References:
+V-99119
+SV-108223
+CCI-000044
+CCI-002236
+CCI-002237
+CCI-002238
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 10 *******************************
+
+QUESTION         : 11 of 85
+TITLE            : CAT II, V-221691, SV-221691r958736, SRG-OS-000329-GPOS-00128
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:721
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:721
+RULE             : The Oracle Linux operating system must lock the associated account after three unsuccessful root logon attempts are made within a 15-minute period.
+QUESTION_TEXT    : Verify the operating system automatically locks the root account, for a minimum of 15 minutes, when three unsuccessful logon attempts in 15 minutes are made.
+
+     # grep pam_faillock.so /etc/pam.d/password-auth
+
+auth        required      pam_faillock.so preauth silent audit deny=3 even_deny_root fail_interval=900 unlock_time=900 
+auth        [default=die] pam_faillock.so authfail audit deny=3 even_deny_root fail_interval=900 unlock_time=900 
+account     required      pam_faillock.so
+
+If the "even_deny_root" setting is not defined on both lines with the "pam_faillock.so" module, is commented out, or is missing from a line, this is a finding.
+
+     # grep pam_faillock.so /etc/pam.d/system-auth
+
+auth        required      pam_faillock.so preauth silent audit deny=3 even_deny_root fail_interval=900 unlock_time=900 
+auth        [default=die] pam_faillock.so authfail audit deny=3 even_deny_root fail_interval=900 unlock_time=900
+account     required      pam_faillock.so
+
+If the "even_deny_root" setting is not defined on both lines with the "pam_faillock.so" module, is commented out, or is missing from a line, this is a finding.
+
+References:
+V-99121
+SV-108225
+CCI-002238
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 11 *******************************
+
+QUESTION         : 12 of 85
+TITLE            : CAT II, V-221703, SV-221703r1015186, SRG-OS-000104-GPOS-00051
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:921
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:921
+RULE             : The Oracle Linux operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.
+QUESTION_TEXT    : Verify the operating system requires multifactor authentication to uniquely identify organizational users using multifactor authentication.
+
+Check to see if smartcard authentication is enforced on the system:
+# authconfig --test | grep "pam_pkcs11 is enabled"
+
+If no results are returned, this is a finding.
+
+# authconfig --test | grep "smartcard removal action"
+
+If "smartcard removal action" is blank, this is a finding.
+
+# authconfig --test | grep "smartcard module"
+
+If any of the above checks are not configured, ask the administrator to indicate the AO-approved multifactor authentication in use and the configuration to support it. If there is no evidence of multifactor authentication, this is a finding.
+
+References:
+V-99145
+SV-108249
+CCI-000764
+CCI-000767
+CCI-000765
+CCI-000768
+CCI-000766
+CCI-000770
+CCI-004045
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 12 *******************************
+
+QUESTION         : 13 of 85
+TITLE            : CAT II, V-221707, SV-221707r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:981
+RULE             : The Oracle Linux operating system must prevent nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+QUESTION_TEXT    : Verify the operating system prevents nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+
+Obtain a list of authorized users for the system.
+
+Check the list against the system by using the following command:
+
+     $ sudo semanage login -l | more
+
+     Login Name    SELinux User    MLS/MCS Range    Service
+
+     __default__   user_u                 s0-s0:c0.c1023        *
+     root                   unconfined_u  s0-s0:c0.c1023        *
+     system_u        system_u           s0-s0:c0.c1023        *
+     joe                     staff_u                s0-s0:c0.c1023        *
+
+All administrators must be mapped to the "staff_u", or an appropriately tailored confined SELinux user as defined by the organization.
+
+All authorized nonadministrative users must be mapped to the "user_u" SELinux user.
+
+If they are not mapped in this way, this is a finding.
+If administrator accounts are mapped to the "sysadm_u" SELinux user and are not documented as an operational requirement with the information system security officer (ISSO), this is a finding.
+If administrator accounts are mapped to the "sysadm_u" SELinux user and are documented as an operational requirement with the ISSO, this can be downgraded to a CAT III.
+
+References:
+V-99153
+SV-108257
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 13 *******************************
+
+QUESTION         : 14 of 85
+TITLE            : CAT II, V-221709, SV-221709r958794, SRG-OS-000363-GPOS-00150
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1021
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1021
+RULE             : The Oracle Linux operating system must be configured so that designated personnel are notified if baseline configurations are changed in an unauthorized manner.
+QUESTION_TEXT    : Verify the operating system notifies designated personnel if baseline configurations are changed in an unauthorized manner.
+
+Note: A file integrity tool other than Advanced Intrusion Detection Environment (AIDE) may be used, but the tool must be executed and notify specified individuals via email or an alert.
+
+Check for the presence of a cron job running routinely on the system that executes AIDE to scan for changes to the system baseline. The commands used in the example will use a daily occurrence.
+
+Check the cron directories for a "crontab" script file controlling the execution of the file integrity application. For example, if AIDE is installed on the system, use the following command:
+    
+     # ls -al /etc/cron.* | grep aide
+     -rwxr-xr-x 1 root root 602 Mar 6 20:02 aide
+
+     # grep aide /etc/crontab /var/spool/cron/root
+     /etc/crontab: 30 04 * * * root /usr/sbin/aide  --check
+     /var/spool/cron/root: 30 04 * * * /usr/sbin/aide  --check
+
+AIDE does not have a configuration that will send a notification, so the cron job uses the mail application on the system to email the results of the file integrity run as in the following example:
+
+     # more /etc/cron.daily/aide
+     #!/bin/bash
+
+     /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+
+If the file integrity application does not notify designated personnel of changes, this is a finding.
+
+References:
+SV-108261
+V-99157
+CCI-001744
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 14 *******************************
+
+QUESTION         : 15 of 85
+TITLE            : CAT II, V-221716, SV-221716r958944, SRG-OS-000445-GPOS-00199
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1161
+RULE             : The Oracle Linux operating system must enable SELinux.
+QUESTION_TEXT    : Verify the operating system verifies correct operation of all security functions.
+
+Check if "SELinux" is active and in "Enforcing" mode with the following command:
+
+     # getenforce
+     Enforcing
+
+If "SELinux" is not active and not in "Enforcing" mode, this is a finding.
+
+References:
+V-99539
+SV-108643
+CCI-002165
+CCI-002696
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 15 *******************************
+
+QUESTION         : 16 of 85
+TITLE            : CAT II, V-221720, SV-221720r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1241
+RULE             : The Oracle Linux operating system security patches and updates must be installed and up to date.
+QUESTION_TEXT    : Verify the operating system security patches and updates are installed and up to date. Updates are required to be applied with a frequency determined by the site or Program Management Office (PMO). 
+
+Obtain the list of available package security updates from Oracle. The URL for updates is https://linux.oracle.com/errata/. It is important to note that updates provided by Oracle may not be present on the system if the underlying packages are not installed.
+
+Check that the available package security updates have been installed on the system with the following command:
+
+# yum history list | more
+Loaded plugins: langpacks, product-id, subscription-manager
+ID | Command line | Date and time | Action(s) | Altered
+-------------------------------------------------------------------------------
+70 | install aide | 2016-05-05 10:58 | Install | 1 
+69 | update -y | 2016-05-04 14:34 | Update | 18 EE
+68 | install vlc | 2016-04-21 17:12 | Install | 21 
+67 | update -y | 2016-04-21 17:04 | Update | 7 EE
+66 | update -y | 2016-04-15 16:47 | E, I, U | 84 EE
+
+If package updates have not been performed on the system within the timeframe required by the site/program documentation, this is a finding. 
+
+Typical update frequency may be overridden by Information Assurance Vulnerability Alert (IAVA) notifications from CYBERCOM.
+
+If the operating system is in non-compliance with the Information Assurance Vulnerability Management (IAVM) process, this is a finding.
+
+References:
+SV-108281
+V-99177
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 16 *******************************
+
+QUESTION         : 17 of 85
+TITLE            : CAT II, V-221721, SV-221721r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1261
+RULE             : The Oracle Linux operating system must not have unnecessary accounts.
+QUESTION_TEXT    : Verify all accounts on the system are assigned to an active system, application, or user account.
+
+Obtain the list of authorized system accounts from the Information System Security Officer (ISSO).
+
+Check the system accounts on the system with the following command:
+
+# more /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+games:x:12:100:games:/usr/games:/sbin/nologin
+gopher:x:13:30:gopher:/var/gopher:/sbin/nologin
+
+Accounts such as "games" and "gopher" are not authorized accounts as they do not support authorized system functions. 
+
+If the accounts on the system do not match the provided documentation, or accounts that do not support an authorized system function are present, this is a finding.
+
+References:
+SV-108283
+V-99179
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 17 *******************************
+
+QUESTION         : 18 of 85
+TITLE            : CAT II, V-221724, SV-221724r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1321
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1321
+RULE             : The Oracle Linux operating system must be configured so that all files and directories have a valid owner.
+QUESTION_TEXT    : Verify all files and directories on the system have a valid owner.
+
+Check the owner of all files and directories with the following command:
+
+Note: The value after -fstype must be replaced with the filesystem type. XFS is used as an example.
+
+# find / -fstype xfs -nouser
+
+If any files on the system do not have an assigned owner, this is a finding.
+
+References:
+V-99187
+SV-108291
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 18 *******************************
+
+QUESTION         : 19 of 85
+TITLE            : CAT II, V-221725, SV-221725r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1341
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1341
+RULE             : The Oracle Linux operating system must be configured so that all files and directories have a valid group owner.
+QUESTION_TEXT    : Verify all files and directories on the system have a valid group.
+
+Check the owner of all files and directories with the following command:
+
+Note: The value after -fstype must be replaced with the filesystem type. XFS is used as an example.
+
+# find / -fstype xfs -nogroup
+
+If any files on the system do not have an assigned group, this is a finding.
+
+References:
+SV-108293
+V-99189
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 19 *******************************
+
+QUESTION         : 20 of 85
+TITLE            : CAT II, V-221729, SV-221729r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1401
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1401
+RULE             : The Oracle Linux operating system must be configured so that all local interactive user home directories have mode 0750 or less permissive.
+QUESTION_TEXT    : Verify the assigned home directory of all local interactive users has a mode of "0750" or less permissive.
+
+Check the home directory assignment for all non-privileged users on the system with the following command:
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+# ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+
+-rwxr-x--- 1 smithj users 18 Mar 5 17:06 /home/smithj
+
+If home directories referenced in "/etc/passwd" do not have a mode of "0750" or less permissive, this is a finding.
+
+References:
+SV-108301
+V-99197
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 20 *******************************
+
+QUESTION         : 21 of 85
+TITLE            : CAT II, V-221730, SV-221730r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1421
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1421
+RULE             : The Oracle Linux operating system must be configured so that all local interactive user home directories are owned by their respective users.
+QUESTION_TEXT    : Verify the assigned home directory of all local interactive users on the system exists.
+
+Check the home directory assignment for all local interactive users on the system with the following command:
+
+# ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+
+-rwxr-x--- 1 smithj users 18 Mar 5 17:06 /home/smithj
+
+If any home directories referenced in "/etc/passwd" are not owned by the interactive user, this is a finding.
+
+References:
+SV-108303
+V-99199
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 21 *******************************
+
+QUESTION         : 22 of 85
+TITLE            : CAT II, V-221731, SV-221731r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1441
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1441
+RULE             : The Oracle Linux operating system must be configured so that all local interactive user home directories are group-owned by the home directory owners primary group.
+QUESTION_TEXT    : Verify the assigned home directory of all local interactive users is group-owned by that user's primary GID.
+
+Check the home directory assignment for all local interactive users on the system with the following command:
+
+     # ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+
+     -rwxr-x--- 1 smithj users 13 Apr 1 04:20 /home/smithj
+
+Check the user's primary group with the following command:
+
+     # grep $(grep smithj /etc/passwd | awk -F: '{print $4}') /etc/group
+
+     users:x:250:smithj,marinc,chongt
+
+If the user home directory referenced in "/etc/passwd" is not group-owned by that user's primary GID, this is a finding.
+
+References:
+SV-108305
+V-99201
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 22 *******************************
+
+QUESTION         : 23 of 85
+TITLE            : CAT II, V-221732, SV-221732r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1461
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1461
+RULE             : The Oracle Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a valid owner.
+QUESTION_TEXT    : Verify all files and directories in a local interactive user's home directory have a valid owner.
+
+Check the owner of all files and directories in a local interactive user's home directory with the following command:
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+$ sudo ls -lLR /home/smithj
+-rw-r--r-- 1 smithj smithj 18 Mar 5 17:06 file1
+-rw-r--r-- 1 smithj smithj 193 Mar 5 17:06 file2
+-rw-r--r-- 1 smithj smithj 231 Mar 5 17:06 file3
+
+If any files or directories are found without an owner, this is a finding.
+
+References:
+SV-108307
+V-99203
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 23 *******************************
+
+QUESTION         : 24 of 85
+TITLE            : CAT II, V-221733, SV-221733r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1481
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1481
+RULE             : The Oracle Linux operating system must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member.
+QUESTION_TEXT    : Verify all files and directories in a local interactive user home directory are group-owned by a group of which the user is a member.
+
+Check the group owner of all files and directories in a local interactive user's home directory with the following command:
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+# ls -lLR /<home directory>/<users home directory>/
+-rw-r--r-- 1 smithj smithj 18 Mar 5 17:06 file1
+-rw-r--r-- 1 smithj smithj 193 Mar 5 17:06 file2
+-rw-r--r-- 1 smithj sa 231 Mar 5 17:06 file3
+
+If any files are found with an owner different than the group home directory user, check to see if the user is a member of that group with the following command:
+
+# grep smithj /etc/group
+sa:x:100:juan,shelley,bob,smithj 
+smithj:x:521:smithj
+
+If the user is not a member of a group that group-owns file(s) in a local interactive user's home directory, this is a finding.
+
+References:
+V-99205
+SV-108309
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 24 *******************************
+
+QUESTION         : 25 of 85
+TITLE            : CAT II, V-221734, SV-221734r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1501
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1501
+RULE             : The Oracle Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a mode of 0750 or less permissive.
+QUESTION_TEXT    : Verify all files and directories contained in a local interactive user home directory, excluding local initialization files, have a mode of "0750".
+
+Check the mode of all non-initialization files in a local interactive user home directory with the following command:
+
+Files that begin with a "." are excluded from this requirement.
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+# ls -lLR /home/smithj
+-rwxr-x--- 1 smithj smithj 18 Mar 5 17:06 file1
+-rwxr----- 1 smithj smithj 193 Mar 5 17:06 file2
+-rw-r-x--- 1 smithj smithj 231 Mar 5 17:06 file3
+
+If any files are found with a mode more permissive than "0750", this is a finding.
+
+References:
+V-99207
+SV-108311
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 25 *******************************
+
+QUESTION         : 26 of 85
+TITLE            : CAT II, V-221735, SV-221735r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1521
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1521
+RULE             : The Oracle Linux operating system must be configured so that all local initialization files for interactive users are owned by the home directory user or root.
+QUESTION_TEXT    : Verify the local initialization files of all local interactive users are owned by that user.
+
+Check the home directory assignment for all nonprivileged users on the system with the following command:
+
+Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
+
+     # awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd
+     
+     smithj 1000 /home/smithj
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+     # ls -al /home/smithj/.[^.]* | more
+
+     -rw-------. 1 smithj users 2984 Apr 27 19:02 .bash_history
+     -rw-r--r--. 1 smithj users   18 Aug 21  2019 .bash_logout
+     -rw-r--r--. 1 smithj users  193 Aug 21  2019 .bash_profile
+
+If all local interactive users' initialization files are not owned by that user or root, this is a finding.
+
+References:
+V-99209
+SV-108313
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 26 *******************************
+
+QUESTION         : 27 of 85
+TITLE            : CAT II, V-221736, SV-221736r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1541
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1541
+RULE             : The Oracle Linux operating system must be configured so that all local initialization files for local interactive users are be group-owned by the users primary group or root.
+QUESTION_TEXT    : Verify the local initialization files of all local interactive users are group-owned by that user's primary Group Identifier (GID).
+
+Check the home directory assignment for all nonprivileged users on the system with the following command:
+
+Note: The example will be for the smithj user, who has a home directory of "/home/smithj" and a primary group of "users".
+
+     # awk -F: '($4>=1000)&&($7 !~ /nologin/){print $1, $4, $6}' /etc/passwd
+     
+     smithj 1000 /home/smithj
+
+     # grep 1000 /etc/group
+     
+     users:x:1000:smithj,jonesj,jacksons 
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+Check the group owner of all local interactive users' initialization files with the following command:
+
+     # ls -al /home/smithj/.[^.]* | more
+
+     -rw-------. 1 smithj users 2984 Apr 27 19:02 .bash_history
+     -rw-r--r--. 1 smithj users   18 Aug 21  2019 .bash_logout
+     -rw-r--r--. 1 smithj users  193 Aug 21  2019 .bash_profile
+
+If all local interactive users' initialization files are not group-owned by that user's primary GID, this is a finding.
+
+References:
+SV-108315
+V-99211
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 27 *******************************
+
+QUESTION         : 28 of 85
+TITLE            : CAT II, V-221737, SV-221737r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1561
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1561
+RULE             : The Oracle Linux operating system must be configured so that all local initialization files have mode 0740 or less permissive.
+QUESTION_TEXT    : Verify that all local initialization files have a mode of "0740" or less permissive.
+
+Check the mode on all local initialization files with the following command:
+
+Note: The example will be for the "smithj" user, who has a home directory of "/home/smithj".
+
+     # ls -al /home/smithj/.[^.]* | more
+
+     -rw-------. 1 smithj users 2984 Apr 27 19:02 .bash_history
+     -rw-r--r--. 1 smithj users   18 Aug 21  2019 .bash_logout
+     -rw-r--r--. 1 smithj users  193 Aug 21  2019 .bash_profile
+
+If any local initialization files have a mode more permissive than "0740", this is a finding.
+
+References:
+V-99213
+SV-108317
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 28 *******************************
+
+QUESTION         : 29 of 85
+TITLE            : CAT II, V-221738, SV-221738r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1581
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1581
+RULE             : The Oracle Linux operating system must be configured so that all local interactive user initialization files executable search paths contain only paths that resolve to the users home directory.
+QUESTION_TEXT    : Verify that all local interactive user initialization files' executable search path statements do not contain statements that will reference a working directory other than the users' home directory.
+
+Check the executable search path statement for all local interactive user initialization files in the users' home directory with the following commands:
+
+Note: The example will be for the smithj user, which has a home directory of "/home/smithj".
+
+# grep -i path= /home/smithj/.*
+/home/smithj/.bash_profile:PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+If any local interactive user initialization files have executable search path statements that include directories outside of their home directory, this is a finding.
+
+References:
+V-99215
+SV-108319
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 29 *******************************
+
+QUESTION         : 30 of 85
+TITLE            : CAT II, V-221739, SV-221739r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1601
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1601
+RULE             : The Oracle Linux operating system must be configured so that local initialization files do not execute world-writable programs.
+QUESTION_TEXT    : Verify that local initialization files do not execute world-writable programs.
+
+Check the system for world-writable files with the following command:
+
+# find / -xdev -perm -002 -type f -exec ls -ld {} \; | more
+
+For all files listed, check for their presence in the local initialization files with the following commands:
+
+Note: The example will be for a system that is configured to create users' home directories in the "/home" directory.
+
+# grep <file> /home/*/.*
+
+If any local initialization files are found to reference world-writable files, this is a finding.
+
+References:
+V-99217
+SV-108321
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 30 *******************************
+
+QUESTION         : 31 of 85
+TITLE            : CAT II, V-221740, SV-221740r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1621
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1621
+RULE             : The Oracle Linux operating system must be configured so that all system device files are correctly labeled to prevent unauthorized modification.
+QUESTION_TEXT    : Verify that all system device files are correctly labeled to prevent unauthorized modification.
+
+List all device files on the system that are incorrectly labeled with the following commands:
+
+Note: Device files are normally found under "/dev", but applications may place device files in other directories and may necessitate a search of the entire system.
+
+#find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"
+
+#find /dev -context *:unlabeled_t:* \( -type c -o -type b \) -printf "%p %Z\n"
+
+Note: There are device files, such as "/dev/vmci", that are used when the operating system is a host virtual machine. They will not be owned by a user on the system and require the "device_t" label to operate. These device files are not a finding.
+
+If there is output from either of these commands, other than already noted, this is a finding.
+
+References:
+V-99219
+SV-108323
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 31 *******************************
+
+QUESTION         : 32 of 85
+TITLE            : CAT II, V-221741, SV-221741r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1641
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1641
+RULE             : The Oracle Linux operating system must be configured so that file systems containing user home directories are mounted to prevent files with the setuid and setgid bit set from being executed.
+QUESTION_TEXT    : Verify file systems that contain user home directories are mounted with the "nosuid" option.
+
+Find the file system(s) that contain the user home directories with the following command:
+
+Note: If a separate file system has not been created for the user home directories (user home directories are mounted under "/"), this is not a finding as the "nosuid" option cannot be used on the "/" system.
+
+# awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd
+smithj 1001 /home/smithj
+thomasr 1002 /home/thomasr
+
+Check the file systems mounted at boot time with the following command:
+
+# more /etc/fstab
+
+UUID=a411dc99-f2a1-4c87-9e05-184977be8539 /home ext4 rw,relatime,discard,data=ordered,nosuid 0 2
+
+If a file system found in "/etc/fstab" refers to the user home directory file system and it does not have the "nosuid" option set, this is a finding.
+
+References:
+SV-108325
+V-99221
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 32 *******************************
+
+QUESTION         : 33 of 85
+TITLE            : CAT II, V-221742, SV-221742r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1661
+RULE             : The Oracle Linux operating system must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media.
+QUESTION_TEXT    : Verify file systems used for removable media are mounted with the "nosuid" option.
+
+Check the file systems mounted at boot time with the following command:
+
+# more /etc/fstab
+
+UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222 /mnt/usbflash vfat noauto,owner,ro,nosuid 0 0
+
+If a file system found in "/etc/fstab" refers to removable media and it does not have the "nosuid" option set, this is a finding.
+
+References:
+SV-108327
+V-99223
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 33 *******************************
+
+QUESTION         : 34 of 85
+TITLE            : CAT II, V-221749, SV-221749r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1761
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1761
+RULE             : The Oracle Linux operating system must set the umask value to 077 for all local interactive user accounts.
+QUESTION_TEXT    : Verify that the default umask for all local interactive users is "077".
+
+Identify the locations of all local interactive user home directories by looking at the "/etc/passwd" file.
+
+Check all local interactive user initialization files for interactive users with the following command:
+
+Note: The example is for a system that is configured to create users home directories in the "/home" directory.
+
+$ sudo grep -ir ^umask /home | grep -v '.bash_history'
+
+If any local interactive user initialization files are found to have a umask statement that has a value less restrictive than "077", this is a finding.
+
+References:
+V-99237
+SV-108341
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 34 *******************************
+
+QUESTION         : 35 of 85
+TITLE            : CAT II, V-221750, SV-221750r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1781
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1781
+RULE             : The Oracle Linux operating system must have cron logging implemented.
+QUESTION_TEXT    : Verify that "rsyslog" is configured to log cron events.
+
+Check the configuration of "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files for the cron facility with the following command:
+
+Note: If another logging package is used, substitute the utility configuration file for "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files.
+
+# grep cron /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+cron.* /var/log/cron
+
+If the command does not return a response, check for cron logging all facilities by inspecting the "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files.
+
+Look for the following entry:
+
+*.* /var/log/messages
+
+If "rsyslog" is not logging messages for the cron facility or all facilities, this is a finding.
+
+References:
+V-99239
+SV-108343
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 35 *******************************
+
+QUESTION         : 36 of 85
+TITLE            : CAT II, V-221753, SV-221753r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1841
+RULE             : The Oracle Linux operating system must disable Kernel core dumps unless needed.
+QUESTION_TEXT    : Verify that kernel core dumps are disabled unless needed.
+
+Check the status of the "kdump" service with the following command:
+
+# systemctl status kdump.service
+kdump.service - Crash recovery kernel arming
+Loaded: loaded (/usr/lib/systemd/system/kdump.service; enabled)
+Active: active (exited) since Wed 2015-08-26 13:08:09 EDT; 43min ago
+Main PID: 1130 (code=exited, status=0/SUCCESS)
+kernel arming.
+
+If the "kdump" service is active, ask the System Administrator if the use of the service is required and documented with the Information System Security Officer (ISSO).
+
+If the service is active and is not documented, this is a finding.
+
+References:
+SV-108349
+V-99245
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 36 *******************************
+
+QUESTION         : 37 of 85
+TITLE            : CAT II, V-221761, SV-221761r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:2001
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:2001
+RULE             : The Oracle Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories.
+QUESTION_TEXT    : Verify the file integrity tool is configured to use FIPS 140-2-approved cryptographic hashes for validating file contents and directories.
+
+Note: AIDE is highly configurable at install time. These commands assume the "aide.conf" file is under the "/etc" directory. 
+
+Use the following command to determine if the file is in another location:
+
+     # find / -name aide.conf
+
+Check the "aide.conf" file to determine if the "sha512" rule has been added to the rule list being applied to the files and directories selection lists. Exclude any log files, or files expected to change frequently, to reduce unnecessary notifications.
+
+An example rule that includes the "sha512" rule follows:
+ 
+     All=p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All # apply the custom rule to the files in bin 
+     /sbin All # apply the same custom rule to the files in sbin 
+
+If the "sha512" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or another file integrity tool is not using FIPS 140-2-approved cryptographic hashes for validating file contents and directories, this is a finding.
+
+References:
+V-99261
+SV-108365
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 37 *******************************
+
+QUESTION         : 38 of 85
+TITLE            : CAT II, V-221762, SV-221762r958796, SRG-OS-000364-GPOS-00151
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:2021
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:2021
+RULE             : The Oracle Linux operating system must not allow removable media to be used as the boot loader unless approved.
+QUESTION_TEXT    : Verify the system is not configured to use a boot loader on removable media.
+
+Note: GRUB 2 reads its configuration from the "/boot/grub2/grub.cfg" file on traditional BIOS-based machines and from the "/boot/efi/EFI/redhat/grub.cfg" file on UEFI machines.
+
+Check for the existence of alternate boot loader configuration files with the following command:
+
+     # find / -name grub.cfg
+     /boot/efi/EFI/redhat/grub.cfg
+
+If a "grub.cfg" is found in any subdirectories other than "/boot/grub2/" and "/boot/efi/EFI/redhat/", ask the system administrator (SA) if there is documentation signed by the information system security officer (ISSO) to approve the use of removable media as a boot loader. 
+
+List the number of menu entries defined in the grub configuration file with the following command (the number will vary between systems):
+
+     # grep -cw menuentry /boot/efi/EFI/redhat/grub.cfg
+     4
+
+Check that the grub configuration file has the "set root" command for each menu entry with the following command ("set root" defines the disk and partition or directory where the kernel and GRUB 2 modules are stored):
+
+     # grep 'set root' /boot/efi/EFI/redhat/grub.cfg
+     set root='hd0,gpt2'
+     set root='hd0,gpt2'
+     set root='hd0,gpt2'
+     set root='hd0,gpt2'
+
+If the system is using an alternate boot loader on removable media, and documentation does not exist approving the alternate configuration, this is a finding.
+
+References:
+SV-108367
+V-99263
+CCI-001813
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 38 *******************************
+
+QUESTION         : 39 of 85
+TITLE            : CAT II, V-221774, SV-221774r971542, SRG-OS-000343-GPOS-00134
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:2241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:2241
+RULE             : The Oracle Linux operating system must initiate an action to notify the System Administrator (SA) and Information System Security Officer (ISSO), at a minimum, when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.
+QUESTION_TEXT    : Verify the operating system initiates an action to notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.
+
+Check the system configuration to determine the partition the audit records are being written to with the following command:
+
+$ sudo grep -iw log_file /etc/audit/auditd.conf
+log_file = /var/log/audit/audit.log
+
+Determine what the threshold is for the system to take action when 75 percent of the repository maximum audit record storage capacity is reached:
+
+$ sudo grep -iw space_left /etc/audit/auditd.conf
+space_left = 25%
+
+If the value of the "space_left" keyword is not set to 25 percent of the total partition size, this is a finding.
+
+References:
+V-99287
+SV-108391
+CCI-001855
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 39 *******************************
+
+QUESTION         : 40 of 85
+TITLE            : CAT II, V-221835, SV-221835r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3061
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3061
+RULE             : The Oracle Linux operating system must send rsyslog output to a log aggregation server.
+QUESTION_TEXT    : Verify "rsyslog" is configured to send all messages to a log aggregation server.
+
+Check the configuration of "rsyslog" with the following command:
+
+Note: If another logging package is used, substitute the utility configuration file for "/etc/rsyslog.conf".
+
+     # grep @ /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+
+     *.* @@[logaggregationserver.example.mil]:[port]
+
+If there are no lines in the "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files that contain the "@" or "@@" symbol(s), and the lines with the correct symbol(s) to send output to another system do not cover all "rsyslog" output, ask the system administrator to indicate how the audit logs are offloaded to a different system or media. 
+
+If the lines are commented out or there is no evidence that the audit logs are being sent to another system, this is a finding.
+
+References:
+SV-108513
+V-99409
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 40 *******************************
+
+QUESTION         : 41 of 85
+TITLE            : CAT II, V-221836, SV-221836r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3081
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3081
+RULE             : The Oracle Linux operating system must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
+QUESTION_TEXT    : Verify that the system is not accepting "rsyslog" messages from other systems unless it is documented as a log aggregation server.
+
+Check the configuration of "rsyslog" with the following command:
+
+# grep imtcp /etc/rsyslog.conf
+$ModLoad imtcp
+# grep imudp /etc/rsyslog.conf
+$ModLoad imudp
+# grep imrelp /etc/rsyslog.conf
+$ModLoad imrelp
+
+If any of the above modules are being loaded in the "/etc/rsyslog.conf" file, ask to see the documentation for the system being used for log aggregation.
+
+If the documentation does not exist, or does not specify the server as a log aggregation system, this is a finding.
+
+References:
+SV-108515
+V-99411
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 41 *******************************
+
+QUESTION         : 42 of 85
+TITLE            : CAT II, V-221839, SV-221839r958480, SRG-OS-000096-GPOS-00050
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3141
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3141
+RULE             : The Oracle Linux operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA) and vulnerability assessments.
+QUESTION_TEXT    : Inspect the firewall configuration and running services to verify that it is configured to prohibit or restrict the use of functions, ports, protocols, and/or services that are unnecessary or prohibited.
+
+Check which services are currently active with the following command:
+
+# firewall-cmd --list-all
+public (default, active)
+interfaces: enp0s3
+sources: 
+services: dhcpv6-client dns http https ldaps rpc-bind ssh
+ports: 
+masquerade: no
+forward-ports: 
+icmp-blocks: 
+rich rules: 
+
+Ask the System Administrator for the site or program PPSM CLSA. Verify the services allowed by the firewall match the PPSM CLSA. 
+
+If there are additional ports, protocols, or services that are not in the PPSM CLSA, or ports, protocols, or services prohibited by the PPSM Category Assurance List (CAL), this is a finding.
+
+References:
+SV-108521
+V-99417
+CCI-000382
+CCI-002314
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 42 *******************************
+
+QUESTION         : 43 of 85
+TITLE            : CAT II, V-221841, SV-221841r1014784, SRG-OS-000163-GPOS-00072
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3181
+RULE             : The Oracle Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 15 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements.
+QUESTION_TEXT    : Verify the operating system terminates all network connections associated with a communications session at the end of the session or based on inactivity.
+
+Check the value of the system inactivity timeout with the following command:
+
+$ sudo grep -irw tmout /etc/profile /etc/bashrc /etc/profile.d
+
+etc/profile.d/tmout.sh:declare -xr TMOUT=600
+
+If conflicting results are returned, this is a finding.
+
+If "TMOUT" is not set to "600" or less to enforce session termination after inactivity, this is a finding.
+
+References:
+V-99421
+SV-108525
+CCI-001133
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 43 *******************************
+
+QUESTION         : 44 of 85
+TITLE            : CAT II, V-221842, SV-221842r958390, SRG-OS-000023-GPOS-00006
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3201
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3201
+RULE             : The Oracle Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner immediately prior to, or as part of, remote access logon prompts.
+QUESTION_TEXT    : Verify any publicly accessible connection to the operating system displays the Standard Mandatory DoD Notice and Consent Banner before granting access to the system.
+
+Check for the location of the banner file being used with the following command:
+
+# grep -i banner /etc/ssh/sshd_config
+
+banner /etc/issue
+
+This command will return the banner keyword and the name of the file that contains the ssh banner (in this case "/etc/issue").
+
+If the line is commented out, this is a finding.
+
+View the file specified by the banner keyword to check that it matches the text of the Standard Mandatory DoD Notice and Consent Banner:
+
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+If the system does not display a graphical logon banner or the banner does not match the Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+
+If the text in the file does not match the Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+
+References:
+V-99423
+SV-108527
+CCI-000048
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 44 *******************************
+
+QUESTION         : 45 of 85
+TITLE            : CAT II, V-221843, SV-221843r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3221
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3221
+RULE             : The Oracle Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) authentication communications.
+QUESTION_TEXT    : If LDAP is not being utilized, this requirement is Not Applicable.
+
+Verify the operating system implements cryptography to protect the integrity of remote LDAP authentication sessions.
+
+To determine if LDAP is being used for authentication, use the following command:
+
+     # systemctl status sssd.service
+     sssd.service - System Security Services Daemon
+     Loaded: loaded (/usr/lib/systemd/system/sssd.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2018-06-27 10:58:11 EST; 1h 50min ago
+
+If the "sssd.service" is "active", then LDAP is being used.
+
+Determine the "id_provider" the LDAP is currently using:
+
+     # grep -ir id_provider /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     id_provider = ad
+
+If "id_provider" is set to "ad", this is Not Applicable.
+
+Ensure LDAP is configured to use TLS, by using the following command:
+
+     # grep -ir start_tls /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     ldap_id_use_start_tls = true
+
+If the "ldap_id_use_start_tls" option is not "true", this is a finding.
+
+References:
+V-99425
+SV-108529
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 45 *******************************
+
+QUESTION         : 46 of 85
+TITLE            : CAT II, V-221844, SV-221844r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3241
+RULE             : The Oracle Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.
+QUESTION_TEXT    : If LDAP is not being utilized, this requirement is Not Applicable.
+
+Verify the operating system implements cryptography to protect the integrity of remote LDAP access sessions.
+
+To determine if LDAP is being used for authentication, use the following command:
+
+     # systemctl status sssd.service
+     sssd.service - System Security Services Daemon
+     Loaded: loaded (/usr/lib/systemd/system/sssd.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2018-06-27 10:58:11 EST; 1h 50min ago
+
+If the "sssd.service" is "active", then LDAP is being used.
+
+Determine the "id_provider" the LDAP is currently using:
+
+     # grep -ir id_provider /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     id_provider = ad
+
+If "id_provider" is set to "ad", this is Not Applicable.
+
+Verify the sssd service is configured to require the use of certificates:
+
+     # grep -ir tls_reqcert /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     ldap_tls_reqcert = demand
+
+If the "ldap_tls_reqcert" setting is missing, commented out, or does not exist, this is a finding.
+
+If the "ldap_tls_reqcert" setting is not set to "demand" or "hard", this is a finding.
+
+References:
+V-99427
+SV-108531
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 46 *******************************
+
+QUESTION         : 47 of 85
+TITLE            : CAT II, V-221845, SV-221845r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3261
+RULE             : The Oracle Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.
+QUESTION_TEXT    : If LDAP is not being utilized, this requirement is Not Applicable.
+
+Verify the operating system implements cryptography to protect the integrity of remote LDAP access sessions.
+
+To determine if LDAP is being used for authentication, use the following command:
+
+     # systemctl status sssd.service
+     sssd.service - System Security Services Daemon
+     Loaded: loaded (/usr/lib/systemd/system/sssd.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2018-06-27 10:58:11 EST; 1h 50min ago
+
+If the "sssd.service" is "active", then LDAP is being used.
+
+Determine the "id_provider" that the LDAP is currently using:
+
+     # grep -ir id_provider /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     id_provider = ad
+
+If "id_provider" is set to "ad", this is Not Applicable.
+
+Check the path to the X.509 certificate for peer authentication with the following command:
+
+     # grep -ir tls_cacert /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     ldap_tls_cacert = /etc/pki/tls/certs/ca-bundle.crt
+
+Verify the "ldap_tls_cacert" option points to a file that contains the trusted CA certificate.
+
+If this file does not exist, or the option is commented out or missing, this is a finding.
+
+References:
+SV-108533
+V-99429
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 47 *******************************
+
+QUESTION         : 48 of 85
+TITLE            : CAT II, V-221848, SV-221848r958908, SRG-OS-000423-GPOS-00187
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3321
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3321
+RULE             : The Oracle Linux operating system must be configured so that all networked systems use SSH for confidentiality and integrity of transmitted and received information as well as information during preparation for transmission.
+QUESTION_TEXT    : Verify SSH is loaded and active with the following command:
+
+# systemctl status sshd
+sshd.service - OpenSSH server daemon
+Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+Active: active (running) since Tue 2015-11-17 15:17:22 EST; 4 weeks 0 days ago
+Main PID: 1348 (sshd)
+CGroup: /system.slice/sshd.service
+1053 /usr/sbin/sshd -D
+
+If "sshd" does not show a status of "active" and "running", this is a finding.
+
+References:
+V-99435
+SV-108539
+CCI-002418
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 48 *******************************
+
+QUESTION         : 49 of 85
+TITLE            : CAT II, V-221866, SV-221866r1015190, SRG-OS-000355-GPOS-00143
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3661
+RULE             : The Oracle Linux operating system must, for networked systems, synchronize clocks with a server that is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
+QUESTION_TEXT    : Check to see if NTP is running in continuous mode.
+
+# ps -ef | grep ntp
+
+If NTP is not running, check to see if "chronyd" is running in continuous mode:
+
+# ps -ef | grep chronyd
+
+If NTP or "chronyd" is not running, this is a finding.
+
+If the NTP process is found, then check the "ntp.conf" file for the "maxpoll" option setting:
+
+# grep maxpoll /etc/ntp.conf
+server 0.rhel.pool.ntp.org iburst maxpoll 16
+
+If the "maxpoll" option is set to a number greater than 16 or the line is commented out, this is a finding.
+
+If the file does not exist, check the "/etc/cron.daily" subdirectory for a crontab file controlling the execution of the "ntpd -q" command.
+
+# grep -i "ntpd -q" /etc/cron.daily/*
+# ls -al /etc/cron.* | grep ntp
+ntp
+
+If a crontab file does not exist in the "/etc/cron.daily" that executes the "ntpd -q" command, this is a finding.
+
+If the "chronyd" process is found, then check the "chrony.conf" file for the "maxpoll" option setting:
+
+# grep maxpoll /etc/chrony.conf
+
+server 0.rhel.pool.ntp.org iburst maxpoll 16
+
+If the option is not set or the line is commented out, this is a finding.
+
+References:
+V-99471
+SV-108575
+CCI-001891
+CCI-004923
+CCI-002046
+CCI-004926
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 49 *******************************
+
+QUESTION         : 50 of 85
+TITLE            : CAT II, V-221867, SV-221867r958902, SRG-OS-000420-GPOS-00186
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3681
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3681
+RULE             : The Oracle Linux operating system must protect against or limit the effects of Denial of Service (DoS) attacks by validating the operating system is implementing rate-limiting measures on impacted network interfaces.
+QUESTION_TEXT    : Verify the operating system protects against or limits the effects of DoS attacks by ensuring the operating system is implementing rate-limiting measures on impacted network interfaces.
+
+     # grep -r net.ipv4.tcp_invalid_ratelimit /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     /etc/sysctl.conf:net.ipv4.tcp_invalid_ratelimit = 500
+
+If "net.ipv4.tcp_invalid_ratelimit" is not configured in the /etc/sysctl.conf file or in any of the other sysctl.d directories, is commented out this is a finding.
+
+Check that the operating system implements the value of the "tcp_invalid_ratelimit" variable with the following command:
+
+     # /sbin/sysctl -a | grep net.ipv4.tcp_invalid_ratelimit
+     net.ipv4.tcp_invalid_ratelimit = 500
+
+     If "net.ipv4.tcp_invalid_ratelimit" has a value of "0", this is a finding.
+
+If "net.ipv4.tcp_invalid_ratelimit" has a value greater than "1000" and is not documented with the Information System Security Officer (ISSO), this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+SV-108577
+V-99473
+CCI-002385
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 50 *******************************
+
+QUESTION         : 51 of 85
+TITLE            : CAT II, V-221868, SV-221868r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3701
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3701
+RULE             : The Oracle Linux operating system must enable an application firewall, if available.
+QUESTION_TEXT    : Verify the operating system enabled an application firewall.
+
+Check to see if "firewalld" is installed with the following command:
+
+# yum list installed firewalld
+firewalld-0.3.9-11.el7.noarch.rpm
+
+If the "firewalld" package is not installed, ask the System Administrator if another firewall application (such as iptables) is installed. 
+
+If an application firewall is not installed, this is a finding. 
+
+Check to see if the firewall is loaded and active with the following command:
+
+# systemctl status firewalld
+firewalld.service - firewalld - dynamic firewall daemon
+
+Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+Active: active (running) since Tue 2014-06-17 11:14:49 CEST; 5 days ago
+
+If "firewalld" does not show a status of "loaded" and "active", this is a finding. 
+
+Check the state of the firewall:
+
+# firewall-cmd --state 
+running
+
+If "firewalld" does not show a state of "running", this is a finding.
+
+References:
+SV-108579
+V-99475
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 51 *******************************
+
+QUESTION         : 52 of 85
+TITLE            : CAT II, V-221874, SV-221874r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3821
+RULE             : The Oracle Linux operating system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces.
+QUESTION_TEXT    : Verify the system uses a reverse-path filter for IPv4:
+
+     # grep -r net.ipv4.conf.all.rp_filter /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     net.ipv4.conf.all.rp_filter = 1
+
+If "net.ipv4.conf.all.rp_filter" is not configured in the /etc/sysctl.conf file or in any of the other sysctl.d directories, is commented out, or does not have a value of "1", this is a finding.
+
+Check that the operating system implements the accept source route variable with the following command:
+
+     # /sbin/sysctl -a | grep net.ipv4.conf.all.rp_filter
+     net.ipv4.conf.all.rp_filter = 1
+
+If the returned line does not have a value of "1", this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+V-99487
+SV-108591
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 52 *******************************
+
+QUESTION         : 53 of 85
+TITLE            : CAT II, V-221875, SV-221875r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3841
+RULE             : The Oracle Linux operating system must use a reverse-path filter for IPv4 network traffic when possible by default.
+QUESTION_TEXT    : Verify the system uses a reverse-path filter for IPv4:
+
+     # grep -r net.ipv4.conf.default.rp_filter /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     net.ipv4.conf.default.rp_filter = 1
+
+If "net.ipv4.conf.default.rp_filter" is not configured in the /etc/sysctl.conf file or in any of the other sysctl.d directories, is commented out, or does not have a value of "1", this is a finding.
+
+Check that the operating system implements the accept source route variable with the following command:
+
+     # /sbin/sysctl -a | grep net.ipv4.conf.default.rp_filter
+     net.ipv4.conf.default.rp_filter = 1
+
+If the returned line does not have a value of "1", this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+V-99489
+SV-108593
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 53 *******************************
+
+QUESTION         : 54 of 85
+TITLE            : CAT II, V-221882, SV-221882r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:3981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:3981
+RULE             : Network interfaces configured on The Oracle Linux operating system must not be in promiscuous mode.
+QUESTION_TEXT    : Verify network interfaces are not in promiscuous mode unless approved by the ISSO and documented.
+
+Check for the status with the following command:
+
+# ip link | grep -i promisc
+
+If network interfaces are found on the system in promiscuous mode and their use has not been approved by the ISSO and documented, this is a finding.
+
+References:
+V-99503
+SV-108607
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 54 *******************************
+
+QUESTION         : 55 of 85
+TITLE            : CAT II, V-221883, SV-221883r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4001
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4001
+RULE             : The Oracle Linux operating system must be configured to prevent unrestricted mail relaying.
+QUESTION_TEXT    : Verify the system is configured to prevent unrestricted mail relaying.
+
+Determine if "postfix" is installed with the following commands:
+
+# yum list installed postfix
+postfix-2.6.6-6.el7.x86_64.rpm 
+
+If postfix is not installed, this is Not Applicable.
+
+If postfix is installed, determine if it is configured to reject connections from unknown or untrusted networks with the following command:
+
+# postconf -n smtpd_client_restrictions
+smtpd_client_restrictions = permit_mynetworks, reject
+
+If the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject", this is a finding.
+
+References:
+V-99505
+SV-108609
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 55 *******************************
+
+QUESTION         : 56 of 85
+TITLE            : CAT II, V-221887, SV-221887r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4081
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4081
+RULE             : The Oracle Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode.
+QUESTION_TEXT    : Verify the TFTP daemon is configured to operate in secure mode.
+
+Check to see if a TFTP server has been installed with the following commands:
+
+# yum list installed tftp-server
+tftp-server.x86_64 x.x-x.el7
+
+If a TFTP server is not installed, this is Not Applicable.
+
+If a TFTP server is installed, check for the server arguments with the following command: 
+
+# grep server_args /etc/xinetd.d/tftp
+server_args = -s /var/lib/tftpboot
+
+If the "server_args" line does not have a "-s" option and a subdirectory is not assigned, this is a finding.
+
+References:
+SV-108617
+V-99513
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 56 *******************************
+
+QUESTION         : 57 of 85
+TITLE            : CAT II, V-221890, SV-221890r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4141
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4141
+RULE             : The Oracle Linux operating system must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS.
+QUESTION_TEXT    : Verify "AUTH_GSS" is being used to authenticate NFS mounts.
+
+To check if the system is importing an NFS file system, look for any entries in the "/etc/fstab" file that have a file system type of "nfs" with the following command:
+
+# cat /etc/fstab | grep nfs
+192.168.21.5:/mnt/export /data1 nfs4 rw,sync ,soft,sec=krb5:krb5i:krb5p
+
+If the system is mounting file systems via NFS and has the sec option without the "krb5:krb5i:krb5p" settings, the "sec" option has the "sys" setting, or the "sec" option is missing, this is a finding.
+
+References:
+V-99519
+SV-108623
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 57 *******************************
+
+QUESTION         : 58 of 85
+TITLE            : CAT II, V-221892, SV-221892r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4181
+RULE             : The Oracle Linux operating system access control program must be configured to grant or deny system access to specific hosts and services.
+QUESTION_TEXT    : If the "firewalld" package is not installed, ask the System Administrator (SA) if another firewall application (such as iptables) is installed. If an application firewall is not installed, this is a finding. 
+
+Verify the system's access control program is configured to grant or deny system access to specific hosts.
+
+Check to see if "firewalld" is active with the following command:
+
+# systemctl status firewalld
+firewalld.service - firewalld - dynamic firewall daemon
+Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+Active: active (running) since Sun 2014-04-20 14:06:46 BST; 30s ago
+
+If "firewalld" is active, check to see if it is configured to grant or deny access to specific hosts or services with the following commands:
+
+# firewall-cmd --get-default-zone
+public
+
+# firewall-cmd --list-all --zone=public
+public (active)
+target: default
+icmp-block-inversion: no
+interfaces: eth0
+sources:
+services: mdns ssh
+ports:
+protocols:
+masquerade: no
+forward-ports:
+icmp-blocks:
+
+If "firewalld" is not active, determine whether "tcpwrappers" is being used by checking whether the "hosts.allow" and "hosts.deny" files are empty with the following commands:
+
+# ls -al /etc/hosts.allow
+rw-r----- 1 root root 9 Aug 2 23:13 /etc/hosts.allow
+
+# ls -al /etc/hosts.deny
+-rw-r----- 1 root root 9 Apr 9 2007 /etc/hosts.deny
+
+If "firewalld" and "tcpwrappers" are not installed, configured, and active, ask the SA if another access control program (such as iptables) is installed and active. Ask the SA to show that the running configuration grants or denies access to specific hosts or services.
+
+If "firewalld" is active and is not configured to grant access to specific hosts or "tcpwrappers" is not configured to grant or deny access to specific hosts, this is a finding.
+
+References:
+SV-108627
+V-99523
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 58 *******************************
+
+QUESTION         : 59 of 85
+TITLE            : CAT II, V-221893, SV-221893r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4201
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4201
+RULE             : The Oracle Linux operating system must not have unauthorized IP tunnels configured.
+QUESTION_TEXT    : Verify the system does not have unauthorized IP tunnels configured.
+
+Check to see if "libreswan" is installed with the following command:
+
+# yum list installed libreswan
+libreswan.x86-64 3.20-5.el7_4
+
+If "libreswan" is installed, check to see if the "IPsec" service is active with the following command:
+
+# systemctl status ipsec
+ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
+Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
+Active: inactive (dead)
+
+If the "IPsec" service is active, check to see if any tunnels are configured in "/etc/ipsec.conf" and "/etc/ipsec.d/" with the following commands:
+
+# grep -iw conn /etc/ipsec.conf /etc/ipsec.d/*.conf
+
+If there are indications that a "conn" parameter is configured for a tunnel, ask the System Administrator if the tunnel is documented with the ISSO. 
+
+If "libreswan" is installed, "IPsec" is active, and an undocumented tunnel is active, this is a finding.
+
+References:
+SV-108629
+V-99525
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 59 *******************************
+
+QUESTION         : 60 of 85
+TITLE            : CAT II, V-221898, SV-221898r971547, SRG-OS-000424-GPOS-00188
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4301
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4301
+RULE             : The Oracle Linux operating system must be configured so that all wireless network adapters are disabled.
+QUESTION_TEXT    : Verify that there are no wireless interfaces configured on the system.
+
+This is N/A for systems that do not have wireless network adapters.
+
+Check for the presence of active wireless interfaces with the following command:
+
+# nmcli device
+DEVICE TYPE STATE
+eth0 ethernet connected
+wlp3s0 wifi disconnected
+lo loopback unmanaged
+
+If a wireless interface is configured and its use on the system is not documented with the Information System Security Officer (ISSO), this is a finding.
+
+References:
+SV-108639
+V-99535
+CCI-002421
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 60 *******************************
+
+QUESTION         : 61 of 85
+TITLE            : CAT II, V-221899, SV-221899r958434, SRG-OS-000057-GPOS-00027
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4321
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4321
+RULE             : The Oracle Linux operating system must protect audit information from unauthorized read, modification, or deletion.
+QUESTION_TEXT    : Verify the operating system audit records have proper permissions and ownership.
+
+List the full permissions and ownership of the audit log files with the following command.
+
+# ls -la /var/log/audit 
+total 4512
+drwx------. 2 root root 23 Apr 25 16:53 .
+drwxr-xr-x. 17 root root 4096 Aug 9 13:09 ..
+-rw-------. 1 root root 8675309 Aug 9 12:54 audit.log
+
+Audit logs must be mode 0600 or less permissive. 
+If any are more permissive, this is a finding.
+
+The owner and group owner of all audit log files must both be "root". If any other owner or group owner is listed, this is a finding.
+
+References:
+V-99537
+SV-108641
+CCI-000162
+CCI-000163
+CCI-000164
+CCI-001314
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 61 *******************************
+
+QUESTION         : 62 of 85
+TITLE            : CAT II, V-228566, SV-228566r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4361
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4361
+RULE             : The Oracle Linux operating system must be configured so that all world-writable directories are owned by root, sys, bin, or an application user.
+QUESTION_TEXT    : The following command will discover and print world-writable directories that are not owned by a system account, assuming that only system accounts have a UID lower than 1000. Run it once for each local partition [PART]: 
+
+# find [PART] -xdev -type d -perm -0002 -uid +999 -print
+
+If there is output, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 62 *******************************
+
+QUESTION         : 63 of 85
+TITLE            : CAT II, V-228567, SV-228567r958498, SRG-OS-000114-GPOS-00059
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4381
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4381
+RULE             : The Oracle Linux operating system must disable the graphical user interface automounter unless required.
+QUESTION_TEXT    : Note: If the operating system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Verify the operating system disables the ability to automount devices in a graphical user interface.
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+Check to see if automounter service is disabled with the following commands:
+# cat /etc/dconf/db/local.d/00-No-Automount
+
+[org/gnome/desktop/media-handling]
+
+automount=false
+
+automount-open=false
+
+autorun-never=true
+
+If the output does not match the example above, this is a finding.
+
+# cat /etc/dconf/db/local.d/locks/00-No-Automount
+
+/org/gnome/desktop/media-handling/automount
+
+/org/gnome/desktop/media-handling/automount-open
+
+/org/gnome/desktop/media-handling/autorun-never
+
+If the output does not match the example, this is a finding.
+
+References:
+CCI-000366
+CCI-000778
+CCI-001958
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 63 *******************************
+
+QUESTION         : 64 of 85
+TITLE            : CAT II, V-228569, SV-228569r1015194, SRG-OS-000373-GPOS-00156
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4401
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4401
+RULE             : The Oracle Linux operating system must be configured so users must re-authenticate for privilege escalation.
+QUESTION_TEXT    : Verify the operating system requires users to reauthenticate for privilege escalation.
+
+Check the configuration of the "/etc/sudoers" and "/etc/sudoers.d/*" files with the following command:
+
+# grep -i authenticate /etc/sudoers /etc/sudoers.d/*
+
+If any uncommented line is found with a "!authenticate" tag, this is a finding.
+
+References:
+CCI-002038
+CCI-004895
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 64 *******************************
+
+QUESTION         : 65 of 85
+TITLE            : CAT II, V-233306, SV-233306r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4441
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4441
+RULE             : The Oracle Linux operating system SSH daemon must prevent remote hosts from connecting to the proxy display.
+QUESTION_TEXT    : Verify the SSH daemon prevents remote hosts from connecting to the proxy display.
+
+Check the SSH X11UseLocalhost setting with the following command:
+
+# sudo grep -i x11uselocalhost /etc/ssh/sshd_config
+X11UseLocalhost yes
+
+If the "X11UseLocalhost" keyword is set to "no", is missing, or is commented out, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 65 *******************************
+
+QUESTION         : 66 of 85
+TITLE            : CAT II, V-244555, SV-244555r958472, SRG-OS-000080-GPOS-00048
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4521
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4521
+RULE             : Oracle Linux operating systems version 7.2 or newer booted with a BIOS must have a unique name for the grub superusers account when booting into single-user and maintenance modes.
+QUESTION_TEXT    : For systems that use UEFI, this is Not Applicable.
+
+For systems that are running a version of Oracle Linux prior to 7.2, this is Not Applicable.
+Verify that a unique name is set as the "superusers" account:
+
+$ sudo grep -iw "superusers" /boot/grub2/grub.cfg
+set superusers="[someuniquestringhere]"
+export superusers
+
+If "superusers" is identical to any OS account name or is missing a name, this is a finding.
+
+References:
+CCI-000213
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 66 *******************************
+
+QUESTION         : 67 of 85
+TITLE            : CAT II, V-244556, SV-244556r958472, SRG-OS-000080-GPOS-00048
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4541
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4541
+RULE             : Oracle Linux operating systems version 7.2 or newer booted with United Extensible Firmware Interface (UEFI) must have a unique name for the grub superusers account when booting into single-user mode and maintenance.
+QUESTION_TEXT    : For systems that use BIOS, this is Not Applicable.
+
+For systems that are running a version of Oracle Linux prior to 7.2, this is Not Applicable.
+Verify that a unique name is set as the "superusers" account:
+
+$ sudo grep -iw "superusers" /boot/efi/EFI/redhat/grub.cfg
+set superusers="[someuniquestringhere]"
+export superusers
+
+If "superusers" is identical to any OS account name or is missing a name, this is a finding.
+
+References:
+CCI-000213
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 67 *******************************
+
+QUESTION         : 68 of 85
+TITLE            : CAT II, V-250309, SV-250309r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4561
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4561
+RULE             : The Oracle Linux operating system must confine SELinux users to roles that conform to least privilege.
+QUESTION_TEXT    : Verify the operating system confines SELinux users to roles that conform to least privilege.
+
+Check the SELinux User list to SELinux Roles mapping by using the following command:
+
+     $ sudo semanage user -l
+
+                                     Labeling  MLS/               MLS/
+     SELinux User      Prefix       MCS Level    MCS Range          SELinux Roles
+
+     guest_u                user          s0                     s0                             guest_r
+     root                        user          s0                     s0-s0:c0.c1023    staff_r sysadm_r system_r unconfined_r
+     staff_u                  user          s0                     s0-s0:c0.c1023    staff_r sysadm_r system_r unconfined_r
+     sysadm_u            user          s0                     s0-s0:c0.c1023    sysadm_r
+     system_u             user          s0                     s0-s0:c0.c1023    system_r unconfined_r
+     unconfined_u    user          s0                     s0-s0:c0.c1023    system_r unconfined_r
+     user_u                   user          s0                     s0                            user_r
+     xguest_u              user          s0                     s0                            xguest_r
+
+If the output differs from the above example, ask the system administrator (SA) to demonstrate how the SELinux User mappings are exercising least privilege. If deviations from the example are not documented with the information system security officer (ISSO) and do not demonstrate least privilege, this is a finding.
+
+References:
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 68 *******************************
+
+QUESTION         : 69 of 85
+TITLE            : CAT II, V-250310, SV-250310r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4581
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4581
+RULE             : The Oracle Linux operating system must not allow privileged accounts to utilize SSH.
+QUESTION_TEXT    : Verify the operating system prevents privileged accounts from utilizing SSH.
+
+Check the SELinux ssh_sysadm_login boolean with the following command:
+
+     $ sudo getsebool ssh_sysadm_login
+     ssh_sysadm_login --> off
+
+If the "ssh_sysadm_login" boolean is not "off" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+References:
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 69 *******************************
+
+QUESTION         : 70 of 85
+TITLE            : CAT II, V-250311, SV-250311r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4601
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4601
+RULE             : The Oracle Linux operating system must elevate the SELinux context when an administrator calls the sudo command.
+QUESTION_TEXT    : Verify the operating system elevates the SELinux context when an administrator calls the sudo command with the following command:
+
+This command must be ran as root:
+
+     # grep -r sysadm_r /etc/sudoers /etc/sudoers.d
+     %{designated_group_or_user_name} ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL
+
+If conflicting results are returned, this is a finding.
+
+If a designated sudoers administrator group or account(s) is not configured to elevate the SELinux type and role to "sysadm_t" and "sysadm_r" with the use of the sudo command, this is a finding.
+
+References:
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 70 *******************************
+
+QUESTION         : 71 of 85
+TITLE            : CAT II, V-251699, SV-251699r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4641
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4641
+RULE             : The Oracle Linux operating system must specify the default "include" directory for the /etc/sudoers file.
+QUESTION_TEXT    : Note: If the "include" and "includedir" directives are not present in the /etc/sudoers file, this requirement is not applicable.
+
+Verify the operating system specifies only the default "include" directory for the /etc/sudoers file with the following command:
+
+$ sudo grep include /etc/sudoers
+
+#includedir /etc/sudoers.d
+
+If the results are not "/etc/sudoers.d" or additional files or directories are specified, this is a finding.
+
+Verify the operating system does not have nested "include" files or directories within the /etc/sudoers.d directory with the following command:
+
+$ sudo grep -r include /etc/sudoers.d
+
+If results are returned, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 71 *******************************
+
+QUESTION         : 72 of 85
+TITLE            : CAT II, V-251700, SV-251700r1015196, SRG-OS-000373-GPOS-00156
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4661
+RULE             : The Oracle Linux operating system must not be configured to bypass password requirements for privilege escalation.
+QUESTION_TEXT    : Verify the operating system is not be configured to bypass password requirements for privilege escalation.
+
+Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+
+$ sudo grep pam_succeed_if /etc/pam.d/sudo
+
+If any occurrences of "pam_succeed_if" is returned from the command, this is a finding.
+
+References:
+CCI-002038
+CCI-004895
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 72 *******************************
+
+QUESTION         : 73 of 85
+TITLE            : CAT II, V-251701, SV-251701r958944, SRG-OS-000445-GPOS-00199
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4681
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4681
+RULE             : The Oracle Linux operating system must use a file integrity tool to verify correct operation of all security functions.
+QUESTION_TEXT    : Verify that Advanced Intrusion Detection Environment (AIDE) is installed and verifies the correct operation of all security functions.
+
+Check that the AIDE package is installed with the following command:
+     $ sudo rpm -q aide
+
+     aide-0.15.1-13.el7.x86_64
+
+If AIDE is not installed, ask the System Administrator how file integrity checks are performed on the system. 
+
+If there is no application installed to perform integrity checks, this is a finding.
+
+If AIDE is installed, check if it has been initialized with the following command:
+     $ sudo /usr/sbin/aide --check
+
+If the output is "Couldn't open file /var/lib/aide/aide.db.gz for reading", this is a finding.
+
+References:
+CCI-002696
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 73 *******************************
+
+QUESTION         : 74 of 85
+TITLE            : CAT II, V-254522, SV-254522r958508, SRG-OS-000123-GPOS-00064
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4701
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4701
+RULE             : The Oracle Linux operating system must automatically expire temporary accounts within 72 hours.
+QUESTION_TEXT    : Verify temporary accounts have been provisioned with an expiration date of 72 hours.
+
+For every existing temporary account, run the following command to obtain its account expiration information:
+
+     $ sudo chage -l <temporary_account_name> | grep -i "account expires"
+
+Verify each of these accounts has an expiration date set within 72 hours.
+If any temporary accounts have no expiration date set or do not expire within 72 hours, this is a finding.
+
+References:
+CCI-001682
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 74 *******************************
+
+QUESTION         : 75 of 85
+TITLE            : CAT II, V-255899, SV-255899r958408, SRG-OS-000033-GPOS-00014
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4721
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4721
+RULE             : The Oracle Linux operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
+QUESTION_TEXT    : Verify that the SSH server is configured to use only FIPS-validated key exchange algorithms:
+
+     $ sudo grep -i kexalgorithms /etc/ssh/sshd_config
+     KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256
+ 
+If "KexAlgorithms" is not configured, is commented out, or does not contain only the algorithms "ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" in exact order, this is a finding.
+
+References:
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 75 *******************************
+
+QUESTION         : 76 of 85
+TITLE            : CAT II, V-255900, SV-255900r958402, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4741
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4741
+RULE             : The Oracle Linux operating system must have the screen package installed.
+QUESTION_TEXT    : Verify the operating system has the screen package installed.
+
+Check to see if the screen package is installed with the following command:
+
+     # yum list installed screen
+     screen-4.3.1-3-x86_64.rpm
+
+If the screen package is not installed, check to see if the tmux package is installed with the following command:
+
+     # yum list installed tmux
+     tmux-1.8-4.el7.x86_64.rpm
+
+If either the screen package or the tmux package is not installed, this is a finding.
+
+References:
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 76 *******************************
+
+QUESTION         : 77 of 85
+TITLE            : CAT II, V-255902, SV-255902r1015197, SRG-OS-000073-GPOS-00041
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4781
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4781
+RULE             : The Oracle Linux operating system must be configured to prevent overwriting of custom authentication configuration settings by the authconfig utility.
+QUESTION_TEXT    : Verify "system-auth" and "password-auth" files are symbolic links pointing to "system-auth-local" and "password-auth-local":
+     $ sudo ls -l /etc/pam.d/{password,system}-auth
+
+     lrwxrwxrwx. 1 root root 30 Apr 1 11:59 /etc/pam.d/password-auth -> /etc/pam.d/password-auth-local
+     lrwxrwxrwx. 1 root root 28 Apr 1 11:59 /etc/pam.d/system-auth -> /etc/pam.d/system-auth-local
+	
+If system-auth and password-auth files are not symbolic links, this is a finding.
+
+If system-auth and password-auth are symbolic links but do not point to "system-auth-local" and "password-auth-local", this is a finding.
+
+References:
+CCI-000196
+CCI-004062
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 77 *******************************
+
+QUESTION         : 78 of 85
+TITLE            : CAT II, V-256975, SV-256975r1015198, SRG-OS-000366-GPOS-00153
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4801
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4801
+RULE             : The Oracle Linux operating system must ensure cryptographic verification of vendor software packages.
+QUESTION_TEXT    : Confirm Oracle package-signing key is installed on the system and verify its fingerprint matches vendor value.
+
+Note: The GPG key is defined in key file "/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle" by default.
+
+List Oracle GPG keys installed on the system:
+
+     $ sudo rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey | grep -i "oracle"
+
+     gpg(Oracle OSS group (Open Source Software group) <build@oss.oracle.com>)
+
+If Oracle GPG key is not installed, this is a finding.
+
+List key fingerprint of installed Oracle GPG key:
+
+     $ sudo gpg -q --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+
+If key file "/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle" is missing, this is a finding.
+
+Example output:
+
+     pub  2048R/EC551F03 2010-07-01 Oracle OSS group (Open Source Software group) <build@oss.oracle.com>
+           Key fingerprint = 4214 4123 FECF C55B 9086  313D 72F9 7B74 EC55 1F03
+	   
+Compare key fingerprint of installed Oracle GPG key with fingerprint listed for OL 7 on Oracle verification webpage at https://linux.oracle.com/security/gpg/#gpg.
+
+If key fingerprint does not match, this is a finding.
+
+References:
+CCI-001749
+CCI-003992
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 78 *******************************
+
+QUESTION         : 79 of 85
+TITLE            : CAT II, V-256976, SV-256976r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4821
+RULE             : The Oracle Linux operating system must disable the login screen user list for graphical user interfaces.
+QUESTION_TEXT    : Verify that the operating system is configured to disable the login screen user list for graphical user interfaces.
+
+Note: If the system does not have the GNOME Desktop installed, this requirement is Not Applicable.
+
+Verify that the login screen user list for the GNOME Desktop is disabled with the following command:
+
+     $ sudo grep -is disable-user-list /etc/dconf/db/gdm.d/*
+	 
+     /etc/dconf/db/gdm.d/00-login-screen:disable-user-list=true
+	 
+If the variable "disable-user-list" is not defined in a file under "/etc/dconf/db/gdm.d/", is not set to "true", is missing or commented out, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 79 *******************************
+
+QUESTION         : 80 of 85
+TITLE            : CAT II, V-256977, SV-256977r958794, SRG-OS-000363-GPOS-00150
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4841
+RULE             : The Oracle Linux operating system must be configured to allow sending email notifications of unauthorized configuration changes to designated personnel.
+QUESTION_TEXT    : Verify that the operating system is configured to allow sending email notifications.
+
+Note: The "mailx" package provides the "mail" command that is used to send email messages.
+
+Verify that the "mailx" package is installed on the system:
+
+     $ sudo yum list installed mailx
+	 
+     mailx.x86_64     12.5-19.el7     @ol7_latest
+	 
+If "mailx" package is not installed, this is a finding.
+
+References:
+CCI-001744
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 80 *******************************
+
+QUESTION         : 81 of 85
+TITLE            : CAT III, V-221747, SV-221747r958804, SRG-OS-000368-GPOS-00154
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1721
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1721
+RULE             : The Oracle Linux operating system must mount /dev/shm with secure options.
+QUESTION_TEXT    : Verify that the "nodev","nosuid", and "noexec" options are configured for /dev/shm:
+
+# cat /etc/fstab | grep /dev/shm
+
+tmpfs /dev/shm tmpfs defaults,nodev,nosuid,noexec 0 0
+
+If results are returned and the "nodev","nosuid", or "noexec" options are missing, this is a finding.
+
+Verify "/dev/shm" is mounted with the "nodev","nosuid", and "noexec" options:
+
+# mount | grep /dev/shm
+
+tmpfs on /dev/shm type tmpfs (rw,nodev,nosuid,noexec,seclabel)
+
+If /dev/shm is mounted without secure options "nodev", "nosuid", and "noexec", this is a finding.
+
+
+References:
+SV-108337
+V-99233
+CCI-001764
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 81 *******************************
+
+QUESTION         : 82 of 85
+TITLE            : CAT III, V-221756, SV-221756r958752, SRG-OS-000341-GPOS-00132
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1901
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1901
+RULE             : The Oracle Linux operating system must use a separate file system for the system audit data path large enough to hold at least one week of audit data.
+QUESTION_TEXT    : Determine if the operating system is configured to have the "/var/log/audit" path is on a separate file system.
+
+# grep /var/log/audit /etc/fstab
+
+If no result is returned, or the operating system is not configured to have "/var/log/audit" on a separate file system, this is a finding.
+
+Verify that "/var/log/audit" is mounted on a separate file system:
+
+# mount | grep "/var/log/audit"
+
+If no result is returned, or "/var/log/audit" is not on a separate file system, this is a finding.
+
+Verify the size of the audit file system:
+
+# df -h /var/log/audit
+
+If the size is insufficient for a week of audit data, this is a finding.
+
+References:
+V-99251
+SV-108355
+CCI-001849
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 82 *******************************
+
+QUESTION         : 83 of 85
+TITLE            : CAT III, V-221759, SV-221759r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1961
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1961
+RULE             : The Oracle Linux operating system must be configured so that the file integrity tool is configured to verify Access Control Lists (ACLs).
+QUESTION_TEXT    : Verify the file integrity tool is configured to verify ACLs.
+
+Note: AIDE is highly configurable at install time. These commands assume the "aide.conf" file is under the "/etc" directory. 
+
+Use the following command to determine if the file is in another location:
+
+     # find / -name aide.conf
+
+Check the "aide.conf" file to determine if the "acl" rule has been added to the rule list being applied to the files and directories selection lists.
+
+An example rule that includes the "acl" rule is below:
+
+     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All # apply the custom rule to the files in bin 
+     /sbin All # apply the same custom rule to the files in sbin 
+
+If the "acl" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or ACLs are not being checked by another file integrity tool, this is a finding.
+
+References:
+V-99257
+SV-108361
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 83 *******************************
+
+QUESTION         : 84 of 85
+TITLE            : CAT III, V-221760, SV-221760r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:1981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:1981
+RULE             : The Oracle Linux operating system must be configured so that the file integrity tool is configured to verify extended attributes.
+QUESTION_TEXT    : Verify the file integrity tool is configured to verify extended attributes.
+
+Note: AIDE is highly configurable at install time. These commands assume the "aide.conf" file is under the "/etc" directory.
+
+Use the following command to determine if the file is in another location:
+     # find / -name aide.conf
+
+Check the "aide.conf" file to determine if the "xattrs" rule has been added to the rule list being applied to the files and directories selection lists.
+
+An example rule that includes the "xattrs" rule follows:
+
+     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All # apply the custom rule to the files in bin 
+     /sbin All # apply the same custom rule to the files in sbin 
+
+If the "xattrs" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or extended attributes are not being checked by another file integrity tool, this is a finding.
+
+References:
+V-99259
+SV-108363
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 84 *******************************
+
+QUESTION         : 85 of 85
+TITLE            : CAT III, V-255901, SV-255901r958524, SRG-OS-000138-GPOS-00069
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.ol7:testaction:4761
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.ol7:question:4761
+RULE             : The Oracle Linux operating system must restrict access to the kernel message buffer.
+QUESTION_TEXT    : Verify the operating system is configured to restrict access to the kernel message buffer with the following commands:
+
+     $ sudo sysctl kernel.dmesg_restrict
+     kernel.dmesg_restrict = 1
+
+If "kernel.dmesg_restrict" is not set to "1" or is missing, this is a finding.
+
+Check that the configuration files are present to enable this kernel parameter:
+
+     $ sudo grep -r kernel.dmesg_restrict /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     /etc/sysctl.conf:kernel.dmesg_restrict = 1
+     /etc/sysctl.d/99-sysctl.conf:kernel.dmesg_restrict = 1
+
+If "kernel.dmesg_restrict" is not set to "1", is missing or commented out, this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+CCI-001090
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 85 *******************************
+

@@ -1,0 +1,2390 @@
+################################################################################
+DOCUMENT         : RHEL_7_STIG
+VERSION          : 3.15.10
+CHECKSUM         : 3393b2cd0a5120cbd5c4bb76c2c1765b273665b1849e26a85fde299dd7c00050
+MANUAL QUESTIONS : 63
+
+IMPORTANT: Make sure to save the completed version of this file to: 
+<SCC Install>/Resources/Content/Manual_Questions/Completed_Files
+
+This file contains all of the non-automated STIG requirements found in the STIG.
+Results from this file will be combined with automated checks in SCC to provide
+complete STIG compliance results.
+
+This file will be programmaticaly imported, so do not modify anything in this file
+except for placing an '[X]' to select a Single answer, and entering text comments.
+
+The list of questions is printed in order of severity, listing CAT I (High), then CAT II, etc..
+
+################################################################################
+
+QUESTION         : 1 of 63
+TITLE            : CAT I, V-204392, SV-204392r991558, SRG-OS-000257-GPOS-00098
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values.
+QUESTION_TEXT    : Verify the file permissions, ownership, and group membership of system files and commands match the vendor values.
+
+Check the default file permissions, ownership, and group membership of system files and commands with the following command:
+
+     # for i in `rpm -Va | grep -E '^.{1}M|^.{5}U|^.{6}G' | cut -d " " -f 4,5`;do for j in `rpm -qf $i`;do rpm -ql $j --dump | cut -d " " -f 1,5,6,7 | grep $i;done;done
+
+     /var/log/gdm 040755 root root
+     /etc/audisp/audisp-remote.conf 0100640 root root
+     /usr/bin/passwd 0104755 root root
+
+For each file returned, verify the current permissions, ownership, and group membership:
+     # ls -la <filename>
+
+     -rw-------. 1 root root 2017 Nov 1 10:03 /etc/audisp/audisp-remote.conf
+
+If the file is more permissive than the default permissions, this is a finding.
+
+If the file is not owned by the default owner and is not documented with the Information System Security Officer (ISSO), this is a finding.
+
+If the file is not a member of the default group and is not documented with the Information System Security Officer (ISSO), this is a finding.
+
+References:
+V-71849
+SV-86473
+CCI-001494
+CCI-001496
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 1 *******************************
+
+QUESTION         : 2 of 63
+TITLE            : CAT I, V-204455, SV-204455r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1201
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1201
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.
+QUESTION_TEXT    : Verify the operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed.
+
+Check that the ctrl-alt-del.target is masked and not active with the following command:
+
+     # systemctl status ctrl-alt-del.target
+
+     ctrl-alt-del.target
+     Loaded: masked (/dev/null; bad)
+     Active: inactive (dead)
+
+If the ctrl-alt-del.target is not masked, this is a finding.
+
+If the ctrl-alt-del.target is active, this is a finding.
+
+References:
+SV-86617
+V-71993
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 2 *******************************
+
+QUESTION         : 3 of 63
+TITLE            : CAT I, V-214801, SV-214801r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4361
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4361
+RULE             : The Red Hat Enterprise Linux operating system must use a virus scan program.
+QUESTION_TEXT    : Verify an anti-virus solution is installed on the system. The anti-virus solution may be bundled with an approved host-based security solution.
+
+If there is no anti-virus solution installed on the system, this is a finding.
+
+References:
+V-72213
+SV-86837
+CCI-001668
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 3 *******************************
+
+QUESTION         : 4 of 63
+TITLE            : CAT II, V-204400, SV-204400r958402, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:161
+RULE             : The Red Hat Enterprise Linux operating system must prevent a user from overriding the session idle-delay setting for the graphical user interface.
+QUESTION_TEXT    : Verify the operating system prevents a user from overriding session idle delay after a 15-minute period of inactivity for graphical user interfaces. 
+
+Note: If the system does not have GNOME installed, this requirement is Not Applicable.
+
+Determine which profile the system database is using with the following command:
+     # grep system-db /etc/dconf/profile/user
+     system-db:local
+
+Check for the session idle delay setting with the following command:
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+     # grep -i idle-delay /etc/dconf/db/local.d/locks/*
+     /org/gnome/desktop/session/idle-delay
+
+If the command does not return a result, this is a finding.
+
+References:
+V-73157
+SV-87809
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 4 *******************************
+
+QUESTION         : 5 of 63
+TITLE            : CAT II, V-204441, SV-204441r958482, SRG-OS-000104-GPOS-00051
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:921
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:921
+RULE             : The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.
+QUESTION_TEXT    : Verify the operating system requires multifactor authentication to uniquely identify organizational users using multifactor authentication.
+
+Check to see if smartcard authentication is enforced on the system:
+
+# authconfig --test | grep "pam_pkcs11 is enabled"
+
+If no results are returned, this is a finding.
+
+# authconfig --test | grep "smartcard removal action"
+
+If "smartcard removal action" is blank, this is a finding.
+
+# authconfig --test | grep "smartcard module"
+
+If any of the above checks are not configured, ask the administrator to indicate the AO-approved multifactor authentication in use and the configuration to support it. If there is no evidence of multifactor authentication, this is a finding.
+
+References:
+V-71965
+SV-86589
+CCI-000766
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 5 *******************************
+
+QUESTION         : 6 of 63
+TITLE            : CAT II, V-204444, SV-204444r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:981
+RULE             : The Red Hat Enterprise Linux operating system must prevent nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+QUESTION_TEXT    : Verify the operating system prevents non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+
+Get a list of authorized users for the system.
+
+Check the list against the system by using the following command:
+
+     $ sudo semanage login -l | more
+
+     Login Name    SELinux User    MLS/MCS Range    Service
+
+     __default__   user_u                 s0-s0:c0.c1023        *
+     root                   unconfined_u  s0-s0:c0.c1023        *
+     system_u        system_u           s0-s0:c0.c1023        *
+     joe                     staff_u                s0-s0:c0.c1023        *
+
+All administrators must be mapped to the , "staff_u", or an appropriately tailored confined SELinux user as defined by the organization.
+
+All authorized non-administrative users must be mapped to the "user_u" SELinux user.
+
+If they are not mapped in this way, this is a finding.
+If administrator accounts are mapped to the "sysadm_u" SELinux user and are not documented as an operational requirement with the ISSO, this is a finding.
+If administrator accounts are mapped to the "sysadm_u" SELinux user and are documented as an operational requirement with the ISSO, this can be downgraded to a CAT III.
+
+References:
+SV-86595
+V-71971
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 6 *******************************
+
+QUESTION         : 7 of 63
+TITLE            : CAT II, V-204446, SV-204446r958794, SRG-OS-000363-GPOS-00150
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1021
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1021
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that designated personnel are notified if baseline configurations are changed in an unauthorized manner.
+QUESTION_TEXT    : Verify the operating system notifies designated personnel if baseline configurations are changed in an unauthorized manner.
+
+Note: A file integrity tool other than Advanced Intrusion Detection Environment (AIDE) may be used, but the tool must be executed and notify specified individuals via email or an alert.
+
+Check for the presence of a cron job running routinely on the system that executes AIDE to scan for changes to the system baseline. The commands used in the example will use a daily occurrence.
+
+Check the cron directories for a "crontab" script file controlling the execution of the file integrity application. For example, if AIDE is installed on the system, use the following command:
+    
+     # ls -al /etc/cron.* | grep aide
+     -rwxr-xr-x 1 root root 602 Mar 6 20:02 aide
+
+     # grep aide /etc/crontab /var/spool/cron/root
+     /etc/crontab: 30 04 * * * root /usr/sbin/aide  --check
+     /var/spool/cron/root: 30 04 * * * /usr/sbin/aide  --check
+
+AIDE does not have a configuration that will send a notification, so the cron job uses the mail application on the system to email the results of the file integrity run as in the following example:
+
+     # more /etc/cron.daily/aide
+     #!/bin/bash
+
+     /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+
+If the file integrity application does not notify designated personnel of changes, this is a finding.
+
+References:
+V-71975
+SV-86599
+CCI-001744
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 7 *******************************
+
+QUESTION         : 8 of 63
+TITLE            : CAT II, V-204453, SV-204453r958944, SRG-OS-000445-GPOS-00199
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1161
+RULE             : The Red Hat Enterprise Linux operating system must enable SELinux.
+QUESTION_TEXT    : Verify the operating system verifies correct operation of all security functions.
+
+Check if "SELinux" is active and in "Enforcing" mode with the following command:
+
+     # getenforce
+     Enforcing
+
+If "SELinux" is not active and not in "Enforcing" mode, this is a finding.
+
+References:
+V-71989
+SV-86613
+CCI-002165
+CCI-002696
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 8 *******************************
+
+QUESTION         : 9 of 63
+TITLE            : CAT II, V-204459, SV-204459r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1281
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1281
+RULE             : The Red Hat Enterprise Linux operating system security patches and updates must be installed and up to date.
+QUESTION_TEXT    : Verify the operating system security patches and updates are installed and up to date. Updates are required to be applied with a frequency determined by the site or Program Management Office (PMO). 
+
+Obtain the list of available package security updates from Red Hat. The URL for updates is https://rhn.redhat.com/errata/. It is important to note that updates provided by Red Hat may not be present on the system if the underlying packages are not installed.
+
+Check that the available package security updates have been installed on the system with the following command:
+
+# yum history list | more
+Loaded plugins: langpacks, product-id, subscription-manager
+ID     | Command line             | Date and time    | Action(s)      | Altered
+-------------------------------------------------------------------------------
+    70 | install aide             | 2016-05-05 10:58 | Install       |     1   
+    69 | update -y                | 2016-05-04 14:34 | Update     |   18 EE
+    68 | install vlc                | 2016-04-21 17:12 | Install        |   21   
+    67 | update -y                | 2016-04-21 17:04 | Update     |     7 EE
+    66 | update -y                | 2016-04-15 16:47 | E, I, U         |   84 EE
+
+If package updates have not been performed on the system within the timeframe that the site/program documentation requires, this is a finding. 
+
+Typical update frequency may be overridden by Information Assurance Vulnerability Alert (IAVA) notifications from CYBERCOM.
+
+If the operating system is in non-compliance with the Information Assurance Vulnerability Management (IAVM) process, this is a finding.
+
+References:
+SV-86623
+V-71999
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 9 *******************************
+
+QUESTION         : 10 of 63
+TITLE            : CAT II, V-204460, SV-204460r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1301
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1301
+RULE             : The Red Hat Enterprise Linux operating system must not have unnecessary accounts.
+QUESTION_TEXT    : Verify all accounts on the system are assigned to an active system, application, or user account.
+
+Obtain the list of authorized system accounts from the Information System Security Officer (ISSO).
+
+Check the system accounts on the system with the following command:
+
+# more /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+games:x:12:100:games:/usr/games:/sbin/nologin
+gopher:x:13:30:gopher:/var/gopher:/sbin/nologin
+
+Accounts such as "games" and "gopher" are not authorized accounts as they do not support authorized system functions. 
+
+If the accounts on the system do not match the provided documentation, or accounts that do not support an authorized system function are present, this is a finding.
+
+References:
+SV-86625
+V-72001
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 10 *******************************
+
+QUESTION         : 11 of 63
+TITLE            : CAT II, V-204463, SV-204463r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1361
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1361
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid owner.
+QUESTION_TEXT    : Verify all files and directories on the system have a valid owner.
+
+Check the owner of all files and directories with the following command:
+
+Note: The value after -fstype must be replaced with the filesystem type. XFS is used as an example.
+
+# find / -fstype xfs -nouser
+
+If any files on the system do not have an assigned owner, this is a finding.
+
+References:
+SV-86631
+V-72007
+CCI-002165
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 11 *******************************
+
+QUESTION         : 12 of 63
+TITLE            : CAT II, V-204464, SV-204464r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1381
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1381
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid group owner.
+QUESTION_TEXT    : Verify all files and directories on the system have a valid group.
+
+Check the owner of all files and directories with the following command:
+
+Note: The value after -fstype must be replaced with the filesystem type. XFS is used as an example.
+
+# find / -fstype xfs -nogroup
+
+If any files on the system do not have an assigned group, this is a finding.
+
+References:
+V-72009
+SV-86633
+CCI-002165
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 12 *******************************
+
+QUESTION         : 13 of 63
+TITLE            : CAT II, V-204469, SV-204469r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1461
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1461
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are owned by their respective users.
+QUESTION_TEXT    : Verify the assigned home directory of all local interactive users on the system exists.
+
+Check the home directory assignment for all local interactive users on the system with the following command:
+
+# ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+
+-rwxr-x--- 1 smithj users 18 Mar 5 17:06 /home/smithj
+
+If any home directories referenced in "/etc/passwd" are not owned by the interactive user, this is a finding.
+
+References:
+SV-86643
+V-72019
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 13 *******************************
+
+QUESTION         : 14 of 63
+TITLE            : CAT II, V-204470, SV-204470r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1481
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1481
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are group-owned by the home directory owners primary group.
+QUESTION_TEXT    : Verify the assigned home directory of all local interactive users is group-owned by that user's primary GID.
+
+Check the home directory assignment for all local interactive users on the system with the following command:
+
+     # ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+     -rwxr-x--- 1 smithj users 13 Apr 1 04:20 /home/smithj
+
+Check the user's primary group with the following command:
+
+     # grep $(grep smithj /etc/passwd | awk -F: '{print $4}') /etc/group
+     users:x:250:smithj,marinc,chongt
+
+If the user home directory referenced in "/etc/passwd" is not group-owned by that user's primary GID, this is a finding.
+
+References:
+SV-86645
+V-72021
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 14 *******************************
+
+QUESTION         : 15 of 63
+TITLE            : CAT II, V-204471, SV-204471r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1501
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1501
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a valid owner.
+QUESTION_TEXT    : Verify all files and directories in a local interactive user's home directory have a valid owner.
+
+Check the owner of all files and directories in a local interactive user's home directory with the following command:
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+$ sudo ls -lLR /home/smithj
+-rw-r--r-- 1 smithj smithj  18 Mar  5 17:06 file1
+-rw-r--r-- 1 smithj smithj 193 Mar  5 17:06 file2
+-rw-r--r-- 1 smithj smithj 231 Mar  5 17:06 file3
+
+If any files or directories are found without an owner, this is a finding.
+
+References:
+SV-86647
+V-72023
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 15 *******************************
+
+QUESTION         : 16 of 63
+TITLE            : CAT II, V-204472, SV-204472r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1521
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1521
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member.
+QUESTION_TEXT    : Verify all files and directories in a local interactive user home directory are group-owned by a group the user is a member of.
+
+Check the group owner of all files and directories in a local interactive user's home directory with the following command:
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+# ls -lLR /<home directory>/<users home directory>/
+-rw-r--r-- 1 smithj smithj  18 Mar  5 17:06 file1
+-rw-r--r-- 1 smithj smithj 193 Mar  5 17:06 file2
+-rw-r--r-- 1 smithj sa        231 Mar  5 17:06 file3
+
+If any files are found with an owner different than the group home directory user, check to see if the user is a member of that group with the following command:
+
+# grep smithj /etc/group
+sa:x:100:juan,shelley,bob,smithj 
+smithj:x:521:smithj
+
+If the user is not a member of a group that group owns file(s) in a local interactive user's home directory, this is a finding.
+
+References:
+V-72025
+SV-86649
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 16 *******************************
+
+QUESTION         : 17 of 63
+TITLE            : CAT II, V-204473, SV-204473r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1541
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1541
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a mode of 0750 or less permissive.
+QUESTION_TEXT    : Verify all files and directories contained in a local interactive user home directory, excluding local initialization files, have a mode of "0750".
+
+Check the mode of all non-initialization files in a local interactive user home directory with the following command:
+
+Files that begin with a "." are excluded from this requirement.
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+# ls -lLR /home/smithj
+-rwxr-x--- 1 smithj smithj  18 Mar  5 17:06 file1
+-rwxr----- 1 smithj smithj 193 Mar  5 17:06 file2
+-rw-r-x--- 1 smithj smithj 231 Mar  5 17:06 file3
+
+If any files are found with a mode more permissive than "0750", this is a finding.
+
+References:
+V-72027
+SV-86651
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 17 *******************************
+
+QUESTION         : 18 of 63
+TITLE            : CAT II, V-204474, SV-204474r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1561
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1561
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for interactive users are owned by the home directory user or root.
+QUESTION_TEXT    : Verify the local initialization files of all local interactive users are owned by that user.
+
+Check the home directory assignment for all nonprivileged users on the system with the following command:
+
+Note: The example will be for the smithj user, who has a home directory of "/home/smithj".
+
+     # awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd
+     
+     smithj 1000 /home/smithj
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+Check the owner of all local interactive users' initialization files with the following command:
+
+     # ls -al /home/smithj/.[^.]* | more
+
+     -rw-------. 1 smithj users 2984 Apr 27 19:02 .bash_history
+     -rw-r--r--. 1 smithj users   18 Aug 21  2019 .bash_logout
+     -rw-r--r--. 1 smithj users  193 Aug 21  2019 .bash_profile
+
+If all local interactive users' initialization files are not owned by that user or root, this is a finding.
+
+References:
+V-72029
+SV-86653
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 18 *******************************
+
+QUESTION         : 19 of 63
+TITLE            : CAT II, V-204475, SV-204475r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1581
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1581
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for local interactive users are be group-owned by the users primary group or root.
+QUESTION_TEXT    : Verify the local initialization files of all local interactive users are group-owned by that user's primary Group Identifier (GID).
+
+Check the home directory assignment for all nonprivileged users on the system with the following command:
+
+Note: The example will be for the smithj user, who has a home directory of "/home/smithj" and a primary group of "users".
+
+     # awk -F: '($4>=1000)&&($7 !~ /nologin/){print $1, $4, $6}' /etc/passwd
+     
+     smithj 1000 /home/smithj
+
+     # grep 1000 /etc/group
+     
+     users:x:1000:smithj,jonesj,jacksons 
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+Check the group owner of all local interactive users' initialization files with the following command:
+
+     # ls -al /home/smithj/.[^.]* | more
+
+     -rw-------. 1 smithj users 2984 Apr 27 19:02 .bash_history
+     -rw-r--r--. 1 smithj users   18 Aug 21  2019 .bash_logout
+     -rw-r--r--. 1 smithj users  193 Aug 21  2019 .bash_profile
+
+If all local interactive users' initialization files are not group-owned by that user's primary GID, this is a finding.
+
+References:
+V-72031
+SV-86655
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 19 *******************************
+
+QUESTION         : 20 of 63
+TITLE            : CAT II, V-204476, SV-204476r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1601
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1601
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all local initialization files have mode 0740 or less permissive.
+QUESTION_TEXT    : Verify that all local initialization files have a mode of "0740" or less permissive.
+
+Check the mode on all local initialization files with the following command:
+
+Note: The example will be for the "smithj" user, who has a home directory of "/home/smithj".
+
+     # ls -al /home/smithj/.[^.]* | more
+
+     -rw-------. 1 smithj users 2984 Apr 27 19:02 .bash_history
+     -rw-r--r--. 1 smithj users   18 Aug 21  2019 .bash_logout
+     -rw-r--r--. 1 smithj users  193 Aug 21  2019 .bash_profile
+
+If any local initialization files have a mode more permissive than "0740", this is a finding.
+
+References:
+SV-86657
+V-72033
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 20 *******************************
+
+QUESTION         : 21 of 63
+TITLE            : CAT II, V-204477, SV-204477r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1621
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1621
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all local interactive user initialization files executable search paths contain only paths that resolve to the users home directory.
+QUESTION_TEXT    : Verify that all local interactive user initialization files' executable search path statements do not contain statements that will reference a working directory other than the user's home directory.
+
+Check the executable search path statement for all local interactive user initialization files in the user's home directory with the following commands:
+
+Note: The example will be for the smithj user, which has a home directory of "/home/smithj".
+
+# grep -i path= /home/smithj/.*
+/home/smithj/.bash_profile:PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+If any local interactive user initialization files have executable search path statements that include directories outside of their home directory, this is a finding.
+
+References:
+V-72035
+SV-86659
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 21 *******************************
+
+QUESTION         : 22 of 63
+TITLE            : CAT II, V-204478, SV-204478r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1641
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1641
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that local initialization files do not execute world-writable programs.
+QUESTION_TEXT    : Verify that local initialization files do not execute world-writable programs.
+
+Check the system for world-writable files with the following command:
+
+# find / -xdev -perm -002 -type f -exec ls -ld {} \; | more
+
+For all files listed, check for their presence in the local initialization files with the following commands:
+
+Note: The example will be for a system that is configured to create users' home directories in the "/home" directory.
+
+# grep <file> /home/*/.*
+
+If any local initialization files are found to reference world-writable files, this is a finding.
+
+References:
+SV-86661
+V-72037
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 22 *******************************
+
+QUESTION         : 23 of 63
+TITLE            : CAT II, V-204479, SV-204479r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1661
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all system device files are correctly labeled to prevent unauthorized modification.
+QUESTION_TEXT    : Verify that all system device files are correctly labeled to prevent unauthorized modification.
+
+List all device files on the system that are incorrectly labeled with the following commands:
+
+Note: Device files are normally found under "/dev", but applications may place device files in other directories and may necessitate a search of the entire system.
+
+#find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"
+
+#find /dev -context *:unlabeled_t:* \( -type c -o -type b \) -printf "%p %Z\n"
+
+Note: There are device files, such as "/dev/vmci", that are used when the operating system is a host virtual machine. They will not be owned by a user on the system and require the "device_t" label to operate. These device files are not a finding.
+
+If there is output from either of these commands, other than already noted, this is a finding.
+
+References:
+SV-86663
+V-72039
+CCI-000318
+CCI-000368
+CCI-001812
+CCI-001813
+CCI-001814
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 23 *******************************
+
+QUESTION         : 24 of 63
+TITLE            : CAT II, V-204480, SV-204480r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1681
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1681
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that file systems containing user home directories are mounted to prevent files with the setuid and setgid bit set from being executed.
+QUESTION_TEXT    : Verify file systems that contain user home directories are mounted with the "nosuid" option.
+
+Find the file system(s) that contain the user home directories with the following command:
+
+Note: If a separate file system has not been created for the user home directories (user home directories are mounted under "/"), this is not a finding as the "nosuid" option cannot be used on the "/" system.
+
+# awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd
+smithj 1001 /home/smithj
+thomasr 1002 /home/thomasr
+
+Check the file systems that are mounted at boot time with the following command:
+
+# more /etc/fstab
+
+UUID=a411dc99-f2a1-4c87-9e05-184977be8539 /home   ext4   rw,relatime,discard,data=ordered,nosuid 0 2
+                                                            
+If a file system found in "/etc/fstab" refers to the user home directory file system and it does not have the "nosuid" option set, this is a finding.
+
+References:
+SV-86665
+V-72041
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 24 *******************************
+
+QUESTION         : 25 of 63
+TITLE            : CAT II, V-204481, SV-204481r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1701
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1701
+RULE             : The Red Hat Enterprise Linux operating system must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media.
+QUESTION_TEXT    : Verify file systems that are used for removable media are mounted with the "nosuid" option.
+
+Check the file systems that are mounted at boot time with the following command:
+
+# more /etc/fstab
+
+UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222 /mnt/usbflash vfat noauto,owner,ro,nosuid 0 0
+
+If a file system found in "/etc/fstab" refers to removable media and it does not have the "nosuid" option set, this is a finding.
+
+References:
+SV-86667
+V-72043
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 25 *******************************
+
+QUESTION         : 26 of 63
+TITLE            : CAT II, V-204488, SV-204488r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1801
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1801
+RULE             : The Red Hat Enterprise Linux operating system must set the umask value to 077 for all local interactive user accounts.
+QUESTION_TEXT    : Verify that the default umask for all local interactive users is "077".
+
+Identify the locations of all local interactive user home directories by looking at the "/etc/passwd" file.
+
+Check all local interactive user initialization files for interactive users with the following command:
+
+Note: The example is for a system that is configured to create users home directories in the "/home" directory.
+
+$ sudo grep -ir ^umask /home | grep -v '.bash_history'
+
+If any local interactive user initialization files are found to have a umask statement that has a value less restrictive than "077", this is a finding.
+
+References:
+V-72049
+SV-86673
+CCI-000318
+CCI-000368
+CCI-001812
+CCI-001813
+CCI-001814
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 26 *******************************
+
+QUESTION         : 27 of 63
+TITLE            : CAT II, V-204489, SV-204489r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1821
+RULE             : The Red Hat Enterprise Linux operating system must have cron logging implemented.
+QUESTION_TEXT    : Verify that "rsyslog" is configured to log cron events.
+
+Check the configuration of "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files for the cron facility with the following command:
+
+Note: If another logging package is used, substitute the utility configuration file for "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files.
+
+# grep cron /etc/rsyslog.conf  /etc/rsyslog.d/*.conf
+cron.* /var/log/cron
+
+If the command does not return a response, check for cron logging all facilities by inspecting the "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files.
+
+Look for the following entry:
+
+*.* /var/log/messages
+
+If "rsyslog" is not logging messages for the cron facility or all facilities, this is a finding.
+
+References:
+V-72051
+SV-86675
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 27 *******************************
+
+QUESTION         : 28 of 63
+TITLE            : CAT II, V-204500, SV-204500r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:2041
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:2041
+RULE             : The Red Hat Enterprise Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories.
+QUESTION_TEXT    : Verify the file integrity tool is configured to use FIPS 140-2-approved cryptographic hashes for validating file contents and directories.
+
+Note: AIDE is highly configurable at install time. These commands assume the "aide.conf" file is under the "/etc" directory. 
+
+Use the following command to determine if the file is in another location:
+
+     # find / -name aide.conf
+
+Check the "aide.conf" file to determine if the "sha512" rule has been added to the rule list being applied to the files and directories selection lists. Exclude any log files, or files expected to change frequently, to reduce unnecessary notifications.
+
+An example rule that includes the "sha512" rule follows:
+ 
+     All=p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All # apply the custom rule to the files in bin 
+     /sbin All # apply the same custom rule to the files in sbin 
+
+If the "sha512" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or another file integrity tool is not using FIPS 140-2-approved cryptographic hashes for validating file contents and directories, this is a finding.
+
+References:
+SV-86697
+V-72073
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 28 *******************************
+
+QUESTION         : 29 of 63
+TITLE            : CAT II, V-204501, SV-204501r958796, SRG-OS-000364-GPOS-00151
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:2061
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:2061
+RULE             : The Red Hat Enterprise Linux operating system must not allow removable media to be used as the boot loader unless approved.
+QUESTION_TEXT    : Verify the system is not configured to use a boot loader on removable media.
+
+Note: GRUB 2 reads its configuration from the "/boot/grub2/grub.cfg" file on traditional BIOS-based machines and from the "/boot/efi/EFI/redhat/grub.cfg" file on UEFI machines.
+
+Check for the existence of alternate boot loader configuration files with the following command:
+
+     # find / -name grub.cfg
+     /boot/efi/EFI/redhat/grub.cfg
+
+If a "grub.cfg" is found in any subdirectories other than "/boot/grub2/" and "/boot/efi/EFI/redhat/", ask the system administrator (SA) if there is documentation signed by the ISSO to approve the use of removable media as a boot loader. 
+
+List the number of menu entries defined in the grub configuration file with the following command (the number will vary between systems):
+
+     # grep -cw menuentry /boot/efi/EFI/redhat/grub.cfg
+     4
+
+Check that the grub configuration file has the "set root" command for each menu entry with the following command ("set root" defines the disk and partition or directory where the kernel and GRUB 2 modules are stored):
+
+     # grep 'set root' /boot/efi/EFI/redhat/grub.cfg
+     set root='hd0,gpt2'
+     set root='hd0,gpt2'
+     set root='hd0,gpt2'
+     set root='hd0,gpt2'
+
+If the system is using an alternate boot loader on removable media, and documentation does not exist approving the alternate configuration, this is a finding.
+
+References:
+SV-86699
+V-72075
+CCI-000318
+CCI-000368
+CCI-001812
+CCI-001813
+CCI-001814
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 29 *******************************
+
+QUESTION         : 30 of 63
+TITLE            : CAT II, V-204574, SV-204574r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3101
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3101
+RULE             : The Red Hat Enterprise Linux operating system must send rsyslog output to a log aggregation server.
+QUESTION_TEXT    : Verify "rsyslog" is configured to send all messages to a log aggregation server.
+
+Check the configuration of "rsyslog" with the following command:
+
+Note: If another logging package is used, substitute the utility configuration file for "/etc/rsyslog.conf".
+
+     # grep @ /etc/rsyslog.conf /etc/rsyslog.d/*.conf
+
+     *.* @@[logaggregationserver.example.mil]:[port]
+
+If there are no lines in the "/etc/rsyslog.conf" or "/etc/rsyslog.d/*.conf" files that contain the "@" or "@@" symbol(s), and the lines with the correct symbol(s) to send output to another system do not cover all "rsyslog" output, ask the system administrator to indicate how the audit logs are offloaded to a different system or media. 
+
+If the lines are commented out or there is no evidence that the audit logs are being sent to another log aggregation server, this is a finding.
+
+References:
+SV-86833
+V-72209
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 30 *******************************
+
+QUESTION         : 31 of 63
+TITLE            : CAT II, V-204575, SV-204575r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3121
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3121
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.
+QUESTION_TEXT    : Verify that the system is not accepting "rsyslog" messages from other systems unless it is documented as a log aggregation server.
+
+Check the configuration of "rsyslog" with the following command:
+
+# grep imtcp /etc/rsyslog.conf
+$ModLoad imtcp
+# grep imudp /etc/rsyslog.conf
+$ModLoad imudp
+# grep imrelp /etc/rsyslog.conf
+$ModLoad imrelp
+
+If any of the above modules are being loaded in the "/etc/rsyslog.conf" file, ask to see the documentation for the system being used for log aggregation.
+
+If the documentation does not exist, or does not specify the server as a log aggregation system, this is a finding.
+
+References:
+SV-86835
+V-72211
+CCI-000318
+CCI-000368
+CCI-001812
+CCI-001813
+CCI-001814
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 31 *******************************
+
+QUESTION         : 32 of 63
+TITLE            : CAT II, V-204577, SV-204577r958480, SRG-OS-000096-GPOS-00050
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3161
+RULE             : The Red Hat Enterprise Linux operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA) and vulnerability assessments.
+QUESTION_TEXT    : Inspect the firewall configuration and running services to verify that it is configured to prohibit or restrict the use of functions, ports, protocols, and/or services that are unnecessary or prohibited.
+
+Check which services are currently active with the following command:
+
+# firewall-cmd --list-all
+public (default, active)
+  interfaces: enp0s3
+  sources: 
+  services: dhcpv6-client dns http https ldaps rpc-bind ssh
+  ports: 
+  masquerade: no
+  forward-ports: 
+  icmp-blocks: 
+  rich rules: 
+
+Ask the System Administrator for the site or program PPSM CLSA. Verify the services allowed by the firewall match the PPSM CLSA. 
+
+If there are additional ports, protocols, or services that are not in the PPSM CLSA, or there are ports, protocols, or services that are prohibited by the PPSM Category Assurance List (CAL), this is a finding.
+
+References:
+V-72219
+SV-86843
+CCI-000382
+CCI-002314
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 32 *******************************
+
+QUESTION         : 33 of 63
+TITLE            : CAT II, V-204581, SV-204581r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3241
+RULE             : The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) authentication communications.
+QUESTION_TEXT    : If LDAP is not being utilized, this requirement is Not Applicable.
+
+Verify the operating system implements cryptography to protect the integrity of remote LDAP authentication sessions.
+
+To determine if LDAP is being used for authentication, use the following command:
+
+     # systemctl status sssd.service
+     sssd.service - System Security Services Daemon
+     Loaded: loaded (/usr/lib/systemd/system/sssd.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2018-06-27 10:58:11 EST; 1h 50min ago
+
+If the "sssd.service" is "active", then LDAP is being used. 
+
+Determine the "id_provider" the LDAP is currently using:
+
+     # grep -ir id_provider /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     id_provider = ad
+
+If "id_provider" is set to "ad", this is Not Applicable.
+
+Ensure that LDAP is configured to use TLS by using the following command:
+
+     # grep -ir start_tls /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     ldap_id_use_start_tls = true
+
+If the "ldap_id_use_start_tls" option is not "true", this is a finding.
+
+References:
+V-72227
+SV-86851
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 33 *******************************
+
+QUESTION         : 34 of 63
+TITLE            : CAT II, V-204582, SV-204582r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3261
+RULE             : The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.
+QUESTION_TEXT    : If LDAP is not being utilized, this requirement is Not Applicable.
+
+Verify the operating system implements cryptography to protect the integrity of remote LDAP access sessions.
+
+To determine if LDAP is being used for authentication, use the following command:
+
+     # systemctl status sssd.service
+     sssd.service - System Security Services Daemon
+     Loaded: loaded (/usr/lib/systemd/system/sssd.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2018-06-27 10:58:11 EST; 1h 50min ago
+
+If the "sssd.service" is "active", then LDAP is being used. 
+
+Determine the "id_provider" the LDAP is currently using:
+
+     # grep -ir id_provider /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     id_provider = ad
+
+If "id_provider" is set to "ad", this is Not Applicable.
+
+Verify the sssd service is configured to require the use of certificates:
+
+     # grep -ir tls_reqcert /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     ldap_tls_reqcert = demand
+
+If the "ldap_tls_reqcert" setting is missing, commented out, or does not exist, this is a finding.
+
+If the "ldap_tls_reqcert" setting is not set to "demand" or "hard", this is a finding.
+
+References:
+V-72229
+SV-86853
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 34 *******************************
+
+QUESTION         : 35 of 63
+TITLE            : CAT II, V-204583, SV-204583r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3281
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3281
+RULE             : The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.
+QUESTION_TEXT    : If LDAP is not being utilized, this requirement is Not Applicable.
+
+Verify the operating system implements cryptography to protect the integrity of remote LDAP access sessions.
+
+To determine if LDAP is being used for authentication, use the following command:
+
+     # systemctl status sssd.service
+     sssd.service - System Security Services Daemon
+     Loaded: loaded (/usr/lib/systemd/system/sssd.service; enabled; vendor preset: disabled)
+     Active: active (running) since Wed 2018-06-27 10:58:11 EST; 1h 50min ago
+
+If the "sssd.service" is "active", then LDAP is being used.
+
+Determine the "id_provider" that the LDAP is currently using:
+
+     # grep -ir id_provider /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     id_provider = ad
+
+If "id_provider" is set to "ad", this is Not Applicable.
+
+Check the path to the X.509 certificate for peer authentication with the following command:
+
+     # grep -ir tls_cacert /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf
+     ldap_tls_cacert = /etc/pki/tls/certs/ca-bundle.crt
+
+Verify the "ldap_tls_cacert" option points to a file that contains the trusted CA certificate.
+
+If this file does not exist, or the option is commented out or missing, this is a finding.
+
+References:
+SV-86855
+V-72231
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 35 *******************************
+
+QUESTION         : 36 of 63
+TITLE            : CAT II, V-204603, SV-204603r982208, SRG-OS-000355-GPOS-00143
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3681
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3681
+RULE             : The Red Hat Enterprise Linux operating system must, for networked systems, synchronize clocks with a server that is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
+QUESTION_TEXT    : Check to see if NTP is running in continuous mode:
+
+# ps -ef | grep ntp
+
+If NTP is not running, check to see if "chronyd" is running in continuous mode:
+
+# ps -ef | grep chronyd
+
+If NTP or "chronyd" is not running, this is a finding.
+
+If the NTP process is found, then check the "ntp.conf" file for the "maxpoll" option setting:
+
+# grep maxpoll /etc/ntp.conf
+
+server 0.rhel.pool.ntp.org iburst maxpoll 16
+
+If the "maxpoll" option is set to a number greater than 16 or the line is commented out, this is a finding.
+
+If the file does not exist, check the "/etc/cron.daily" subdirectory for a crontab file controlling the execution of the "ntpd -q" command.
+
+# grep -i "ntpd -q" /etc/cron.daily/*
+# ls -al /etc/cron.* | grep ntp
+
+ntp
+
+If a crontab file does not exist in the "/etc/cron.daily" that executes the "ntpd -q" command, this is a finding.
+
+If the "chronyd" process is found, then check the "chrony.conf" file for the "maxpoll" option setting:
+
+# grep maxpoll /etc/chrony.conf
+
+server 0.rhel.pool.ntp.org iburst maxpoll 16
+
+If the option is not set or the line is commented out, this is a finding.
+
+References:
+V-72269
+SV-86893
+CCI-001891
+CCI-002046
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 36 *******************************
+
+QUESTION         : 37 of 63
+TITLE            : CAT II, V-204610, SV-204610r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3821
+RULE             : The Red Hat Enterprise Linux operating system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces.
+QUESTION_TEXT    : Verify the system uses a reverse-path filter for IPv4:
+
+     # grep -r net.ipv4.conf.all.rp_filter /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     net.ipv4.conf.all.rp_filter = 1
+
+If "net.ipv4.conf.all.rp_filter" is not configured in the /etc/sysctl.conf file or in any of the other sysctl.d directories, is commented out, or does not have a value of "1", this is a finding.
+
+Check that the operating system implements the accept source route variable with the following command:
+
+     # /sbin/sysctl -a | grep net.ipv4.conf.all.rp_filter
+     net.ipv4.conf.all.rp_filter = 1
+
+If the returned line does not have a value of "1", this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+V-92251
+SV-102353
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 37 *******************************
+
+QUESTION         : 38 of 63
+TITLE            : CAT II, V-204611, SV-204611r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3841
+RULE             : The Red Hat Enterprise Linux operating system must use a reverse-path filter for IPv4 network traffic when possible by default.
+QUESTION_TEXT    : Verify the system uses a reverse-path filter for IPv4:
+
+     # grep -r net.ipv4.conf.default.rp_filter /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     net.ipv4.conf.default.rp_filter = 1
+
+If "net.ipv4.conf.default.rp_filter" is not configured in the /etc/sysctl.conf file or in any of the other sysctl.d directories, is commented out, or does not have a value of "1", this is a finding.
+
+Check that the operating system implements the accept source route variable with the following command:
+
+     # /sbin/sysctl -a | grep net.ipv4.conf.default.rp_filter
+     net.ipv4.conf.default.rp_filter = 1
+
+If the returned line does not have a value of "1", this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+V-92253
+SV-102355
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 38 *******************************
+
+QUESTION         : 39 of 63
+TITLE            : CAT II, V-204618, SV-204618r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3981
+RULE             : Network interfaces configured on the Red Hat Enterprise Linux operating system must not be in promiscuous mode.
+QUESTION_TEXT    : Verify network interfaces are not in promiscuous mode unless approved by the ISSO and documented.
+
+Check for the status with the following command:
+
+# ip link | grep -i promisc
+
+If network interfaces are found on the system in promiscuous mode and their use has not been approved by the ISSO and documented, this is a finding.
+
+References:
+V-72295
+SV-86919
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 39 *******************************
+
+QUESTION         : 40 of 63
+TITLE            : CAT II, V-204619, SV-204619r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4001
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4001
+RULE             : The Red Hat Enterprise Linux operating system must be configured to prevent unrestricted mail relaying.
+QUESTION_TEXT    : Verify the system is configured to prevent unrestricted mail relaying.
+
+Determine if "postfix" is installed with the following commands:
+
+# yum list installed postfix
+postfix-2.6.6-6.el7.x86_64.rpm 
+
+If postfix is not installed, this is Not Applicable.
+
+If postfix is installed, determine if it is configured to reject connections from unknown or untrusted networks with the following command:
+
+# postconf -n smtpd_client_restrictions
+smtpd_client_restrictions = permit_mynetworks, reject
+
+If the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject", this is a finding.
+
+References:
+SV-86921
+V-72297
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 40 *******************************
+
+QUESTION         : 41 of 63
+TITLE            : CAT II, V-204623, SV-204623r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4081
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4081
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode.
+QUESTION_TEXT    : Verify the TFTP daemon is configured to operate in secure mode.
+
+Check to see if a TFTP server has been installed with the following commands:
+
+# yum list installed tftp-server
+tftp-server.x86_64 x.x-x.el7 rhel-7-server-rpms
+
+If a TFTP server is not installed, this is Not Applicable.
+
+If a TFTP server is installed, check for the server arguments with the following command: 
+
+# grep server_args /etc/xinetd.d/tftp
+server_args = -s /var/lib/tftpboot
+
+If the "server_args" line does not have a "-s" option and a subdirectory is not assigned, this is a finding.
+
+References:
+SV-86929
+V-72305
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 41 *******************************
+
+QUESTION         : 42 of 63
+TITLE            : CAT II, V-204628, SV-204628r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4181
+RULE             : The Red Hat Enterprise Linux operating system access control program must be configured to grant or deny system access to specific hosts and services.
+QUESTION_TEXT    : If the "firewalld" package is not installed, ask the System Administrator (SA) if another firewall application (such as iptables) is installed. If an application firewall is not installed, this is a finding. 
+
+Verify the system's access control program is configured to grant or deny system access to specific hosts.
+
+Check to see if "firewalld" is active with the following command:
+
+# systemctl status firewalld
+firewalld.service - firewalld - dynamic firewall daemon
+Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+Active: active (running) since Sun 2014-04-20 14:06:46 BST; 30s ago
+
+If "firewalld" is active, check to see if it is configured to grant or deny access to specific hosts or services with the following commands:
+
+# firewall-cmd --get-default-zone
+public
+
+# firewall-cmd --list-all --zone=public
+public (active)
+target: default
+icmp-block-inversion: no
+interfaces: eth0
+sources:
+services: mdns ssh
+ports:
+protocols:
+masquerade: no
+forward-ports:
+icmp-blocks:
+
+If "firewalld" is not active, determine whether "tcpwrappers" is being used by checking whether the "hosts.allow" and "hosts.deny" files are empty with the following commands:
+
+# ls -al /etc/hosts.allow
+rw-r----- 1 root root 9 Aug 2 23:13 /etc/hosts.allow
+
+# ls -al /etc/hosts.deny
+-rw-r----- 1 root root 9 Apr 9 2007 /etc/hosts.deny
+
+If "firewalld" and "tcpwrappers" are not installed, configured, and active, ask the SA if another access control program (such as iptables) is installed and active. Ask the SA to show that the running configuration grants or denies access to specific hosts or services.
+
+If "firewalld" is active and is not configured to grant access to specific hosts or "tcpwrappers" is not configured to grant or deny access to specific hosts, this is a finding.
+
+References:
+SV-86939
+V-72315
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 42 *******************************
+
+QUESTION         : 43 of 63
+TITLE            : CAT II, V-204629, SV-204629r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4201
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4201
+RULE             : The Red Hat Enterprise Linux operating system must not have unauthorized IP tunnels configured.
+QUESTION_TEXT    : Verify the system does not have unauthorized IP tunnels configured.
+
+Check to see if "libreswan" is installed with the following command:
+
+# yum list installed libreswan
+libreswan.x86-64 3.20-5.el7_4
+
+If "libreswan" is installed, check to see if the "IPsec" service is active with the following command:
+
+# systemctl status ipsec
+ipsec.service - Internet Key Exchange (IKE) Protocol Daemon for IPsec
+Loaded: loaded (/usr/lib/systemd/system/ipsec.service; disabled)
+Active: inactive (dead)
+
+If the "IPsec" service is active, check to see if any tunnels are configured in "/etc/ipsec.conf" and "/etc/ipsec.d/" with the following commands:
+
+# grep -iw conn /etc/ipsec.conf /etc/ipsec.d/*.conf
+
+If there are indications that a "conn" parameter is configured for a tunnel, ask the System Administrator if the tunnel is documented with the ISSO. 
+
+If "libreswan" is installed, "IPsec" is active, and an undocumented tunnel is active, this is a finding.
+
+References:
+V-72317
+SV-86941
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 43 *******************************
+
+QUESTION         : 44 of 63
+TITLE            : CAT II, V-204634, SV-204634r971547, SRG-OS-000424-GPOS-00188
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4301
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4301
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that all wireless network adapters are disabled.
+QUESTION_TEXT    : Verify that there are no wireless interfaces configured on the system.
+
+This is N/A for systems that do not have wireless network adapters.
+
+Check for the presence of active wireless interfaces with the following command:
+
+# nmcli device
+DEVICE TYPE STATE
+eth0 ethernet connected
+wlp3s0 wifi disconnected
+lo loopback unmanaged
+
+If a wireless interface is configured and its use on the system is not documented with the Information System Security Officer (ISSO), this is a finding.
+
+References:
+V-73177
+SV-87829
+CCI-001443
+CCI-001444
+CCI-002418
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 44 *******************************
+
+QUESTION         : 45 of 63
+TITLE            : CAT II, V-214800, SV-214800r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4341
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4341
+RULE             : The Red Hat Enterprise Linux operating system must implement the Endpoint Security for Linux Threat Prevention tool.
+QUESTION_TEXT    : Check that the following package has been installed:
+
+     # rpm -qa | grep -i mcafeetp
+
+If the "mcafeetp" package is not installed, this is a finding.
+
+Verify that the daemon is running:
+
+     # ps -ef | grep -i mfetpd
+
+If the daemon is not running, this is a finding.
+
+References:
+V-92255
+SV-102357
+CCI-001263
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 45 *******************************
+
+QUESTION         : 46 of 63
+TITLE            : CAT II, V-214937, SV-214937r958402, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4381
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4381
+RULE             : The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface.
+QUESTION_TEXT    : Verify the operating system prevents a user from overriding the screensaver lock-enabled setting for the graphical user interface. 
+
+Note: If the system does not have GNOME installed, this requirement is Not Applicable.
+
+Determine which profile the system database is using with the following command:
+     # grep system-db /etc/dconf/profile/user
+     system-db:local
+
+Check for the lock-enabled setting with the following command:
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+     # grep -i lock-enabled /etc/dconf/db/local.d/locks/*
+     /org/gnome/desktop/screensaver/lock-enabled
+
+If the command does not return a result, this is a finding.
+
+References:
+V-78995
+SV-93701
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 46 *******************************
+
+QUESTION         : 47 of 63
+TITLE            : CAT II, V-219059, SV-219059r958498, SRG-OS-000114-GPOS-00059
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4401
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4401
+RULE             : The Red Hat Enterprise Linux operating system must disable the graphical user interface automounter unless required.
+QUESTION_TEXT    : Note: If the operating system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Verify the operating system disables the ability to automount devices in a graphical user interface.
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+Check to see if automounter service is disabled with the following commands:
+# cat /etc/dconf/db/local.d/00-No-Automount
+
+[org/gnome/desktop/media-handling]
+
+automount=false
+
+automount-open=false
+
+autorun-never=true
+
+If the output does not match the example above, this is a finding.
+
+# cat /etc/dconf/db/local.d/locks/00-No-Automount
+
+/org/gnome/desktop/media-handling/automount
+
+/org/gnome/desktop/media-handling/automount-open
+
+/org/gnome/desktop/media-handling/autorun-never
+
+If the output does not match the example, this is a finding.
+
+References:
+V-100023
+SV-109127
+CCI-000366
+CCI-000778
+CCI-001958
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 47 *******************************
+
+QUESTION         : 48 of 63
+TITLE            : CAT II, V-228564, SV-228564r958434, SRG-OS-000057-GPOS-00027
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4441
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4441
+RULE             : The Red Hat Enterprise Linux operating system must protect audit information from unauthorized read, modification, or deletion.
+QUESTION_TEXT    : Verify the operating system audit records have proper permissions and ownership.
+
+List the full permissions and ownership of the audit log files with the following command.
+
+# ls -la /var/log/audit 
+total 4512
+drwx------. 2 root root 23 Apr 25 16:53 .
+drwxr-xr-x. 17 root root 4096 Aug 9 13:09 ..
+-rw-------. 1 root root 8675309 Aug 9 12:54 audit.log
+
+Audit logs must be mode 0600 or less permissive. 
+If any are more permissive, this is a finding.
+
+The owner and group owner of all audit log files must both be "root". If any other owner or group owner is listed, this is a finding.
+
+References:
+CCI-000162
+CCI-000163
+CCI-000164
+CCI-001314
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 48 *******************************
+
+QUESTION         : 49 of 63
+TITLE            : CAT II, V-244557, SV-244557r958472, SRG-OS-000080-GPOS-00048
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4541
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4541
+RULE             : Red Hat Enterprise Linux operating systems version 7.2 or newer booted with a BIOS must have a unique name for the grub superusers account when booting into single-user and maintenance modes.
+QUESTION_TEXT    : For systems that use UEFI, this is Not Applicable.
+
+For systems that are running a version of RHEL prior to 7.2, this is Not Applicable.
+
+Verify that a unique name is set as the "superusers" account:
+
+# grep -iw "superusers" /boot/grub2/grub.cfg
+    set superusers="[someuniquestringhere]"
+    export superusers
+
+If "superusers" is identical to any OS account name or is missing a name, this is a finding.
+
+References:
+CCI-000213
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 49 *******************************
+
+QUESTION         : 50 of 63
+TITLE            : CAT II, V-244558, SV-244558r958472, SRG-OS-000080-GPOS-00048
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4561
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4561
+RULE             : Red Hat Enterprise Linux operating systems version 7.2 or newer booted with United Extensible Firmware Interface (UEFI) must have a unique name for the grub superusers account when booting into single-user mode and maintenance.
+QUESTION_TEXT    : For systems that use BIOS, this is Not Applicable.
+
+For systems that are running a version of RHEL prior to 7.2, this is Not Applicable.
+
+Verify that a unique name is set as the "superusers" account:
+
+$ sudo grep -iw "superusers" /boot/efi/EFI/redhat/grub.cfg
+    set superusers="[someuniquestringhere]"
+    export superusers
+
+If "superusers" is identical to any OS account name or is missing a name, this is a finding.
+
+References:
+CCI-000213
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 50 *******************************
+
+QUESTION         : 51 of 63
+TITLE            : CAT II, V-250312, SV-250312r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4581
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4581
+RULE             : The Red Hat Enterprise Linux operating system must confine SELinux users to roles that conform to least privilege.
+QUESTION_TEXT    : Verify the operating system confines SELinux users to roles that conform to least privilege.
+
+Check the SELinux User list to SELinux Roles mapping by using the following command:
+
+     $ sudo semanage user -l
+
+                                     Labeling  MLS/               MLS/
+     SELinux User      Prefix       MCS Level    MCS Range          SELinux Roles
+
+     guest_u                user          s0                     s0                             guest_r
+     root                        user          s0                     s0-s0:c0.c1023    staff_r sysadm_r system_r unconfined_r
+     staff_u                  user          s0                     s0-s0:c0.c1023    staff_r sysadm_r system_r unconfined_r
+     sysadm_u            user          s0                     s0-s0:c0.c1023    sysadm_r
+     system_u             user          s0                     s0-s0:c0.c1023    system_r unconfined_r
+     unconfined_u    user          s0                     s0-s0:c0.c1023    system_r unconfined_r
+     user_u                   user          s0                     s0                            user_r
+     xguest_u              user          s0                     s0                            xguest_r
+
+If the output differs from the above example, ask the system administrator (SA) to demonstrate how the SELinux User mappings are exercising least privilege. If deviations from the example are not documented with the information system security officer (ISSO) and do not demonstrate least privilege, this is a finding.
+
+References:
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 51 *******************************
+
+QUESTION         : 52 of 63
+TITLE            : CAT II, V-250313, SV-250313r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4601
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4601
+RULE             : The Red Hat Enterprise Linux operating system must not allow privileged accounts to utilize SSH.
+QUESTION_TEXT    : Verify the operating system prevents privileged accounts from utilizing SSH.
+Check the SELinux ssh_sysadm_login boolean with the following command:
+
+     $ sudo getsebool ssh_sysadm_login
+     ssh_sysadm_login --> off
+
+If the "ssh_sysadm_login" boolean is not "off" and is not documented with the ISSO as an operational requirement, this is a finding.
+
+References:
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 52 *******************************
+
+QUESTION         : 53 of 63
+TITLE            : CAT II, V-250314, SV-250314r958726, SRG-OS-000324-GPOS-00125
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4621
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4621
+RULE             : The Red Hat Enterprise Linux operating system must elevate the SELinux context when an administrator calls the sudo command.
+QUESTION_TEXT    : Verify the operating system elevates the SELinux context when an administrator calls the sudo command with the following command:
+
+This command must be ran as root:
+
+     # grep -r sysadm_r /etc/sudoers /etc/sudoers.d
+     %{designated_group_or_user_name} ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL
+
+If conflicting results are returned, this is a finding.
+
+If a designated sudoers administrator group or account(s) is not configured to elevate the SELinux type and role to "sysadm_t" and "sysadm_r" with the use of the sudo command, this is a finding.
+
+References:
+CCI-002165
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 53 *******************************
+
+QUESTION         : 54 of 63
+TITLE            : CAT II, V-251703, SV-251703r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4661
+RULE             : The Red Hat Enterprise Linux operating system must specify the default "include" directory for the /etc/sudoers file.
+QUESTION_TEXT    : Note: If the "include" and "includedir" directives are not present in the /etc/sudoers file, this requirement is not applicable.
+
+Verify the operating system specifies only the default "include" directory for the /etc/sudoers file with the following command:
+
+$ sudo grep include /etc/sudoers
+
+#includedir /etc/sudoers.d
+
+If the results are not "/etc/sudoers.d" or additional files or directories are specified, this is a finding.
+
+Verify the operating system does not have nested "include" files or directories within the /etc/sudoers.d directory with the following command:
+
+$ sudo grep -r include /etc/sudoers.d
+
+If results are returned, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 54 *******************************
+
+QUESTION         : 55 of 63
+TITLE            : CAT II, V-251705, SV-251705r958944, SRG-OS-000445-GPOS-00199
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4701
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4701
+RULE             : The Red Hat Enterprise Linux operating system must use a file integrity tool to verify correct operation of all security functions.
+QUESTION_TEXT    : Verify that Advanced Intrusion Detection Environment (AIDE) is installed and verifies the correct operation of all security functions.
+
+Check that the AIDE package is installed with the following command:
+     $ sudo rpm -q aide
+
+     aide-0.15.1-13.el7.x86_64
+
+If AIDE is not installed, ask the System Administrator how file integrity checks are performed on the system. 
+
+If there is no application installed to perform integrity checks, this is a finding.
+
+If AIDE is installed, check if it has been initialized with the following command:
+     $ sudo /usr/sbin/aide --check
+
+If the output is "Couldn't open file /var/lib/aide/aide.db.gz for reading", this is a finding.
+
+References:
+CCI-002696
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 55 *******************************
+
+QUESTION         : 56 of 63
+TITLE            : CAT II, V-254523, SV-254523r958508, SRG-OS-000123-GPOS-00064
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4721
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4721
+RULE             : The Red Hat Enterprise Linux operating system must automatically expire temporary accounts within 72 hours.
+QUESTION_TEXT    : Verify temporary accounts have been provisioned with an expiration date of 72 hours.
+
+For every existing temporary account, run the following command to obtain its account expiration information:
+
+     $ sudo chage -l <temporary_account_name> | grep -i "account expires"
+
+Verify each of these accounts has an expiration date set within 72 hours.
+If any temporary accounts have no expiration date set or do not expire within 72 hours, this is a finding.
+
+References:
+CCI-001682
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 56 *******************************
+
+QUESTION         : 57 of 63
+TITLE            : CAT II, V-256968, SV-256968r982212, SRG-OS-000366-GPOS-00153
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4821
+RULE             : The Red Hat Enterprise Linux operating system must ensure cryptographic verification of vendor software packages.
+QUESTION_TEXT    : Confirm Red Hat package-signing keys are installed on the system and verify their fingerprints match vendor values.
+
+Note: For Red Hat Enterprise Linux 7 software packages, Red Hat uses GPG keys labeled "release key 2" and "auxiliary key". The keys are defined in key file "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" by default.
+
+List Red Hat GPG keys installed on the system:
+
+     $ sudo rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey | grep -i "red hat"
+
+     gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)
+     gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)
+
+If Red Hat GPG keys "release key 2" and "auxiliary key" are not installed, this is a finding.
+
+List key fingerprints of installed Red Hat GPG keys:
+
+     $ sudo gpg -q --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
+If key file "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" is missing, this is a finding.
+
+Example output:
+
+     pub  4096R/FD431D51 2009-10-22 Red Hat, Inc. (release key 2) <security@redhat.com>
+           Key fingerprint = 567E 347A D004 4ADE 55BA  8A5F 199E 2F91 FD43 1D51
+     pub  1024D/2FA658E0 2006-12-01 Red Hat, Inc. (auxiliary key) <security@redhat.com>
+           Key fingerprint = 43A6 E49C 4A38 F4BE 9ABF  2A53 4568 9C88 2FA6 58E0
+	   
+Compare key fingerprints of installed Red Hat GPG keys with fingerprints listed on Red Hat "Product Signing Keys" webpage at https://access.redhat.com/security/team/key.
+
+If key fingerprints do not match, this is a finding.
+
+References:
+CCI-001749
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 57 *******************************
+
+QUESTION         : 58 of 63
+TITLE            : CAT II, V-256969, SV-256969r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4841
+RULE             : The Red Hat Enterprise Linux operating system must disable the login screen user list for graphical user interfaces.
+QUESTION_TEXT    : Verify that the operating system is configured to disable the login screen user list for graphical user interfaces.
+
+Note: If the system does not have the GNOME Desktop installed, this requirement is Not Applicable.
+
+Verify that the login screen user list for the GNOME Desktop is disabled with the following command:
+
+     $ sudo grep -is disable-user-list /etc/dconf/db/gdm.d/*
+     
+     /etc/dconf/db/gdm.d/00-login-screen:disable-user-list=true
+	 
+If the variable "disable-user-list" is not defined in a file under "/etc/dconf/db/gdm.d/", is not set to "true", is missing or commented out, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 58 *******************************
+
+QUESTION         : 59 of 63
+TITLE            : CAT III, V-204486, SV-204486r958804, SRG-OS-000368-GPOS-00154
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:1761
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:1761
+RULE             : The Red Hat Enterprise Linux operating system must mount /dev/shm with secure options.
+QUESTION_TEXT    : Verify that the "nodev","nosuid", and "noexec" options are configured for /dev/shm:
+
+# cat /etc/fstab | grep /dev/shm
+
+tmpfs /dev/shm tmpfs defaults,nodev,nosuid,noexec 0 0
+
+If results are returned and the "nodev", "nosuid", or "noexec" options are missing, this is a finding.
+
+Verify "/dev/shm" is mounted with the "nodev", "nosuid", and "noexec" options:
+
+# mount | grep /dev/shm
+
+tmpfs on /dev/shm type tmpfs (rw,nodev,nosuid,noexec,seclabel)
+
+If /dev/shm is mounted without secure options "nodev", "nosuid", and "noexec", this is a finding.
+
+References:
+SV-95725
+V-81013
+CCI-001764
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 59 *******************************
+
+QUESTION         : 60 of 63
+TITLE            : CAT III, V-204498, SV-204498r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:2001
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:2001
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify Access Control Lists (ACLs).
+QUESTION_TEXT    : Verify the file integrity tool is configured to verify ACLs.
+
+Note: AIDE is highly configurable at install time. These commands assume the "aide.conf" file is under the "/etc" directory. 
+
+Use the following command to determine if the file is in another location:
+
+     # find / -name aide.conf
+
+Check the "aide.conf" file to determine if the "acl" rule has been added to the rule list being applied to the files and directories selection lists.
+
+An example rule that includes the "acl" rule is below:
+
+     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All # apply the custom rule to the files in bin 
+     /sbin All # apply the same custom rule to the files in sbin 
+
+If the "acl" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or ACLs are not being checked by another file integrity tool, this is a finding.
+
+References:
+SV-86693
+V-72069
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 60 *******************************
+
+QUESTION         : 61 of 63
+TITLE            : CAT III, V-204499, SV-204499r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:2021
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:2021
+RULE             : The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify extended attributes.
+QUESTION_TEXT    : Verify the file integrity tool is configured to verify extended attributes.
+
+Note: AIDE is highly configurable at install time. These commands assume the "aide.conf" file is under the "/etc" directory.
+
+Use the following command to determine if the file is in another location:
+     # find / -name aide.conf
+
+Check the "aide.conf" file to determine if the "xattrs" rule has been added to the rule list being applied to the files and directories selection lists.
+
+An example rule that includes the "xattrs" rule follows:
+
+     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All # apply the custom rule to the files in bin 
+     /sbin All # apply the same custom rule to the files in sbin 
+
+If the "xattrs" rule is not being used on all uncommented selection lines in the "/etc/aide.conf" file, or extended attributes are not being checked by another file integrity tool, this is a finding.
+
+References:
+SV-86695
+V-72071
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 61 *******************************
+
+QUESTION         : 62 of 63
+TITLE            : CAT III, V-204608, SV-204608r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:3781
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:3781
+RULE             : For Red Hat Enterprise Linux operating systems using DNS resolution, at least two name servers must be configured.
+QUESTION_TEXT    : Determine whether the system is using local or DNS name resolution with the following command:
+
+# grep hosts /etc/nsswitch.conf
+hosts: files dns
+
+If the DNS entry is missing from the host's line in the "/etc/nsswitch.conf" file, the "/etc/resolv.conf" file must be empty.
+
+Verify the "/etc/resolv.conf" file is empty with the following command:
+
+# ls -al /etc/resolv.conf
+-rw-r--r-- 1 root root 0 Aug 19 08:31 resolv.conf
+
+If local host authentication is being used and the "/etc/resolv.conf" file is not empty, this is a finding.
+
+If the DNS entry is found on the host's line of the "/etc/nsswitch.conf" file, verify the operating system is configured to use two or more name servers for DNS resolution.
+
+Determine the name servers used by the system with the following command:
+
+# grep nameserver /etc/resolv.conf
+nameserver 192.168.1.2
+nameserver 192.168.1.3
+
+If less than two lines are returned that are not commented out, this is a finding.
+
+Verify that the "/etc/resolv.conf" file is immutable with the following command:
+
+# sudo lsattr /etc/resolv.conf
+
+----i----------- /etc/resolv.conf
+
+If the file is mutable and has not been documented with the Information System Security Officer (ISSO), this is a finding.
+
+References:
+SV-86905
+V-72281
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 62 *******************************
+
+QUESTION         : 63 of 63
+TITLE            : CAT III, V-255927, SV-255927r958524, SRG-OS-000138-GPOS-00069
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.rhel7:testaction:4781
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.rhel7:question:4781
+RULE             : The Red Hat Enterprise Linux operating system must restrict access to the kernel message buffer.
+QUESTION_TEXT    : Verify the operating system is configured to restrict access to the kernel message buffer with the following commands:
+
+     $ sudo sysctl kernel.dmesg_restrict
+     kernel.dmesg_restrict = 1
+
+If "kernel.dmesg_restrict" is not set to "1" or is missing, this is a finding.
+
+Check that the configuration files are present to enable this kernel parameter:
+
+     $ sudo grep -r kernel.dmesg_restrict /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     /etc/sysctl.conf:kernel.dmesg_restrict = 1
+     /etc/sysctl.d/99-sysctl.conf:kernel.dmesg_restrict = 1
+
+If "kernel.dmesg_restrict" is not set to "1", is missing or commented out, this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+CCI-001090
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 63 *******************************
+

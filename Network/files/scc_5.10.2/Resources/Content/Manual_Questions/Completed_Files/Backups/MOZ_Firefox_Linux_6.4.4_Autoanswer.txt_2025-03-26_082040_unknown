@@ -1,0 +1,150 @@
+################################################################################
+DOCUMENT         : MOZ_Firefox_Linux
+VERSION          : 6.4.4
+CHECKSUM         : 59287819a90eb0d963e238f6fae33036206073d97ef8041fbccaf6aa13a59908
+MANUAL QUESTIONS : 5
+
+IMPORTANT: Make sure to save the completed version of this file to: 
+<SCC Install>/Resources/Content/Manual_Questions/Completed_Files
+
+This file contains all of the non-automated STIG requirements found in the STIG.
+Results from this file will be combined with automated checks in SCC to provide
+complete STIG compliance results.
+
+This file will be programmaticaly imported, so do not modify anything in this file
+except for placing an '[X]' to select a Single answer, and entering text comments.
+
+The list of questions is printed in order of severity, listing CAT I (High), then CAT II, etc..
+
+################################################################################
+
+QUESTION         : 1 of 5
+TITLE            : CAT I, V-251545, SV-251545r879827, SRG-APP-000456
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:testaction:1
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:question:1
+RULE             : The installed version of Firefox must be supported.
+QUESTION_TEXT    : Run Firefox. Click the ellipsis button >> Help >> About Firefox, and view the version number.
+
+If the Firefox version is not a supported version, this is a finding.
+
+References:
+CCI-002605
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 1 *******************************
+
+QUESTION         : 2 of 5
+TITLE            : CAT II, V-251550, SV-251550r879664, SRG-APP-000278
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:testaction:101
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:question:101
+RULE             : Firefox must be configured to not automatically execute or download MIME types that are not authorized for auto-download.
+QUESTION_TEXT    : Type "about:preferences" in the browser address bar. 
+
+Type "Applications" in the Find bar in the upper-right corner. 
+
+Determine if any of the following file extensions are listed: HTA, JSE, JS, MOCHA, SHS, VBE, VBS, SCT, WSC, FDF, XFDF, LSL, LSO, LSS, IQY, RQY, DOS, BAT, PS, EPS, WCH, WCM, WB1, WB3, WCH, WCM, AD.
+
+If the entry exists and the "Action" is "Save File" or "Always Ask", this is not a finding.
+ 
+If an extension exists and the entry in the Action column is associated with an application that does/can execute the code, this is a finding.
+
+References:
+CCI-001242
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 2 *******************************
+
+QUESTION         : 3 of 5
+TITLE            : CAT II, V-251560, SV-251560r918133, SRG-APP-000175
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:testaction:281
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:question:281
+RULE             : Firefox must have the DOD root certificates installed.
+QUESTION_TEXT    : Type "about:preferences#privacy" in the browser window. 
+
+Scroll down to the bottom and select "View Certificates...".
+
+In the Certificate Manager window, select the "Authorities" tab.
+
+Scroll through the Certificate Name list to the U.S. Government heading. Look for the entries for DOD Root CA 2, DOD Root CA 3, DOD Root CA 4, and DOD Root CA 5.
+
+If there are entries for DOD Root CA 2, DOD Root CA 3, DOD Root CA 4, and DOD Root CA 5, select them individually.
+
+Click the "View" button.
+
+Verify the publishing organization is "US Government".
+
+If there are no entries for the appropriate DOD root certificates, this is a finding. If other AO-approved certificates are used, this is not a finding. If SIPRNet-specific certificates are used, this is not a finding.
+
+Note: In a Windows environment, use of policy setting "security.enterprise_roots.enabled=true" will point Firefox to the Windows Trusted Root Certification Authority Store. This is not a finding. It may also be set via the policy Certificates >> ImportEnterpriseRoots, which can be verified via "about:policies".
+
+References:
+CCI-000185
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 3 *******************************
+
+QUESTION         : 4 of 5
+TITLE            : CAT II, V-252908, SV-252908r879587, SRG-APP-000141
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:testaction:641
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:question:641
+RULE             : Pocket must be disabled.
+QUESTION_TEXT    : Type "about:policies" in the browser address bar. 
+
+If "DisablePocket" is not displayed under Policy Name or the Policy Value does not have a value of "true", this is a finding.
+
+References:
+CCI-000381
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 4 *******************************
+
+QUESTION         : 5 of 5
+TITLE            : CAT II, V-252909, SV-252909r879587, SRG-APP-000141
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:testaction:661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.firefox.linux:question:661
+RULE             : Firefox Studies must be disabled.
+QUESTION_TEXT    : Type "about:policies" in the browser address bar. 
+
+If "DisableFirefoxStudies" is not displayed under Policy Name or the Policy Value does not have a value of "true", this is a finding.
+
+References:
+CCI-000381
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 5 *******************************
+

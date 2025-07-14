@@ -1,0 +1,22 @@
+---
+- name: IOS XE SCAP Report
+  hosts: "{{ host_name }}"
+  connection: network_cli
+  vars:
+    ignore_all_errors: false
+    ansible_command_timeout: 60
+    ansible_become: yes
+    ansible_become_method: enable
+  tasks:
+    - name: Run show tech command to feed SCC
+      ios_command:
+        commands: show tech
+      register: show_tech_output
+    - name: Write show tech output to file
+      copy: 
+        content: "{{ show_tech_output }}"
+        dest: /tmp/scap.txt
+      delegate_to: localhost
+    # - name: Run SCC against show tech output
+    #   command: 
+

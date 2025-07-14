@@ -1,0 +1,3069 @@
+################################################################################
+DOCUMENT         : SLES_15_STIG
+VERSION          : 2.3.10
+CHECKSUM         : 01c05910406ae868a496ac6b4903b77ca30c7630c5891df784f6f8e3e9e30557
+MANUAL QUESTIONS : 95
+
+IMPORTANT: Make sure to save the completed version of this file to: 
+<SCC Install>/Resources/Content/Manual_Questions/Completed_Files
+
+This file contains all of the non-automated STIG requirements found in the STIG.
+Results from this file will be combined with automated checks in SCC to provide
+complete STIG compliance results.
+
+This file will be programmaticaly imported, so do not modify anything in this file
+except for placing an '[X]' to select a Single answer, and entering text comments.
+
+The list of questions is printed in order of severity, listing CAT I (High), then CAT II, etc..
+
+################################################################################
+
+QUESTION         : 1 of 95
+TITLE            : CAT I, V-234819, SV-234819r958472, SRG-OS-000080-GPOS-00048
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:361
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:361
+RULE             : SUSE operating systems with a basic input/output system (BIOS) must require authentication upon booting into single-user and maintenance modes.
+QUESTION_TEXT    : Verify that the SUSE operating system has set an encrypted root password. 
+
+Note: If the system does not use a BIOS this requirement is Not Applicable.
+
+Check that the encrypted password is set for root with the following command:
+
+> sudo cat /boot/grub2/grub.cfg | grep -i password 
+
+password_pbkdf2 root grub.pbkdf2.sha512.10000.VeryLongString
+
+If the root password entry does not begin with "password_pbkdf2", this is a finding.
+
+References:
+CCI-000213
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 1 *******************************
+
+QUESTION         : 2 of 95
+TITLE            : CAT I, V-234820, SV-234820r958472, SRG-OS-000080-GPOS-00048
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:381
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:381
+RULE             : SUSE operating systems with Unified Extensible Firmware Interface (UEFI) implemented must require authentication upon booting into single-user mode and maintenance.
+QUESTION_TEXT    : Verify that the SUSE operating system has set an encrypted root password. 
+
+Note: If the system does not use UEFI, this requirement is Not Applicable.
+
+Check that the encrypted password is set for root with the following command:
+
+> sudo cat /boot/efi/EFI/sles/grub.cfg | grep -i password 
+
+password_pbkdf2 root grub.pbkdf2.sha512.10000.VeryLongString
+
+If the root password entry does not begin with "password_pbkdf2", this is a finding.
+
+References:
+CCI-000213
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 2 *******************************
+
+QUESTION         : 3 of 95
+TITLE            : CAT I, V-234831, SV-234831r1009558, SRG-OS-000185-GPOS-00079
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:581
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:581
+RULE             : All SUSE operating system persistent disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at-rest protection.
+QUESTION_TEXT    : Verify the SUSE operating system prevents unauthorized disclosure or modification of all information requiring at rest protection by using disk encryption. 
+
+Determine the partition layout for the system with the following command:
+
+> sudo fdisk -l
+
+Device Boot Start End Sectors Size Id Type
+/dev/sda1 2048 4208639 4206592 2G 82 Linux swap
+/dev/sda2 * 4208640 53479423 49270784 23.5G 83 Linux
+/dev/sda3 53479424 125829119 72349696 34.5G 83 Linux
+
+Verify the system partitions are all encrypted with the following command: 
+
+> sudo more /etc/crypttab
+
+cr_root  UUID=26d4a101-7f48-4394-b730-56dc00e65f64
+cr_home  UUID=f5b8a790-14cb-4b82-882d-707d52f27765
+cr_swap  UUID=f2d86128-f975-478d-a5b0-25806c900eac
+
+
+Every persistent disk partition present on the system must have an entry in the file. 
+
+If any partitions other than pseudo file systems (such as /proc or /sys) are not listed or "/etc/crypttab" does not exist, this is a finding.
+
+References:
+CCI-001199
+CCI-002475
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 3 *******************************
+
+QUESTION         : 4 of 95
+TITLE            : CAT I, V-234852, SV-234852r1009613, SRG-OS-000366-GPOS-00153
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1001
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1001
+RULE             : The SUSE operating system tool zypper must have gpgcheck enabled.
+QUESTION_TEXT    : Verify that the SUSE operating system tool zypper has gpgcheck enabled.
+
+Check that zypper has gpgcheck enabled with the following command: 
+
+> grep -i '^gpgcheck' /etc/zypp/zypp.conf
+
+gpgcheck = 1
+
+If "gpgcheck" is set to "0", "off", "no", or "false", this is a finding.
+
+References:
+CCI-003992
+CCI-001749
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 4 *******************************
+
+QUESTION         : 5 of 95
+TITLE            : CAT I, V-234898, SV-234898r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1881
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1881
+RULE             : The SUSE operating system must not be configured to allow blank or null passwords.
+QUESTION_TEXT    : Verify the SUSE operating system is not configured to allow blank or null passwords.
+
+Check that blank or null passwords cannot be used by running the following command:
+
+> grep pam_unix.so /etc/pam.d/* | grep nullok
+
+If this produces any output, it may be possible to log on with accounts with empty passwords.
+
+If null passwords can be used, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 5 *******************************
+
+QUESTION         : 6 of 95
+TITLE            : CAT I, V-234988, SV-234988r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3281
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3281
+RULE             : The SUSE operating system must disable the x86 Ctrl-Alt-Delete key sequence.
+QUESTION_TEXT    : Verify the SUSE operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed.
+
+Check that the ctrl-alt-del.target is masked with the following command:
+
+> systemctl status ctrl-alt-del.target
+ctrl-alt-del.target
+Loaded: masked (/dev/null; maksed)
+Active: inactive (dead)
+
+If the ctrl-alt-del.target is not masked, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 6 *******************************
+
+QUESTION         : 7 of 95
+TITLE            : CAT I, V-234989, SV-234989r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3301
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3301
+RULE             : The SUSE operating system must disable the x86 Ctrl-Alt-Delete key sequence for Graphical User Interfaces.
+QUESTION_TEXT    : Note: If a graphical user interface is not installed, this requirement is Not Applicable.
+
+Verify the SUSE operating system is not configured to reboot the system
+when Ctrl-Alt-Delete is pressed in the graphical user interface.
+
+Check that the dconf setting was disabled to allow the Ctrl-Alt-Delete
+sequence in the graphical user interface with the following command:
+
+Check the default logout key sequence:
+
+> sudo gsettings get org.gnome.settings-daemon.plugins.media-keys logout
+['']
+
+Check that the value is not writable and cannot be changed by the user:
+
+> sudo gsettings writable org.gnome.settings-daemon.plugins.media-keys logout
+false
+
+If the logout value is not [''] and the writable status is not false, this
+is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 7 *******************************
+
+QUESTION         : 8 of 95
+TITLE            : CAT I, V-235032, SV-235032r991591, SRG-OS-000480-GPOS-00229
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4121
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4121
+RULE             : The SUSE operating system must not allow unattended or automatic logon via SSH.
+QUESTION_TEXT    : Verify the SUSE operating system disables unattended or automatic logon via SSH.
+
+Check that unattended or automatic logon via SSH is disabled with the following command:
+
+> sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iEH '^\s*(permit(.*?)(passwords|environment))'
+
+PermitEmptyPasswords no
+PermitUserEnvironment no
+
+If "PermitEmptyPasswords" or "PermitUserEnvironment" keywords are not set to "no", are missing completely, or are commented out, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 8 *******************************
+
+QUESTION         : 9 of 95
+TITLE            : CAT I, V-251725, SV-251725r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4181
+RULE             : The SUSE operating system must not have accounts configured with blank or null passwords.
+QUESTION_TEXT    : Check the "/etc/shadow" file for blank passwords with the following command:
+
+$ sudo awk -F: '!$2 {print $1}' /etc/shadow
+
+If the command returns any results, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 9 *******************************
+
+QUESTION         : 10 of 95
+TITLE            : CAT II, V-234802, SV-234802r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:21
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:21
+RULE             : Vendor-packaged SUSE operating system security patches and updates must be installed and up to date.
+QUESTION_TEXT    : Verify the SUSE operating system security patches and updates are installed and up to date.
+
+Note: Updates are required to be applied with a frequency determined by the site or Program Management Office (PMO).
+
+Check for required SUSE operating system patches and updates with the following command:
+
+> sudo zypper patch-check
+
+0 patches needed (0 security patches)
+
+If the patch repository data is corrupt, check that the available package security updates have been installed on the system with the following command:
+
+> cut -d "|" -f 1-4 -s --output-delimiter " | " /var/log/zypp/history | grep -v " radd "
+
+2016-12-14 11:59:36 | install | libapparmor1-32bit | 2.8.0-2.4.1
+2016-12-14 11:59:36 | install | pam_apparmor | 2.8.0-2.4.1
+2016-12-14 11:59:36 | install | pam_apparmor-32bit | 2.8.0-2.4.1
+
+If the SUSE operating system has not been patched within the site or PMO frequency, this is a finding.
+
+References:
+CCI-001227
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 10 *******************************
+
+QUESTION         : 11 of 95
+TITLE            : CAT II, V-234803, SV-234803r958390, SRG-OS-000023-GPOS-00006
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:41
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:41
+RULE             : The SUSE operating system must display the Standard Mandatory DOD Notice and Consent Banner before granting access via local console.
+QUESTION_TEXT    : Verify the SUSE operating system displays the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via local console.
+
+Check the "motd" (message of the day) file to verify that it contains the DOD required banner text:
+
+> more /etc/issue
+
+The output must display the following DOD-required banner text: 
+
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+If the output does not display the correct banner text, this is a finding.
+
+References:
+CCI-000048
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 11 *******************************
+
+QUESTION         : 12 of 95
+TITLE            : CAT II, V-234805, SV-234805r958390, SRG-OS-000023-GPOS-00006
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:81
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:81
+RULE             : The SUSE operating system must display the Standard Mandatory DOD Notice and Consent Banner before granting access via SSH.
+QUESTION_TEXT    : Verify the SUSE operating system displays the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via SSH.
+
+Check the issue file to verify it contains one of the DOD required banners. If it does not, this is a finding.
+
+> more /etc/issue
+
+The output must display the following DOD-required banner text: 
+
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+If the output does not display the banner text, this is a finding.
+
+Check the banner setting for sshd_config:
+
+> sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*banner'
+
+Banner /etc/issue
+
+If "Banner" is not set to "/etc/issue", this is a finding.
+
+References:
+CCI-000048
+CCI-001384
+CCI-001385
+CCI-001386
+CCI-001387
+CCI-001388
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 12 *******************************
+
+QUESTION         : 13 of 95
+TITLE            : CAT II, V-234806, SV-234806r958390, SRG-OS-000023-GPOS-00006
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:101
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:101
+RULE             : The SUSE operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access to the local graphical user interface (GUI).
+QUESTION_TEXT    : Verify the SUSE operating system displays the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on via the local GUI. 
+
+Note: If a graphical user interface is not installed, this requirement is Not Applicable.
+
+Check the configuration by running the following command:
+
+> more /etc/gdm/Xsession
+
+The beginning of the file must contain the following text immediately after (#!/bin/sh):
+
+if ! zenity --text-info \
+--title "Consent" \
+--filename=/etc/gdm/banner \
+--no-markup \
+--checkbox="Accept." 10 10; then
+sleep 1;
+exit 1;
+fi
+
+If the beginning of the file does not contain the above text immediately after the line (#!/bin/sh), this is a finding.
+
+References:
+CCI-000048
+CCI-000050
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 13 *******************************
+
+QUESTION         : 14 of 95
+TITLE            : CAT II, V-234807, SV-234807r958392, SRG-OS-000024-GPOS-00007
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:121
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:121
+RULE             : The SUSE operating system file /etc/gdm/banner must contain the Standard Mandatory DoD Notice and Consent banner text.
+QUESTION_TEXT    : Note: If the system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Verify the SUSE operating system file "/etc/gdm/banner" contains the Standard Mandatory DoD Notice and Consent Banner text by running the following command:
+
+> more /etc/gdm/banner
+
+If the file does not contain the following text, this is a finding.
+
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+References:
+CCI-000050
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 14 *******************************
+
+QUESTION         : 15 of 95
+TITLE            : CAT II, V-234808, SV-234808r958586, SRG-OS-000228-GPOS-00088
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:141
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:141
+RULE             : The SUSE operating system must display a banner before granting local or remote access to the system via a graphical user logon.
+QUESTION_TEXT    : Note: If the system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Verify the SUSE operating system displays a banner before local or remote access to the system via a graphical user logon.
+
+Check that the SUSE operating system displays a banner at the logon screen by performing the following command:
+
+> grep banner-message-enable /etc/dconf/db/gdm.d/*
+banner-message-enable=true
+
+> cat /etc/dconf/profile/gdm
+user-db:user
+system-db:gdm
+file-db:/usr/share/gdm/greeter-dconf-defaults
+
+If "banner-message-enable" is set to "false" or is missing completely, this is a finding.
+
+References:
+CCI-001384
+CCI-001385
+CCI-001386
+CCI-001387
+CCI-001388
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 15 *******************************
+
+QUESTION         : 16 of 95
+TITLE            : CAT II, V-234809, SV-234809r958586, SRG-OS-000228-GPOS-00088
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:161
+RULE             : The SUSE operating system must display the approved Standard Mandatory DoD Notice before granting local or remote access to the system via a graphical user logon.
+QUESTION_TEXT    : Note: If the system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Verify the SUSE operating system displays the approved Standard Mandatory DoD Notice before granting local or remote access to the system via a graphical user logon.
+
+Check that the SUSE operating system displays the exact approved Standard Mandatory DoD Notice and Consent Banner text by performing the following command:
+
+> grep banner-message-text /etc/dconf/db/gdm.d/*
+banner-message-text=
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\nBy using this IS (which includes any device attached to this IS), you consent to the following conditions:\n-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n-At any time, the USG may inspect and seize data stored on this IS.\n-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+Note: The "\n" characters are for formatting only. They will not be displayed on the GUI.
+
+If the banner text does not exactly match the approved Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+
+References:
+CCI-001384
+CCI-001385
+CCI-001386
+CCI-001387
+CCI-001388
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 16 *******************************
+
+QUESTION         : 17 of 95
+TITLE            : CAT II, V-234810, SV-234810r1009609, SRG-OS-000028-GPOS-00009
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:181
+RULE             : The SUSE operating system must be able to lock the graphical user interface (GUI).
+QUESTION_TEXT    : Verify the SUSE operating system allows the user to lock the GUI. 
+
+Note: If the system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+Run the following command:
+
+> sudo gsettings get org.gnome.desktop.lockdown disable-lock-screen
+
+If the result is "true", this is a finding.
+
+References:
+CCI-000056
+CCI-000057
+CCI-000060
+CCI-000058
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 17 *******************************
+
+QUESTION         : 18 of 95
+TITLE            : CAT II, V-234812, SV-234812r958402, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:221
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:221
+RULE             : The SUSE operating system must initiate a session lock after a 15-minute period of inactivity for the graphical user interface (GUI).
+QUESTION_TEXT    : Verify the SUSE operating system initiates a session lock after a 15-minute period of inactivity via the GUI by running the following command:
+
+Note: If the system does not have a graphical user interface installed, this requirement is Not Applicable.
+
+> sudo gsettings get org.gnome.desktop.session idle-delay
+
+uint32 900
+
+If the command does not return a value less than or equal to "900", this is a finding.
+
+References:
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 18 *******************************
+
+QUESTION         : 19 of 95
+TITLE            : CAT II, V-234813, SV-234813r1009561, SRG-OS-000029-GPOS-00010
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:241
+RULE             : The SUSE operating system must initiate a session lock after a 10-minute period of inactivity.
+QUESTION_TEXT    : Verify the SUSE operating system must initiate a session logout after a 10-minute period of inactivity for all connection types. 
+
+Check the proper script exists to kill an idle session after a 10-minute period of inactivity with the following command:
+
+> cat /etc/profile.d/autologout.sh
+TMOUT=600
+readonly TMOUT
+export TMOUT
+
+If the file "/etc/profile.d/autologout.sh" does not exist or the output from the function call is not the same, this is a finding.
+
+References:
+CCI-000057
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 19 *******************************
+
+QUESTION         : 20 of 95
+TITLE            : CAT II, V-234817, SV-234817r1009611, SRG-OS-000066-GPOS-00034
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:321
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:321
+RULE             : The SUSE operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
+QUESTION_TEXT    : Verify the SUSE operating system for PKI-based authentication had valid certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
+
+Check that the certification path to an accepted trust anchor for multifactor authentication is implemented with the following command:
+
+> grep cert_policy /etc/pam_pkcs11/pam_pkcs11.conf
+
+cert_policy = ca,oscp_on,signature,crl_auto;
+
+If "cert_policy" is not set to include "ca", this is a finding.
+
+References:
+CCI-000185
+CCI-004068
+CCI-001991
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 20 *******************************
+
+QUESTION         : 21 of 95
+TITLE            : CAT II, V-234821, SV-234821r958480, SRG-OS-000096-GPOS-00050
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:401
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:401
+RULE             : The SUSE operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments.
+QUESTION_TEXT    : Verify the SUSE operating system is configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the PPSM CAL and vulnerability assessments.
+
+Check that the "firewalld.service" is enabled and running by running the following command:
+
+> systemctl status firewalld.service
+ firewalld.service - firewalld - dynamic firewall daemon
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2019-11-06 10:58:11 CET; 24h ago
+     Docs: man:firewalld(1)
+ Main PID: 1105 (firewalld)
+    Tasks: 2 (limit: 4915)
+   CGroup: /system.slice/firewalld.service
+           ??1105 /usr/bin/python3 -Es /usr/sbin/firewalld --nofork --nopid
+
+If the service is not enabled, this is a finding.
+
+If the service is not active, this is a finding.
+
+Check the firewall configuration for any unnecessary or prohibited functions, ports, protocols, and/or services by running the following command:
+
+> sudo firewall-cmd --list-all
+
+Ask the System Administrator for the site or program PPSM Component Local Services Assessment (Component Local Services Assessment (CLSA). Verify the services allowed by the firewall match the PPSM CLSA. 
+
+If there are any additional ports, protocols, or services that are not included in the PPSM CLSA, this is a finding.
+
+If there are any ports, protocols, or services that are prohibited by the PPSM CAL, this is a finding.
+
+References:
+CCI-000382
+CCI-002314
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 21 *******************************
+
+QUESTION         : 22 of 95
+TITLE            : CAT II, V-234822, SV-234822r958482, SRG-OS-000104-GPOS-00051
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:421
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:421
+RULE             : The SUSE operating system must not have duplicate User IDs (UIDs) for interactive users.
+QUESTION_TEXT    : Verify the SUSE operating system contains no duplicate UIDs for interactive users.
+
+Check that the SUSE operating system contains no duplicate UIDs for interactive users by running the following command:
+
+> awk -F ":" 'list[$3]++{print $1, $3}' /etc/passwd
+
+If output is produced, this is a finding.
+
+References:
+CCI-000764
+CCI-000804
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 22 *******************************
+
+QUESTION         : 23 of 95
+TITLE            : CAT II, V-234823, SV-234823r958498, SRG-OS-000114-GPOS-00059
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:441
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:441
+RULE             : The SUSE operating system must disable the file system automounter unless required.
+QUESTION_TEXT    : Verify the SUSE operating system disables the ability to automount devices.
+
+Check to see if automounter service is active with the following command:
+
+> systemctl status autofs
+autofs.service - Automounts filesystems on demand
+Loaded: loaded (/usr/lib/systemd/system/autofs.service; disabled)
+Active: inactive (dead)
+
+If the "autofs" status is set to "active" and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.
+
+References:
+CCI-000778
+CCI-001958
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 23 *******************************
+
+QUESTION         : 24 of 95
+TITLE            : CAT II, V-234828, SV-234828r958524, SRG-OS-000138-GPOS-00069
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:521
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:521
+RULE             : The sticky bit must be set on all SUSE operating system world-writable directories.
+QUESTION_TEXT    : Verify the SUSE operating system prevents unauthorized and unintended information transfer via the shared system resources.
+
+Check that world-writable directories have the sticky bit set with the following command:
+
+> sudo find / \( -path /.snapshots -o -path /sys -o -path /proc \) -prune -o -perm -002 -type d -exec ls -lLd {} \;
+
+256 0 drwxrwxrwt 1 root root 4096 Jun 14 06:45 /tmp
+
+If any of the returned directories do not have the sticky bit set, or are not documented as having the write permission for the other class, this is a finding.
+
+References:
+CCI-001090
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 24 *******************************
+
+QUESTION         : 25 of 95
+TITLE            : CAT II, V-234833, SV-234833r958566, SRG-OS-000206-GPOS-00084
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:621
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:621
+RULE             : The SUSE operating system must prevent unauthorized users from accessing system error messages.
+QUESTION_TEXT    : Verify the SUSE operating system prevents unauthorized users from accessing system error messages.
+
+Check the "/var/log/messages" file permissions with the following command:
+
+> sudo stat -c "%n %U:%G %a" /var/log/messages
+
+/var/log/messages root:root 640
+
+Check that "permissions.local" file contains the correct permissions rules with the following command:
+
+> grep -i messages /etc/permissions.local
+
+/var/log/messages root:root 640
+
+If the effective permissions do not match the "permissions.local" file, the command does not return any output, or is commented out, this is a finding.
+
+References:
+CCI-001314
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 25 *******************************
+
+QUESTION         : 26 of 95
+TITLE            : CAT II, V-234846, SV-234846r958674, SRG-OS-000298-GPOS-00116
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:881
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:881
+RULE             : The SUSE operating system must have a firewall system installed to immediately disconnect or disable remote access to the whole operating system.
+QUESTION_TEXT    : Verify "firewalld" is configured to protect the SUSE operating system. 
+
+Run the following command:
+
+> systemctl status firewalld.service
+ firewalld.service - firewalld - dynamic firewall daemon
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2019-11-06 10:58:11 CET; 24h ago
+     Docs: man:firewalld(1)
+ Main PID: 1105 (firewalld)
+    Tasks: 2 (limit: 4915)
+   CGroup: /system.slice/firewalld.service
+           ??1105 /usr/bin/python3 -Es /usr/sbin/firewalld --nofork --nopid
+
+If the service is not enabled, this is a finding.
+
+If the service is not active, this is a finding.
+
+References:
+CCI-002322
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 26 *******************************
+
+QUESTION         : 27 of 95
+TITLE            : CAT II, V-234847, SV-234847r991568, SRG-OS-000299-GPOS-00117
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:901
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:901
+RULE             : The SUSE operating system wireless network adapters must be disabled unless approved and documented.
+QUESTION_TEXT    : Verify that the SUSE operating system has no wireless network adapters enabled.
+
+Check that there are no wireless interfaces configured on the system with the following command:
+
+> sudo wicked show all
+
+lo up
+link: #1, state up
+type: loopback
+config: compat:suse:/etc/sysconfig/network/ifcfg-lo
+leases: ipv4 static granted
+leases: ipv6 static granted
+addr: ipv4 127.0.0.1/8 [static]
+addr: ipv6 ::1/128 [static]
+
+eth0 up
+link: #2, state up, mtu 1500
+type: ethernet, hwaddr 06:00:00:00:00:01
+config: compat:suse:/etc/sysconfig/network/ifcfg-eth0
+leases: ipv4 dhcp granted
+leases: ipv6 dhcp granted, ipv6 auto granted
+addr: ipv4 10.0.0.100/16 [dhcp]
+route: ipv4 default via 10.0.0.1 proto dhcp
+
+wlan0 up
+link: #3, state up, mtu 1500
+type: wireless, hwaddr 06:00:00:00:00:02
+config: wicked:xml:/etc/wicked/ifconfig/wlan0.xml
+leases: ipv4 dhcp granted
+addr: ipv4 10.0.0.101/16 [dhcp]
+route: ipv4 default via 10.0.0.1 proto dhcp
+
+If a wireless interface is configured, it must be documented and approved by the local AO.
+
+If a wireless interface is configured and has not been documented and approved, this is a finding.
+
+References:
+CCI-001443
+CCI-001444
+CCI-002418
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 27 *******************************
+
+QUESTION         : 28 of 95
+TITLE            : CAT II, V-234848, SV-234848r958702, SRG-OS-000312-GPOS-00122
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:921
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:921
+RULE             : SUSE operating system AppArmor tool must be configured to control whitelisted applications and user home directory access control.
+QUESTION_TEXT    : Verify that the SUSE operating system AppArmor tool is configured to control whitelisted applications and user home directory access control.
+
+Check that "pam_apparmor" is installed on the system with the following command:
+
+> zypper info pam_apparmor | grep "Installed"
+
+If the package "pam_apparmor" is not installed on the system, this is a finding.
+
+Check that the "apparmor" daemon is running with the following command:
+
+> systemctl status apparmor.service | grep -i active
+
+Active: active (exited) since Fri 2017-01-13 01:01:01 GMT; 1day 1h ago
+
+If something other than "Active: active" is returned, this is a finding.
+
+Note: "pam_apparmor" must have properly configured profiles. All configurations will be based on the actual system setup and organization. See the "pam_apparmor" documentation for more information on configuring profiles.
+
+References:
+CCI-001764
+CCI-001774
+CCI-002165
+CCI-002233
+CCI-002235
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 28 *******************************
+
+QUESTION         : 29 of 95
+TITLE            : CAT II, V-234849, SV-234849r1038944, SRG-OS-000355-GPOS-00143
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:941
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:941
+RULE             : The SUSE operating system clock must, for networked systems, be synchronized to an authoritative DOD time source at least every 24 hours.
+QUESTION_TEXT    : The SUSE operating system clock must be configured to synchronize to an authoritative DOD time source when the time difference is greater than one second. 
+
+Check that the SUSE operating system clock must be configured to synchronize to an authoritative DOD time source when the time difference is greater than one second with the following command:
+
+> sudo grep maxpoll /etc/chrony.conf
+
+server 0.us.pool.ntp.mil maxpoll 16
+
+If nothing is returned, "maxpoll" is greater than "16", or is commented out, this is a finding.
+
+Verify the "chrony.conf" file is configured to an authoritative DOD time source by running the following command:
+
+> sudo grep -i server /etc/chrony.conf
+server 0.us.pool.ntp.mil 
+
+If the parameter "server" is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
+
+References:
+CCI-004923
+CCI-004926
+CCI-001891
+CCI-002046
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 29 *******************************
+
+QUESTION         : 30 of 95
+TITLE            : CAT II, V-234851, SV-234851r958794, SRG-OS-000363-GPOS-00150
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:981
+RULE             : Advanced Intrusion Detection Environment (AIDE) must verify the baseline SUSE operating system configuration at least weekly.
+QUESTION_TEXT    : Verify the SUSE operating system checks the baseline configuration for unauthorized changes at least once weekly.
+
+Note: A file integrity tool other than AIDE may be used, but the tool must be executed at least once per week.
+
+Check for the presence of a cron job running daily or weekly on the system that executes AIDE to scan for changes to the system baseline. The command used in the following example looks at the daily cron job:
+
+Check the "/etc/cron" subdirectories for a "crontab" file controlling the execution of the file integrity application. For example, if AIDE is installed on the system, use the following command:
+
+     > sudo grep -R aide /etc/crontab /etc/cron.*
+     /etc/crontab: 30 04 * * * /etc/aide
+
+If the file integrity application does not exist, or a "crontab" file does not exist in "/etc/crontab", the "/etc/cron.daily" subdirectory, or "/etc/cron.weekly" subdirectory, this is a finding.
+
+References:
+CCI-001744
+CCI-002696
+CCI-002699
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 30 *******************************
+
+QUESTION         : 31 of 95
+TITLE            : CAT II, V-234854, SV-234854r1009615, SRG-OS-000375-GPOS-00160
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1041
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1041
+RULE             : The SUSE operating system must have the packages required for multifactor authentication to be installed.
+QUESTION_TEXT    : Verify the SUSE operating system has the packages required for multifactor authentication installed.
+
+Check for the presence of the packages required to support multifactor authentication with the following commands:
+
+> zypper info pam_pkcs11 | grep -i installed
+
+> zypper info mozilla-nss | grep -i installed
+
+> zypper info mozilla-nss-tools | grep -i installed
+
+> zypper info pcsc-ccid | grep -i installed
+
+> zypper info pcsc-lite | grep -i installed
+
+> zypper info pcsc-tools | grep -i installed
+
+> zypper info opensc | grep -i installed
+
+> zypper info coolkey | grep -i installed
+
+If any of the packages required for multifactor authentication are not installed, this is a finding.
+
+References:
+CCI-004046
+CCI-001953
+CCI-001954
+CCI-001948
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 31 *******************************
+
+QUESTION         : 32 of 95
+TITLE            : CAT II, V-234855, SV-234855r1009616, SRG-OS-000375-GPOS-00160
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1061
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1061
+RULE             : The SUSE operating system must implement certificate status checking for multifactor authentication.
+QUESTION_TEXT    : Verify the SUSE operating system implements certificate status checking for multifactor authentication.
+
+Check that certificate status checking for multifactor authentication is implemented with the following command:
+
+> grep use_pkcs11_module /etc/pam_pkcs11/pam_pkcs11.conf | awk '/pkcs11_module coolkey {/,/}/' /etc/pam_pkcs11/pam_pkcs11.conf | grep cert_policy
+
+cert_policy = ca,ocsp_on,signature,crl_auto;
+
+If "cert_policy" is not set to include "ocsp", this is a finding.
+
+References:
+CCI-004046
+CCI-001953
+CCI-001954
+CCI-001948
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 32 *******************************
+
+QUESTION         : 33 of 95
+TITLE            : CAT II, V-234856, SV-234856r958820, SRG-OS-000378-GPOS-00163
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1081
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1081
+RULE             : The SUSE operating system must disable the USB mass storage kernel module.
+QUESTION_TEXT    : Verify the SUSE operating system does not automount USB mass storage devices when connected to the host.
+
+Check that "usb-storage" is blacklisted in the "/etc/modprobe.d/50-blacklist.conf" file with the following command:
+
+> grep usb-storage /etc/modprobe.d/50-blacklist.conf
+blacklist usb-storage
+
+If nothing is output from the command, this is a finding.
+
+References:
+CCI-001958
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 33 *******************************
+
+QUESTION         : 34 of 95
+TITLE            : CAT II, V-234857, SV-234857r958828, SRG-OS-000383-GPOS-00166
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1101
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1101
+RULE             : If Network Security Services (NSS) is being used by the SUSE operating system it must prohibit the use of cached authentications after one day.
+QUESTION_TEXT    : If NSS is not used on the operating system, this is Not Applicable.
+
+If NSS is used by the SUSE operating system, verify it prohibits the use of cached authentications after one day.
+
+Check that cached authentications cannot be used after one day with the following command:
+
+> sudo grep -i "memcache_timeout" /etc/sssd/sssd.conf
+
+memcache_timeout = 86400
+
+If "memcache_timeout" has a value greater than "86400", or is missing, this is a finding.
+
+References:
+CCI-002007
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 34 *******************************
+
+QUESTION         : 35 of 95
+TITLE            : CAT II, V-234858, SV-234858r958828, SRG-OS-000383-GPOS-00166
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1121
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1121
+RULE             : The SUSE operating system must configure the Linux Pluggable Authentication Modules (PAM) to prohibit the use of cached offline authentications after one day.
+QUESTION_TEXT    : If SSSD is not being used on the operating system, this is Not Applicable.
+
+Verify that the SUSE operating system PAM prohibits the use of cached off line authentications after one day.
+
+Check that cached off line authentications cannot be used after one day with the following command:
+
+> sudo grep "offline_credentials_expiration" /etc/sssd/sssd.conf
+
+offline_credentials_expiration = 1
+
+If "offline_credentials_expiration" is not set to a value of "1", this is a finding.
+
+References:
+CCI-002007
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 35 *******************************
+
+QUESTION         : 36 of 95
+TITLE            : CAT II, V-234863, SV-234863r958936, SRG-OS-000437-GPOS-00194
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1221
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1221
+RULE             : The SUSE operating system must remove all outdated software components after updated versions have been installed.
+QUESTION_TEXT    : Verify the SUSE operating system removes all outdated software components after updated version have been installed by running the following command:
+
+> grep -i upgraderemovedroppedpackages /etc/zypp/zypp.conf 
+
+solver.upgradeRemoveDroppedPackages = true
+
+If "solver.upgradeRemoveDroppedPackages" is commented out, is set to "false", or is missing completely, this is a finding.
+
+References:
+CCI-002617
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 36 *******************************
+
+QUESTION         : 37 of 95
+TITLE            : CAT II, V-234864, SV-234864r958948, SRG-OS-000447-GPOS-00201
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1241
+RULE             : The SUSE operating system must notify the System Administrator (SA) when Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation of any security functions.
+QUESTION_TEXT    : Verify the SUSE operating system notifies the SA when AIDE discovers anomalies in the operation of any security functions.
+
+Check to see if the aide cron job sends an email when executed with the following command:
+
+     > grep -i "aide" /etc/cron.*/aide 
+     0 0 * * * /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily AIDE integrity check run" root@example_server_name.mil
+
+If the "aide" file does not exist under the "/etc/cron" directory structure or the cron job is not configured to execute a binary to send an email (such as "/bin/mail"), this is a finding.
+
+References:
+CCI-002702
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 37 *******************************
+
+QUESTION         : 38 of 95
+TITLE            : CAT II, V-234865, SV-234865r959008, SRG-OS-000479-GPOS-00224
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1261
+RULE             : The SUSE operating system must off-load rsyslog messages for networked systems in real time and off-load standalone systems at least weekly.
+QUESTION_TEXT    : Verify that the SUSE operating system must off-load rsyslog messages for networked systems in real time and off-load standalone systems at least weekly.
+
+For stand-alone hosts, verify with the System Administrator that the log files are off-loaded at least weekly.
+
+For networked systems, check that rsyslog is sending log messages to a remote server with the following command:
+
+> sudo grep "\*.\*" /etc/rsyslog.conf | grep "@" | grep -v "^#"
+
+*.*;mail.none;news.none @192.168.1.101:514
+
+If any active message labels in the file do not have a line to send log messages to a remote server, this is a finding.
+
+References:
+CCI-001851
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 38 *******************************
+
+QUESTION         : 39 of 95
+TITLE            : CAT II, V-234866, SV-234866r958364, SRG-OS-000002-GPOS-00002
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1281
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1281
+RULE             : The SUSE operating system must provision temporary accounts with an expiration date for 72 hours.
+QUESTION_TEXT    : Verify that the SUSE operating system provisions temporary accounts with an expiration date for "72" hours.
+
+Ask the System Administrator if any temporary accounts have been added to the system. For every existing temporary account, run the following command to obtain its account expiration information:
+
+> sudo chage -l system_account_name
+
+Verify each of these accounts has an expiration date that is within "72" hours of its creation.
+
+If any temporary accounts have no expiration date set or do not expire within "72" hours of their creation, this is a finding.
+
+References:
+CCI-000016
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 39 *******************************
+
+QUESTION         : 40 of 95
+TITLE            : CAT II, V-234867, SV-234867r958388, SRG-OS-000021-GPOS-00005
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1301
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1301
+RULE             : The SUSE operating system must lock an account after three consecutive invalid access attempts.
+QUESTION_TEXT    : Verify the SUSE operating system locks a user account after three consecutive failed access attempts until the locked account is released by an administrator. 
+
+Check that the system locks a user account after three consecutive failed login attempts using the following command: 
+
+> grep pam_tally2.so /etc/pam.d/common-auth 
+auth required pam_tally2.so onerr=fail deny=3 
+
+If no line is returned or the line is commented out, this is a finding.
+If the line is missing "onerr=fail", this is a finding.
+If the line has "deny" set to a value other than 1, 2, or 3, this is a finding.
+
+Check that the system resets the failed login attempts counter after a successful login using the following command: 
+
+> grep pam_tally2.so /etc/pam.d/common-account 
+account required pam_tally2.so
+
+If the account option is missing, or commented out, this is a finding.
+
+References:
+CCI-000044
+CCI-002238
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 40 *******************************
+
+QUESTION         : 41 of 95
+TITLE            : CAT II, V-234869, SV-234869r1009617, SRG-OS-000068-GPOS-00036
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1341
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1341
+RULE             : The SUSE operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM).
+QUESTION_TEXT    : Verify the SUSE operating system implements multifactor authentication for remote access to privileged accounts via PAM.
+
+Check that the "pam_pkcs11.so" option is configured in the "/etc/pam.d/common-auth" file with the following command:
+
+> grep pam_pkcs11.so /etc/pam.d/common-auth
+
+auth sufficient pam_pkcs11.so
+
+If "pam_pkcs11.so" is not set in "/etc/pam.d/common-auth", this is a finding.
+
+References:
+CCI-000187
+CCI-000765
+CCI-000766
+CCI-004046
+CCI-001953
+CCI-001954
+CCI-004047
+CCI-000767
+CCI-000768
+CCI-001948
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 41 *******************************
+
+QUESTION         : 42 of 95
+TITLE            : CAT II, V-234871, SV-234871r1009619, SRG-OS-000118-GPOS-00060
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1381
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1381
+RULE             : The SUSE operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity after password expiration.
+QUESTION_TEXT    : Verify the SUSE operating system disables account identifiers after 35 days of inactivity since the password expiration.
+
+Check the account inactivity value by performing the following command:
+
+> sudo grep -i '^inactive' /etc/default/useradd
+
+INACTIVE=35
+
+If no output is produced, or if "INACTIVE" is not set to a value greater than "0" and less than or equal to "35", this is a finding.
+
+References:
+CCI-003627
+CCI-003628
+CCI-000795
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 42 *******************************
+
+QUESTION         : 43 of 95
+TITLE            : CAT II, V-234872, SV-234872r958508, SRG-OS-000123-GPOS-00064
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1401
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1401
+RULE             : The SUSE operating system must never automatically remove or disable emergency administrator accounts.
+QUESTION_TEXT    : Verify the SUSE operating system is configured such that emergency administrator accounts are never automatically removed or disabled. 
+
+Note: Root is typically the "account of last resort" on a system and is also used as the example emergency administrator account. If another account is being used as the emergency administrator account, the command should be used against that account. 
+
+Check to see if the root account password or account expires with the following command:
+
+> sudo chage -l [Emergency_Administrator]
+
+Password expires:never
+
+If "Password expires" or "Account expires" is set to anything other than "never", this is a finding.
+
+References:
+CCI-001682
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 43 *******************************
+
+QUESTION         : 44 of 95
+TITLE            : CAT II, V-234874, SV-234874r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1441
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1441
+RULE             : The SUSE operating system must not have unnecessary accounts.
+QUESTION_TEXT    : Verify all SUSE operating system accounts are assigned to an active system, application, or user account.
+
+Obtain the list of authorized system accounts from the Information System Security Officer (ISSO).
+
+Check the system accounts on the system with the following command:
+
+> more /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+...
+games:x:12:100:Games account:/var/games:/bin/bash
+
+Accounts such as "games" and "gopher" are not authorized accounts as they do not support authorized system functions. 
+
+If the accounts on the system do not match the provided documentation, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 44 *******************************
+
+QUESTION         : 45 of 95
+TITLE            : CAT II, V-234875, SV-234875r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1461
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1461
+RULE             : The SUSE operating system must not have unnecessary account capabilities.
+QUESTION_TEXT    : Verify all non-interactive SUSE operating system accounts do not have an interactive shell assigned to them.
+
+Obtain the list of authorized system accounts from the Information System Security Officer (ISSO).
+
+Check the system accounts on the system with the following command:
+
+> awk -F: '($7 !~ "/sbin/nologin" && $7 !~ "/bin/false"){print $1 ":" $3 ":" $7}' /etc/passwd
+root:0:/bin/bash
+nobody:65534:/bin/bash
+
+If a non-interactive accounts such as "games" or "nobody" is listed with an interactive shell, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 45 *******************************
+
+QUESTION         : 46 of 95
+TITLE            : CAT II, V-234882, SV-234882r1009621, SRG-OS-000069-GPOS-00037
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1601
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1601
+RULE             : The SUSE operating system must enforce passwords that contain at least one uppercase character.
+QUESTION_TEXT    : Verify the SUSE operating system enforces password complexity by requiring at least one uppercase character.
+
+Check that the operating system enforces password complexity by requiring that at least one uppercase character be used by using the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so ucredit=-1
+
+If the command does not return anything, the returned line is commented out, or has a second column value different from "requisite", or does not contain "ucredit=-1", this is a finding.
+
+References:
+CCI-004066
+CCI-000192
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 46 *******************************
+
+QUESTION         : 47 of 95
+TITLE            : CAT II, V-234883, SV-234883r1009622, SRG-OS-000070-GPOS-00038
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1621
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1621
+RULE             : The SUSE operating system must enforce passwords that contain at least one lowercase character.
+QUESTION_TEXT    : Verify the SUSE operating system enforces password complexity by requiring that at least one lowercase character.
+
+Check that the operating system enforces password complexity by requiring that at least one lowercase character be used by using the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so lcredit=-1
+
+If the command does not return anything, the returned line is commented out, or has a second column value different from "requisite", or does not contain "lcredit=-1", this is a finding.
+
+References:
+CCI-004066
+CCI-000193
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 47 *******************************
+
+QUESTION         : 48 of 95
+TITLE            : CAT II, V-234884, SV-234884r1009623, SRG-OS-000071-GPOS-00039
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1641
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1641
+RULE             : The SUSE operating system must enforce passwords that contain at least one numeric character.
+QUESTION_TEXT    : Verify the SUSE operating system enforces password complexity by requiring that at least one numeric character.
+
+Check that the operating system enforces password complexity by requiring that at least one numeric character be used by using the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so dcredit=-1
+
+If the command does not return anything, the returned line is commented out, or has a second column value different from "requisite", or does not contain "dcredit=-1", this is a finding.
+
+References:
+CCI-004066
+CCI-000194
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 48 *******************************
+
+QUESTION         : 49 of 95
+TITLE            : CAT II, V-234885, SV-234885r1009624, SRG-OS-000072-GPOS-00040
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1661
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1661
+RULE             : The SUSE operating system must require the change of at least eight of the total number of characters when passwords are changed.
+QUESTION_TEXT    : Verify the SUSE operating system requires at least eight characters be changed between the old and new passwords during a password change.
+
+Check that the operating system requires at least eight characters be changed between the old and new passwords during a password change by running the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so difok=8
+
+If the command does not return anything, the returned line is commented out, or has a second column value different from "requisite", or does not contain "difok", or the value is less than "8", this is a finding.
+
+References:
+CCI-004066
+CCI-000195
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 49 *******************************
+
+QUESTION         : 50 of 95
+TITLE            : CAT II, V-234886, SV-234886r1009625, SRG-OS-000073-GPOS-00041
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1681
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1681
+RULE             : The SUSE operating system must configure the Linux Pluggable Authentication Modules (PAM) to only store encrypted representations of passwords.
+QUESTION_TEXT    : Verify the SUSE operating system configures the Linux PAM to only store encrypted representations of passwords. All account passwords must be hashed with SHA512 encryption strength.
+
+Check that PAM is configured to create SHA512 hashed passwords by running the following command:
+
+> grep pam_unix.so /etc/pam.d/common-password
+password required pam_unix.so sha512
+
+If the command does not return anything or the returned line is commented out, has a second column value different from "required", or does not contain "sha512", this is a finding.
+
+References:
+CCI-004062
+CCI-000196
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 50 *******************************
+
+QUESTION         : 51 of 95
+TITLE            : CAT II, V-234895, SV-234895r1009632, SRG-OS-000078-GPOS-00046
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1821
+RULE             : The SUSE operating system must employ passwords with a minimum of 15 characters.
+QUESTION_TEXT    : Verify the SUSE operating system enforces a minimum 15-character password length.
+
+Check that the operating system enforces a minimum 15-character password length with the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so minlen=15
+
+If the command does not return anything, the returned line is commented out, or has a second column value different from "requisite", or does not contain "minlen" value, or the value is less than "15", this is a finding.
+
+References:
+CCI-004066
+CCI-000205
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 51 *******************************
+
+QUESTION         : 52 of 95
+TITLE            : CAT II, V-234896, SV-234896r1009633, SRG-OS-000266-GPOS-00101
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1841
+RULE             : The SUSE operating system must enforce passwords that contain at least one special character.
+QUESTION_TEXT    : Verify the SUSE operating system enforces password complexity by requiring at least one special character.
+
+Check that the operating system enforces password complexity by requiring at least one special character using the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so ocredit=-1
+
+If the command does not return anything, the returned line is commented out, or has a second column value different from "requisite", or does not contain "ocredit=-1", this is a finding.
+
+References:
+CCI-004066
+CCI-001619
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 52 *******************************
+
+QUESTION         : 53 of 95
+TITLE            : CAT II, V-234897, SV-234897r991587, SRG-OS-000480-GPOS-00225
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1861
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1861
+RULE             : The SUSE operating system must prevent the use of dictionary words for passwords.
+QUESTION_TEXT    : Verify the SUSE operating system prevents the use of dictionary words for passwords.
+
+Check that the SUSE operating system prevents the use of dictionary words for passwords with the following command:
+
+> grep pam_cracklib.so /etc/pam.d/common-password
+password requisite pam_cracklib.so
+
+If the command does not return anything, or the returned line is commented out, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 53 *******************************
+
+QUESTION         : 54 of 95
+TITLE            : CAT II, V-234956, SV-234956r958424, SRG-OS-000046-GPOS-00022
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2741
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2741
+RULE             : The Information System Security Officer (ISSO) and System Administrator (SA), at a minimum, must be alerted of a SUSE operating system audit processing failure event.
+QUESTION_TEXT    : Verify the administrators are notified in the event of a SUSE operating system audit processing failure by inspecting "/etc/audit/auditd.conf".
+
+Check if the system is configured to send email to an account when it needs to notify an administrator with the following command: 
+
+> sudo grep action_mail /etc/audit/auditd.conf
+
+action_mail_acct = root
+
+If the value of the "action_mail_acct" keyword is not set to "root" and/or other accounts for security personnel, the "action_mail_acct" keyword is missing, or the returned line is commented out, this is a finding.
+
+References:
+CCI-000139
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 54 *******************************
+
+QUESTION         : 55 of 95
+TITLE            : CAT II, V-234957, SV-234957r958424, SRG-OS-000046-GPOS-00022
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2761
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2761
+RULE             : The Information System Security Officer (ISSO) and System Administrator (SA), at a minimum, must have mail aliases to be notified of a SUSE operating system audit processing failure.
+QUESTION_TEXT    : Verify the administrators are notified in the event of a SUSE operating system audit processing failure by checking that "/etc/aliases" has a defined value for root.
+
+> grep -i "^postmaster:" /etc/aliases
+
+postmaster: root
+
+If the above command does not return a value of "root", or the output is commented out, this is a finding
+
+Verify the alias for root forwards to a monitored e-mail account:
+
+> grep -i "^root:" /etc/aliases
+root: person@server.mil
+
+If the alias for root does not forward to a monitored e-mail account, or the output is commented out, this is a finding.
+
+References:
+CCI-000139
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 55 *******************************
+
+QUESTION         : 56 of 95
+TITLE            : CAT II, V-234958, SV-234958r1038966, SRG-OS-000047-GPOS-00023
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2781
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2781
+RULE             : The SUSE operating system audit system must take appropriate action when the audit storage volume is full.
+QUESTION_TEXT    : Verify the SUSE operating system takes the appropriate action when the audit storage volume is full. 
+
+Check that the SUSE operating system takes the appropriate action when the audit storage volume is full with the following command:
+
+> sudo grep disk_full_action /etc/audit/auditd.conf
+
+disk_full_action = SYSLOG
+
+If the value of the "disk_full_action" option is not "SYSLOG", "SINGLE", or "HALT", or the line is commented out, this is a finding.
+
+References:
+CCI-000140
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 56 *******************************
+
+QUESTION         : 57 of 95
+TITLE            : CAT II, V-234959, SV-234959r958434, SRG-OS-000057-GPOS-00027
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2801
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2801
+RULE             : The SUSE operating system must protect audit rules from unauthorized modification.
+QUESTION_TEXT    : Verify that the SUSE operating system protects audit rules from unauthorized modification.
+
+Check that "permissions.local" file contains the correct permissions rules with the following command:
+
+> grep -i audit /etc/permissions.local
+
+/var/log/audit root:root 600
+/var/log/audit/audit.log root:root 600
+/etc/audit/audit.rules root:root 640
+/etc/audit/rules.d/audit.rules root:root 640
+
+If the command does not return any output, this is a finding.
+
+Check that all of the audit information files and folders have the correct permissions with the following command:
+
+> sudo chkstat /etc/permissions.local
+
+If the command returns any output, this is a finding.
+
+References:
+CCI-000162
+CCI-000163
+CCI-000164
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 57 *******************************
+
+QUESTION         : 58 of 95
+TITLE            : CAT II, V-234961, SV-234961r991557, SRG-OS-000256-GPOS-00097
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2821
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2821
+RULE             : The SUSE operating system audit tools must have the proper permissions configured to protect against unauthorized access.
+QUESTION_TEXT    : Verify that the SUSE operating system audit tools have the proper permissions configured in the permissions profile to protect from unauthorized access.
+
+Check that "permissions.local" file contains the correct permissions rules with the following command:
+
+> grep "^/usr/sbin/au" /etc/permissions.local
+
+/usr/sbin/audispd root:root 0750
+/usr/sbin/auditctl root:root 0750
+/usr/sbin/auditd root:root 0750
+/usr/sbin/ausearch root:root 0755
+/usr/sbin/aureport root:root 0755
+/usr/sbin/autrace root:root 0750
+/usr/sbin/augenrules root:root 0750
+
+If the command does not return any output, this is a finding.
+
+Check that all of the audit information files and folders have the correct permissions with the following command:
+
+> sudo chkstat /etc/permissions.local
+
+If the command returns any output, this is a finding.
+
+References:
+CCI-001493
+CCI-001494
+CCI-001495
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 58 *******************************
+
+QUESTION         : 59 of 95
+TITLE            : CAT II, V-234962, SV-234962r991567, SRG-OS-000278-GPOS-00108
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2841
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2841
+RULE             : The SUSE operating system file integrity tool must be configured to protect the integrity of the audit tools.
+QUESTION_TEXT    : Verify that the SUSE operating system file integrity tool is configured to protect the integrity of the audit tools.
+
+Check that AIDE is properly configured to protect the integrity of the audit tools by running the following command:
+
+> sudo grep /usr/sbin/au /etc/aide.conf
+
+/usr/sbin/auditctl p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+/usr/sbin/auditd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+/usr/sbin/ausearch p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+/usr/sbin/aureport p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+/usr/sbin/autrace p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+/usr/sbin/audispd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+/usr/sbin/augenrules p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+
+If AIDE is properly configured to protect the integrity of the audit tools, all lines listed above will be returned from the command. 
+
+If one or more lines are missing, or is commented out, this is a finding.
+
+References:
+CCI-001496
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 59 *******************************
+
+QUESTION         : 60 of 95
+TITLE            : CAT II, V-234965, SV-234965r958752, SRG-OS-000341-GPOS-00132
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2901
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2901
+RULE             : The SUSE operating system must allocate audit record storage capacity to store at least one week of audit records when audit records are not immediately sent to a central audit record storage facility.
+QUESTION_TEXT    : Verify the SUSE operating system allocates audit record storage capacity to store at least one week of audit records when audit records are not immediately sent to a central audit record storage facility.
+
+Determine to which partition the audit records are being written with the following command:
+
+> sudo grep -iw log_file /etc/audit/auditd.conf
+log_file = /var/log/audit/audit.log
+
+Check the size of the partition that audit records are written to (with the example being /var/log/audit/) with the following command:
+
+> df -h /var/log/audit/
+/dev/sda2 24G 10.4G 13.6G 43% /var
+
+If the audit records are not written to a partition made specifically for audit records (/var/log/audit is a separate partition), determine the amount of space being used by other files in the partition with the following command:
+
+> sudo du -sh [audit_partition]
+1.8G /var/log/audit
+
+The partition size needed to capture a week of audit records is based on the activity level of the system and the total storage capacity available. In normal circumstances, 10.0 GB of storage space for audit records will be sufficient.
+
+If the audit record partition is not allocated sufficient storage capacity, this is a finding.
+
+References:
+CCI-001849
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 60 *******************************
+
+QUESTION         : 61 of 95
+TITLE            : CAT II, V-234969, SV-234969r971542, SRG-OS-000343-GPOS-00134
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2981
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2981
+RULE             : The SUSE operating system auditd service must notify the System Administrator (SA) and Information System Security Officer (ISSO) immediately when audit storage capacity is 75 percent full.
+QUESTION_TEXT    : Determine if the SUSE operating system auditd is configured to notify the SA and ISSO when the audit record storage volume reaches 75 percent of the storage capacity.
+
+Check the system configuration to determine the partition to which audit records are written using the following command:
+
+> sudo grep -iw log_file /etc/audit/auditd.conf
+log_file = /var/log/audit/audit.log
+
+Check the size of the partition to which audit records are written (e.g., "/var/log/audit/"):
+
+> df -h /var/log/audit/
+/dev/sda2 24G 10.4G 13.6G 43% /var
+
+If the audit records are not being written to a partition specifically created for audit records (in this example "/var/log/audit" is a separate partition), use the following command to determine the amount of space other files in the partition currently occupy:
+
+> sudo du -sh <partition>
+1.8G /var/log/audit
+
+Determine the threshold for the system to take action when 75 percent of the repository maximum audit record storage capacity is reached:
+
+> sudo grep -iw space_left /etc/audit/auditd.conf
+space_left = 225 
+
+If the value of the "space_left" keyword is not set to 25 percent of the total partition size, this is a finding.
+
+References:
+CCI-001855
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 61 *******************************
+
+QUESTION         : 62 of 95
+TITLE            : CAT II, V-234979, SV-234979r1009576, SRG-OS-000479-GPOS-00224
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3101
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3101
+RULE             : Audispd must take appropriate action when the SUSE operating system audit storage is full.
+QUESTION_TEXT    : Verify the audit system off-loads audit records if the SUSE operating system storage volume becomes full.
+
+Check that the records are properly off-loaded to a remote server with the following command:
+
+> sudo grep -i "disk_full_action" /etc/audit/audisp-remote.conf
+disk_full_action = syslog
+
+If "disk_full_action" is not set to "syslog", "single", or "halt" or the line is commented out, this is a finding.
+
+References:
+CCI-001851
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 62 *******************************
+
+QUESTION         : 63 of 95
+TITLE            : CAT II, V-234982, SV-234982r991588, SRG-OS-000480-GPOS-00226
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3161
+RULE             : The SUSE operating system must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.
+QUESTION_TEXT    : Verify the SUSE operating system enforces a delay of at least four seconds between logon prompts following a failed logon attempt.
+
+Check that the SUSE operating system enforces a delay of at least four seconds between logon prompts following a failed logon attempt with the following command:
+
+> grep FAIL_DELAY /etc/login.defs
+FAIL_DELAY 4
+
+If the value of "FAIL_DELAY" is not set to "4", "FAIL_DELAY" is commented out, or "FAIL_DELAY" is missing, then this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 63 *******************************
+
+QUESTION         : 64 of 95
+TITLE            : CAT II, V-234983, SV-234983r991588, SRG-OS-000480-GPOS-00226
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3181
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3181
+RULE             : The SUSE operating system must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.
+QUESTION_TEXT    : Verify the SUSE operating system enforces a delay of at least four seconds between logon prompts following a failed logon attempt.
+
+> grep pam_faildelay /etc/pam.d/common-auth
+auth required pam_faildelay.so delay=4000000
+
+If the value of "delay" is not set to "4000000", "delay" is commented out, "delay" is missing, or the "pam_faildelay" line is missing completely, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 64 *******************************
+
+QUESTION         : 65 of 95
+TITLE            : CAT II, V-234991, SV-234991r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3341
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3341
+RULE             : All SUSE operating system local interactive users must have a home directory assigned in the /etc/passwd file.
+QUESTION_TEXT    : Verify SUSE operating system local interactive users on the system have a home directory assigned.
+
+Check for missing local interactive user home directories with the following command:
+
+> sudo pwck -r
+user 'smithj': directory '/home/smithj' does not exist
+
+Ask the System Administrator (SA) if any users found without home directories are local interactive users. If the SA is unable to provide a response, check for users with a User Identifier (UID) of 1000 or greater with the following command:
+
+> awk -F: '($3>=1000)&&($1!="nobody"){print $1 ":" $3}' /etc/passwd
+
+If any interactive users do not have a home directory assigned, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 65 *******************************
+
+QUESTION         : 66 of 95
+TITLE            : CAT II, V-234992, SV-234992r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3361
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3361
+RULE             : All SUSE operating system local interactive user home directories defined in the /etc/passwd file must exist.
+QUESTION_TEXT    : Verify the assigned home directory of all SUSE operating system local interactive users on the system exists.
+
+Check the home directory assignment for all local interactive non-privileged users on the system with the following command:
+
+> awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $6}' /etc/passwd
+
+smithj /home/smithj
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+Check that all referenced home directories exist with the following command:
+
+> sudo pwck -r
+
+user 'smithj': directory '/home/smithj' does not exist
+
+If any home directories referenced in "/etc/passwd" are returned as not defined, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 66 *******************************
+
+QUESTION         : 67 of 95
+TITLE            : CAT II, V-234993, SV-234993r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3381
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3381
+RULE             : All SUSE operating system local interactive user home directories must have mode 0750 or less permissive.
+QUESTION_TEXT    : Verify the assigned home directory of all SUSE operating system local interactive users has a mode of "0750" or less permissive.
+
+Check the home directory assignment for all non-privileged users on the system with the following command:
+
+Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.
+
+> ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)
+-rwxr-x--- 1 smithj users 18 Mar 5 17:06 /home/smithj
+
+If home directories referenced in "/etc/passwd" do not have a mode of "0750" or less permissive, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 67 *******************************
+
+QUESTION         : 68 of 95
+TITLE            : CAT II, V-234994, SV-234994r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3401
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3401
+RULE             : All SUSE operating system local interactive user home directories must be group-owned by the home directory owner's primary group.
+QUESTION_TEXT    : Verify the assigned home directory of all SUSE operating system local interactive users is group-owned by that user's primary GID.
+
+Check the home directory assignment for all non-privileged users on the system with the following command:
+
+Note: This may miss local interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information. The returned directory "/home/smithj" is used as an example.
+
+> awk -F: '($3>=1000)&&($7 !~ /nologin/){print $4, $6}' /etc/passwd)
+250:/home/smithj
+
+Check the user's primary group with the following command:
+
+> grep users /etc/group
+users:x:250:smithj,jonesj,jacksons
+
+If the user home directory referenced in "/etc/passwd" is not group-owned by that user's primary GID, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 68 *******************************
+
+QUESTION         : 69 of 95
+TITLE            : CAT II, V-234995, SV-234995r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3421
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3421
+RULE             : All SUSE operating system local initialization files must have mode 0740 or less permissive.
+QUESTION_TEXT    : Verify that all SUSE operating system local initialization files have a mode of "0740" or less permissive.
+
+Check the mode on all SUSE operating system local initialization files with the following command:
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+> sudo ls -al /home/smithj/.* | more
+-rwxr-xr-x 1 smithj users 896 Mar 10 2011 .profile
+-rwxr-xr-x 1 smithj users 497 Jan 6 2007 .login
+-rwxr-xr-x 1 smithj users 886 Jan 6 2007 .something
+
+If any local initialization files have a mode more permissive than "0740", this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 69 *******************************
+
+QUESTION         : 70 of 95
+TITLE            : CAT II, V-234996, SV-234996r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3441
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3441
+RULE             : All SUSE operating system local interactive user initialization files executable search paths must contain only paths that resolve to the users home directory.
+QUESTION_TEXT    : Verify that all SUSE operating system local interactive user initialization files executable search path statements do not contain statements that will reference a working directory other than the user's home directory.
+
+Check the executable search path statement for all operating system local interactive user initialization files in the user's home directory with the following commands:
+
+Note: The example will be for the user "smithj", who has a home directory of "/home/smithj".
+
+> sudo grep -i path= /home/smithj/.*
+/home/smithj/.bash_profile:PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+If any local interactive user initialization files have executable search path statements that include directories outside of their home directory, and the additional path statements are not documented with the ISSO as an operational requirement, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 70 *******************************
+
+QUESTION         : 71 of 95
+TITLE            : CAT II, V-234997, SV-234997r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3461
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3461
+RULE             : All SUSE operating system local initialization files must not execute world-writable programs.
+QUESTION_TEXT    : Verify that SUSE operating system local initialization files do not execute world-writable programs.
+
+Verify that SUSE operating system local initialization files do not
+execute world-writable programs.
+
+Check the system for world-writable files with the following command:
+
+> sudo find / -xdev -perm -002 -type f -exec ls -ld {} \;
+
+For all files listed, check for their presence in the local
+initialization files with the following command:
+
+Note: The example will be for a system that is configured to create
+users' home directories in the "/home" directory.
+
+> sudo find /home/* -maxdepth 1 -type f -name \.\* -exec grep -H <file> {} \;
+
+If any local initialization files are found to reference world-writable
+files, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 71 *******************************
+
+QUESTION         : 72 of 95
+TITLE            : CAT II, V-234998, SV-234998r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3481
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3481
+RULE             : SUSE operating system file systems that contain user home directories must be mounted to prevent files with the setuid and setgid bit set from being executed.
+QUESTION_TEXT    : Verify that SUSE operating system file systems that contain user home directories are mounted with the "nosuid" option.
+
+Print the currently active file system mount options of the file system(s) that contain the user home directories with the following command:
+
+> for X in `awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd`; do findmnt -nkT $X; done | sort -r
+/home /dev/mapper/system-home ext4 rw,nosuid,relatime,data=ordered
+
+If a file system containing user home directories is not mounted with the FSTYPE OPTION nosuid, this is a finding.
+
+Note: If a separate file system has not been created for the user home directories (user home directories are mounted under "/"), this is not a finding as the "nosuid" option cannot be used on the "/" system.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 72 *******************************
+
+QUESTION         : 73 of 95
+TITLE            : CAT II, V-234999, SV-234999r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3501
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3501
+RULE             : SUSE operating system file systems that are used with removable media must be mounted to prevent files with the setuid and setgid bit set from being executed.
+QUESTION_TEXT    : Verify SUSE operating system file systems used for removable media are mounted with the "nosuid" option.
+
+Check the file systems that are mounted at boot time with the following command:
+
+> more /etc/fstab
+
+UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222 /mnt/usbflash vfat noauto,owner,ro,nosuid 0 0
+
+If a file system found in "/etc/fstab" refers to removable media and it does not have the "nosuid" option set, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 73 *******************************
+
+QUESTION         : 74 of 95
+TITLE            : CAT II, V-235002, SV-235002r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3561
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3561
+RULE             : All SUSE operating system world-writable directories must be group-owned by root, sys, bin, or an application group.
+QUESTION_TEXT    : Verify all SUSE operating system world-writable directories are group-owned by root, sys, bin, or an application group.
+
+Check the system for world-writable directories with the following command:
+
+> sudo find / -perm -002 -type d -exec ls -lLd {} \;
+drwxrwxrwt. 2 root root 40 Aug 26 13:07 /dev/mqueue
+drwxrwxrwt. 2 root root 220 Aug 26 13:23 /dev/shm
+drwxrwxrwt. 14 root root 4096 Aug 26 13:29 /tmp
+
+If any world-writable directories are not owned by root, sys, bin, or an application group associated with the directory, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 74 *******************************
+
+QUESTION         : 75 of 95
+TITLE            : CAT II, V-235003, SV-235003r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3581
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3581
+RULE             : SUSE operating system kernel core dumps must be disabled unless needed.
+QUESTION_TEXT    : Verify that SUSE operating system kernel core dumps are disabled unless needed.
+
+Check the status of the "kdump" service with the following command:
+
+> systemctl status kdump.service
+Loaded: not-found (Reason: No such file or directory)
+Active: inactive (dead)
+
+If the "kdump" service is active, ask the System Administrator if the use of the service is required and documented with the Information System Security Officer (ISSO).
+
+If the service is active and is not documented, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 75 *******************************
+
+QUESTION         : 76 of 95
+TITLE            : CAT II, V-235006, SV-235006r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3641
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3641
+RULE             : The SUSE operating system must be configured to not overwrite Pluggable Authentication Modules (PAM) configuration on package changes.
+QUESTION_TEXT    : Verify the SUSE operating system is configured to not overwrite PAM configuration on package changes.
+
+Check that soft links between PAM configuration files are removed with the following command:
+
+> find /etc/pam.d/ -type l -iname "common-*"
+
+If any results are returned, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 76 *******************************
+
+QUESTION         : 77 of 95
+TITLE            : CAT II, V-235027, SV-235027r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4021
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4021
+RULE             : The SUSE operating system must not have network interfaces in promiscuous mode unless approved and documented.
+QUESTION_TEXT    : Verify the SUSE operating system network interfaces are not in promiscuous mode unless approved by the ISSO and documented.
+
+Check for the status with the following command:
+
+> ip link | grep -i promisc
+
+If network interfaces are found on the system in promiscuous mode and their use has not been approved by the ISSO and documented, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 77 *******************************
+
+QUESTION         : 78 of 95
+TITLE            : CAT II, V-235028, SV-235028r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4041
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4041
+RULE             : All SUSE operating system files and directories must have a valid owner.
+QUESTION_TEXT    : Verify that all SUSE operating system files and directories on the system have a valid owner.
+
+Check the owner of all files and directories with the following command:
+
+Note: The value after -fstype must be replaced with the filesystem type. XFS is used as an example.
+
+> sudo find / -fstype xfs -nouser
+
+If any files on the system do not have an assigned owner, this is a finding.
+
+References:
+CCI-001230
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 78 *******************************
+
+QUESTION         : 79 of 95
+TITLE            : CAT II, V-235029, SV-235029r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4061
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4061
+RULE             : All SUSE operating system files and directories must have a valid group owner.
+QUESTION_TEXT    : Verify all SUSE operating system files and directories on the system have a valid group.
+
+Check the owner of all files and directories with the following command:
+
+Note: The value after -fstype must be replaced with the filesystem type. XFS is used as an example.
+
+> sudo find / -fstype xfs -nogroup
+
+If any files on the system do not have an assigned group, this is a finding.
+
+References:
+CCI-001230
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 79 *******************************
+
+QUESTION         : 80 of 95
+TITLE            : CAT II, V-251723, SV-251723r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4141
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4141
+RULE             : The SUSE operating system must specify the default "include" directory for the /etc/sudoers file.
+QUESTION_TEXT    : Note: If the "include" and "includedir" directives are not present in the /etc/sudoers file, this requirement is not applicable.
+
+Verify the operating system specifies only the default "include" directory for the /etc/sudoers file with the following command:
+
+> sudo grep include /etc/sudoers
+
+@includedir /etc/sudoers.d
+
+If the results are not "/etc/sudoers.d" or additional files or directories are specified, this is a finding.
+
+Verify the operating system does not have nested "include" files or directories within the /etc/sudoers.d directory with the following command:
+
+> sudo grep -r include /etc/sudoers.d
+
+If results are returned, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 80 *******************************
+
+QUESTION         : 81 of 95
+TITLE            : CAT II, V-251724, SV-251724r1050789, SRG-OS-000373-GPOS-00156
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4161
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4161
+RULE             : The SUSE operating system must not be configured to bypass password requirements for privilege escalation.
+QUESTION_TEXT    : Verify the operating system is not be configured to bypass password requirements for privilege escalation.
+
+Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+
+$ sudo grep pam_succeed_if /etc/pam.d/sudo
+
+If any occurrences of "pam_succeed_if" are returned from the command, this is a finding.
+
+References:
+CCI-004895
+CCI-002038
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 81 *******************************
+
+QUESTION         : 82 of 95
+TITLE            : CAT II, V-255920, SV-255920r991554, SRG-OS-000250-GPOS-00093
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4201
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4201
+RULE             : The SUSE operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
+QUESTION_TEXT    : Verify the SSH server is configured to use only FIPS-validated key exchange algorithms:
+
+> sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH '^\s*kexalgorithms'
+
+KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256
+ 
+If "KexAlgorithms" is not configured, is commented out, or does not contain only the algorithms "ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" in exact order, this is a finding.
+
+References:
+CCI-001453
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 82 *******************************
+
+QUESTION         : 83 of 95
+TITLE            : CAT II, V-255922, SV-255922r958794, SRG-OS-000363-GPOS-00150
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4241
+RULE             : The SUSE operating system must use a file integrity tool to verify correct operation of all security functions.
+QUESTION_TEXT    : Verify that Advanced Intrusion Detection Environment (AIDE) is installed and verifies the correct operation of all security functions.
+
+Check that the AIDE package is installed with the following command:
+     $ sudo zypper if aide | grep "Installed"
+     Installed: Yes
+
+If AIDE is not installed, ask the System Administrator how file integrity checks are performed on the system. 
+
+If there is no application installed to perform integrity checks, this is a finding.
+
+If AIDE is installed, check if it has been initialized with the following command:
+     $ sudo aide --check
+
+If the output is "Couldn't open file /var/lib/aide/aide.db for reading", this is a finding.
+
+References:
+CCI-002696
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 83 *******************************
+
+QUESTION         : 84 of 95
+TITLE            : CAT II, V-256982, SV-256982r958508, SRG-OS-000123-GPOS-00064
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4261
+RULE             : The SUSE operating system must automatically expire temporary accounts within 72 hours.
+QUESTION_TEXT    : Verify temporary accounts have been provisioned with an expiration date of 72 hours.
+
+For every existing temporary account, run the following command to obtain its account expiration information:
+
+     > sudo chage -l <temporary_account_name> | grep -i "account expires"
+
+Verify each of these accounts has an expiration date set within 72 hours.
+If any temporary accounts have no expiration date set or do not expire within 72 hours, this is a finding.
+
+References:
+CCI-001682
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 84 *******************************
+
+QUESTION         : 85 of 95
+TITLE            : CAT II, V-256983, SV-256983r958794, SRG-OS-000363-GPOS-00150
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4281
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4281
+RULE             : The SUSE operating system must be configured to allow sending email notifications of unauthorized configuration changes to designated personnel.
+QUESTION_TEXT    : Verify that the operating system is configured to allow sending email notifications.
+
+Note: The "mailx" package provides the "mail" command that is used to send email messages.
+
+Verify that the "mailx" package is installed on the system:
+
+     > sudo zypper se mailx
+
+     i | mailx | A MIME-Capable Implementation of the mailx Command | package
+	 
+If "mailx" package is not installed, this is a finding.
+
+References:
+CCI-001744
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 85 *******************************
+
+QUESTION         : 86 of 95
+TITLE            : CAT III, V-234814, SV-234814r958404, SRG-OS-000031-GPOS-00012
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:261
+RULE             : The SUSE operating system must conceal, via the session lock, information previously visible on the display with a publicly viewable image in the graphical user interface (GUI).
+QUESTION_TEXT    : Verify the SUSE operating system conceals via the session lock information previously visible on the display with a publicly viewable image in the GUI.
+
+Note: If the system does not have X Windows installed, this requirement is Not Applicable.
+
+Check that the lock screen is set to a publicly viewable image by running the following command:
+
+> sudo gsettings get org.gnome.desktop.screensaver picture-uri 
+'file:///usr/share/wallpapers/SLE-default-static.xml'
+
+If nothing is returned or "org.gnome.desktop.screensaver" is not set, this is a finding.
+
+References:
+CCI-000060
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 86 *******************************
+
+QUESTION         : 87 of 95
+TITLE            : CAT III, V-234850, SV-234850r958788, SRG-OS-000359-GPOS-00146
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:961
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:961
+RULE             : The SUSE operating system must be configured to use Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+QUESTION_TEXT    : Verify the SUSE operating system is configured to use UTC or GMT.
+
+Check that the SUSE operating system is configured to use UTC or GMT with the following command:
+
+> timedatectl status | grep -i "time zone"
+Time zone: UTC (UTC, +0000)
+
+If "Time zone" is not set to "UTC" or "GMT", this is a finding.
+
+References:
+CCI-001890
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 87 *******************************
+
+QUESTION         : 88 of 95
+TITLE            : CAT III, V-234873, SV-234873r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:1421
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:1421
+RULE             : The SUSE operating system must display the date and time of the last successful account logon upon logon.
+QUESTION_TEXT    : Verify the SUSE operating system users are provided with feedback on when account accesses last occurred.
+
+Check that "pam_lastlog" is used and not silent with the following command:
+
+> grep pam_lastlog /etc/pam.d/login
+
+session required pam_lastlog.so showfailed 
+
+If "pam_lastlog" is missing from "/etc/pam.d/login" file, the "silent" option is present, or the returned line is commented out, this is a finding.
+
+References:
+CCI-000052
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 88 *******************************
+
+QUESTION         : 89 of 95
+TITLE            : CAT III, V-234967, SV-234967r1009567, SRG-OS-000342-GPOS-00133
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2941
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2941
+RULE             : The SUSE operating system audit event multiplexor must be configured to use Kerberos.
+QUESTION_TEXT    : Determine if the SUSE operating system audit event multiplexor is configured to use Kerberos by running the following command:
+
+> sudo grep transport /etc/audit/audisp-remote.conf
+transport = krb5
+
+If "transport" is not set to "krb5", or is commented out, this is a finding.
+
+References:
+CCI-001851
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 89 *******************************
+
+QUESTION         : 90 of 95
+TITLE            : CAT III, V-234968, SV-234968r1009570, SRG-OS-000342-GPOS-00133
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:2961
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:2961
+RULE             : Audispd must off-load audit records onto a different system or media from the SUSE operating system being audited.
+QUESTION_TEXT    : Verify "audispd" off-loads audit records onto a different system or media from the SUSE operating system being audited.
+
+Check if "audispd" is configured to off-load audit records onto a different system or media from the SUSE operating system by running the following command:
+
+> sudo grep remote_server /etc/audit/audisp-remote.conf
+remote_server = 192.168.1.101
+
+If "remote_server" is not set to an external server or media, or is commented out, this is a finding.
+
+References:
+CCI-001851
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 90 *******************************
+
+QUESTION         : 91 of 95
+TITLE            : CAT III, V-234980, SV-234980r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3121
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3121
+RULE             : The SUSE operating system must use a separate file system for the system audit data path.
+QUESTION_TEXT    : Verify that the SUSE operating system has a separate file system/partition for the system audit data path.
+
+Check that a file system/partition has been created for the system audit data path with the following command:
+
+Note: "/var/log/audit" is used as the example as it is a common location.
+
+> grep /var/log/audit /etc/fstab
+UUID=3645951a /var/log/audit ext4 defaults 1 2
+
+If a separate entry for the system audit data path (in this example the "/var/log/audit" path) does not exist, ask the System Administrator if the system audit logs are being written to a different file system/partition on the system and then grep for that file system/partition. 
+
+If a separate file system/partition does not exist for the system audit data path, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 91 *******************************
+
+QUESTION         : 92 of 95
+TITLE            : CAT III, V-234986, SV-234986r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3241
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3241
+RULE             : The SUSE operating system file integrity tool must be configured to verify Access Control Lists (ACLs).
+QUESTION_TEXT    : Verify that the SUSE operating system file integrity tool is configured to verify extended attributes.
+
+If there is no application installed to perform integrity checks, this is a finding.
+
+Check the "/etc/aide.conf" file to determine if the "xattrs" rule has been added to the rule list being applied to the files and directories selection lists.
+
+An example rule that includes the "acl" rule follows:
+
+     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All > apply the custom rule to the files in bin 
+     /sbin All > apply the same custom rule to the files in sbin 
+
+If the "acl" rule is not being used on all selection lines in the "/etc/aide.conf" file, or extended attributes are not being checked by another file integrity tool, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 92 *******************************
+
+QUESTION         : 93 of 95
+TITLE            : CAT III, V-234987, SV-234987r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3261
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3261
+RULE             : The SUSE operating system file integrity tool must be configured to verify extended attributes.
+QUESTION_TEXT    : Verify that the SUSE operating system file integrity tool is configured to verify extended attributes.
+
+If there is no application installed to perform integrity checks, this is a finding.
+
+Check the "/etc/aide.conf" file to determine if the "xattrs" rule has been added to the rule list being applied to the files and directories selection lists.
+
+An example rule that includes the "xattrs" rule follows:
+
+     All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
+     /bin All > apply the custom rule to the files in bin 
+     /sbin All > apply the same custom rule to the files in sbin 
+
+If the "xattrs" rule is not being used on all selection lines in the "/etc/aide.conf" file, or extended attributes are not being checked by another file integrity tool, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 93 *******************************
+
+QUESTION         : 94 of 95
+TITLE            : CAT III, V-235004, SV-235004r991589, SRG-OS-000480-GPOS-00227
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:3601
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:3601
+RULE             : A separate file system must be used for SUSE operating system user home directories (such as /home or an equivalent).
+QUESTION_TEXT    : Verify that a separate file system/partition has been created for SUSE operating system non-privileged local interactive user home directories.
+
+Check the home directory assignment for all non-privileged users (those with a UID greater than 1000) on the system with the following command:
+
+> awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6, $7}' /etc/passwd
+
+adamsj 1002 /home/adamsj /bin/bash
+jacksonm 1003 /home/jacksonm /bin/bash
+smithj 1001 /home/smithj /bin/bash
+
+The output of the command will give the directory/partition that contains the home directories for the non-privileged users on the system (in this example, /home) and user's shell. All accounts with a valid shell (such as /bin/bash) are considered interactive users.
+
+Check that a file system/partition has been created for the non-privileged interactive users with the following command:
+
+Note: The partition of /home is used in the example.
+
+> grep /home /etc/fstab
+UUID=333ada18 /home ext4 noatime,nobarrier,nodev 1 2
+
+If a separate entry for the file system/partition that contains the non-privileged interactive users' home directories does not exist, this is a finding.
+
+References:
+CCI-000366
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 94 *******************************
+
+QUESTION         : 95 of 95
+TITLE            : CAT III, V-255921, SV-255921r958524, SRG-OS-000138-GPOS-00069
+TEST_ACTION_ID   : ocil:navy.navwar.niwcatlantic.scc.sles15:testaction:4221
+QUESTION_ID      : ocil:navy.navwar.niwcatlantic.scc.sles15:question:4221
+RULE             : The SUSE operating system must restrict access to the kernel message buffer.
+QUESTION_TEXT    : Verify the operating system is configured to restrict access to the kernel message buffer with the following commands:
+
+     $ sudo sysctl kernel.dmesg_restrict
+     kernel.dmesg_restrict = 1
+
+If "kernel.dmesg_restrict" is not set to "1" or is missing, this is a finding.
+
+Check that the configuration files are present to enable this kernel parameter:
+
+     $ sudo grep -r kernel.dmesg_restrict /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null
+     /etc/sysctl.conf:kernel.dmesg_restrict = 1
+     /etc/sysctl.d/99-sysctl.conf:kernel.dmesg_restrict = 1
+
+If "kernel.dmesg_restrict" is not set to "1", is missing or commented out, this is a finding.
+
+If conflicting results are returned, this is a finding.
+
+References:
+CCI-001090
+
+     ===========================================================================
+     Select One of the following by entering an X in the brackets
+     [ ] Finding
+     [ ] Not a Finding
+     [ ] Not Applicable
+     [X] Not Reviewed
+     Enter any comments : 
+
+******************************* end of question 95 *******************************
+

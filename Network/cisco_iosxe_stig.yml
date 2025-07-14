@@ -9,4 +9,3 @@
     ansible_become_method: enable
   roles:
     - role: iosxeSTIG
-    
