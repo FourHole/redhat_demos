@@ -533,14 +533,14 @@
   when:
     - iosxeSTIG_stigrule_216675_Manage
 # R-216700 CISC-RT-000620
-- name : stigrule_216700_no_mpls_ip_propagate_ttl
-  ignore_errors: "{{ ignore_all_errors }}"
-  notify: "save configuration"
-  ios_config:
-    defaults: yes
-    lines: "{{ iosxeSTIG_stigrule_216700_no_mpls_ip_propagate_ttl_Lines }}"
-  when:
-    - iosxeSTIG_stigrule_216700_Manage
+# - name : stigrule_216700_no_mpls_ip_propagate_ttl
+#   ignore_errors: "{{ ignore_all_errors }}"
+#   notify: "save configuration"
+#   ios_config:
+#     defaults: yes
+#     lines: "{{ iosxeSTIG_stigrule_216700_no_mpls_ip_propagate_ttl_Lines }}"
+#   when:
+#     - iosxeSTIG_stigrule_216700_Manage
 # R-216723 CISC-RT-000850
 - name : stigrule_216723_ip_pim_register_rate_limit_10
   ignore_errors: "{{ ignore_all_errors }}"
