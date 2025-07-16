@@ -1,0 +1,15 @@
+- name: IOS XE SCAP Report
+  hosts: "{{ host_name }}"
+  connection: network_cli
+  vars:
+    ignore_all_errors: false
+    ansible_command_timeout: 350
+    ansible_become: yes
+    ansible_become_method: enable
+  tasks:
+    - name: Create test user
+      cisco.ios.ios_user:
+        name: ansible
+        password_type: secret
+        privilege: 15
+        configured_password: ansible12345!
